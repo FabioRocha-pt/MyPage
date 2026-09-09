@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAIRO | My Page Template 03</title>
+<style>
+:root{--paper:#eeeae1;--ink:#171714;--red:#df402e;--soft:#d8d3c9}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 Arial,sans-serif;overflow-x:hidden}body:before{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E")}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}.nav{height:82px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:35px}.brand{color:var(--red);font-size:21px;font-weight:950;letter-spacing:-.06em}.links{display:flex;justify-content:center;gap:29px;font-size:12px;font-weight:750}.links a:hover,.social a:hover{color:var(--red)}.social{display:flex;gap:13px;font-size:11px;font-weight:900}.menu{display:none;border:0;border-radius:50%;width:43px;height:43px;background:var(--red);color:white}.hero{min-height:700px;padding:35px 0 90px}.hero h1{font-size:clamp(100px,15vw,205px);line-height:.71;letter-spacing:-.09em;color:var(--red);margin:10px 0 35px}.hero-grid{display:grid;grid-template-columns:1fr 210px 310px;gap:28px;align-items:end}.updates{display:grid;gap:10px}.update{display:flex;justify-content:space-between;padding:16px 18px;background:rgba(216,211,201,.78);border-radius:8px;font-weight:750;transition:.25s}.update:hover{background:var(--red);color:white;transform:translateX(7px)}.bio{line-height:1.6}.link{display:inline-block;color:var(--red);font-weight:850;border-bottom:1px solid;margin-top:12px}.portrait{height:390px;border-radius:8px;overflow:hidden;position:relative}.portrait img{width:100%;height:100%;object-fit:cover;object-position:43%;filter:saturate(.65) sepia(.15);transition:.7s}.portrait:hover img{scale:1.05}.portrait:after{content:"DJ / PRODUCER";position:absolute;top:14px;left:14px;background:#ffffffe0;padding:6px 9px;border-radius:99px;font-size:9px;font-weight:900}.marquee{border-block:1px solid #17171435;overflow:hidden;padding:13px 0;rotate:-1deg}.track{display:flex;width:max-content;animation:roll 25s linear infinite}.group{display:flex;flex:none;gap:28px;padding-right:28px;color:var(--red);font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.group span:after{content:"✦";margin-left:28px}@keyframes roll{to{transform:translateX(-50%)}}.section{padding:115px 0}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:45px}.head h2,.about h2{font-size:clamp(70px,11vw,150px);line-height:.75;letter-spacing:-.085em;color:var(--red);text-transform:uppercase;margin:0}.head p{max-width:290px;margin:0}.music{display:grid;grid-template-columns:1.15fr .75fr 1fr;gap:18px;align-items:start}.card:nth-child(2){margin-top:100px}.card:nth-child(4){grid-column:1}.card:nth-child(5){grid-column:2/4;margin-top:-35px}.art{aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--soft);position:relative}.art img{width:100%;height:100%;object-fit:cover;transition:.5s}.card:hover img{scale:1.05}.disc-art{display:grid;place-items:center;background:repeating-radial-gradient(circle,#1b1b18 0 5px,#30302b 6px 9px)}.disc{width:38%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--red);color:white;font-size:12px;font-weight:950;animation:spin 13s linear infinite}@keyframes spin{to{rotate:360deg}}.tag{position:absolute;top:12px;left:12px;padding:6px 9px;border-radius:99px;background:#ffffffe2;font-size:9px;font-weight:900;text-transform:uppercase}.card h3{font-size:16px;margin:12px 0 4px}.card a{color:var(--red);font-weight:850;border-bottom:1px solid}.tour{padding:115px 0;background:var(--red);color:white}.tour .head h2{color:white}.event{display:grid;grid-template-columns:95px 1.3fr 1fr auto;align-items:center;gap:24px;padding:23px 5px;border-top:1px solid #ffffff70;transition:.25s}.event:last-child{border-bottom:1px solid #ffffff70}.event:hover{padding-inline:18px;background:#ffffff18}.event time{font-size:31px;font-weight:950}.event h3{font-size:23px;margin:0}.pill{border:1px solid currentColor;border-radius:99px;padding:9px 15px;background:none;color:inherit;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer}.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:70px}.about-copy{padding-top:22px;font-size:18px;line-height:1.62}.contact{padding:110px 0;background:#191916;color:#f2eee6}.contact h2{font-size:clamp(70px,12vw,170px);line-height:.72;letter-spacing:-.09em;color:var(--red);margin:0 0 55px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}.contact-block{border-top:1px solid #555;padding-top:18px}.contact-block h3{font-size:27px;margin:0}.contact-block p{color:#aaa89f}.footer{padding:25px 0 45px;background:#191916;color:#99978f}.footer-row{display:flex;justify-content:space-between;font-size:11px}.reveal{opacity:0;transform:translateY(38px);transition:.8s}.reveal.show{opacity:1;transform:none}.modal{position:fixed;z-index:50;inset:0;background:#000a;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}.modal.open{opacity:1;visibility:visible}.box{width:min(620px,100%);background:var(--paper);padding:30px;border-radius:8px}.box-top{display:flex;justify-content:space-between}.box h3{font-size:44px;line-height:.9;color:var(--red);margin:0}.close{border:0;background:var(--red);color:white;width:38px;height:38px;border-radius:50%}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:25px}.field{display:grid;gap:6px}.full{grid-column:1/-1}.field label{font-size:9px;font-weight:900}.field input,.field textarea{border:1px solid #aaa59b;background:#f7f3eb;padding:12px}.field textarea{min-height:95px}.submit{border:0;background:var(--red);color:white;padding:14px;font-weight:900}
+@media(max-width:850px){.links,.social{display:none}.nav{grid-template-columns:1fr auto}.menu{display:block}.hero-grid{grid-template-columns:1fr 1fr}.updates{grid-column:1/-1}.music{grid-template-columns:1fr 1fr}.card:nth-child(n){margin:0;grid-column:auto}.event{grid-template-columns:80px 1fr auto}.city{display:none}.about-grid{grid-template-columns:1fr}.section{padding:85px 0}}@media(max-width:560px){.wrap{width:calc(100% - 24px)}.nav{height:65px}.hero{min-height:auto;padding-bottom:65px}.hero h1{font-size:23vw}.hero-grid{grid-template-columns:1fr}.portrait{grid-row:1;height:400px}.music{gap:12px}.card:nth-child(3),.card:nth-child(5){grid-column:1/-1}.head{display:block}.head p{margin-top:25px}.event{grid-template-columns:60px 1fr}.event .pill{display:none}.event time{font-size:24px}.about-copy{font-size:16px}.contact-grid,.form{grid-template-columns:1fr}.full{grid-column:auto}.footer-row{flex-direction:column;gap:8px}}
+@media(max-width:850px){.links.mobile-open{display:flex;position:absolute;top:65px;left:12px;right:12px;z-index:30;flex-direction:column;gap:0;background:var(--paper);border:1px solid #17171435;padding:10px}.links.mobile-open a{padding:12px}}
+</style>
+<noscript>
+<style>.reveal{opacity:1!important;translate:none!important;transform:none!important}</style>
+</noscript>
+</head>
+<body>
+<header class="wrap nav">
+<a class="brand" href="#home">KAIRO</a>
+<nav class="links">
+<a href="#home">Home</a>
+<a href="#music">Music</a>
+<a href="#tour">Tour</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+</nav>
+<div class="social">
+<a href="#">IG</a>
+<a href="#">SC</a>
+<a href="#">YT</a>
+</div>
+<button class="menu">☰</button>
+</header>
+<main>
+<section class="hero wrap" id="home">
+<h1>KAIRO<br>AFTER DARK</h1>
+<div class="hero-grid">
+<div class="updates">
+<a class="update" href="#music">
+<span>New session on Muska</span>
+<b>↗</b>
+</a>
+<a class="update" href="#tour">
+<span>Summer dates announced</span>
+<b>↗</b>
+</a>
+<a class="update book" href="#contact">
+<span>Bookings now open</span>
+<b>↗</b>
+</a>
+</div>
+<div class="bio">Percussion, pressure and warm late-night energy. KAIRO connects Cape Verdean rhythm with forward-facing club music.<br>
+<a class="link" href="#about">Read the full story</a>
+</div>
+<div class="portrait">
+<img src="assets/dj-template-02-hero.png" alt="KAIRO artist portrait">
+</div>
+</div>
+</section>
+<div class="marquee">
+<div class="track">
+<div class="group">
+<span>Afro House</span>
+<span>Amapiano</span>
+<span>Praia</span>
+<span>Worldwide Booking</span>
+<span>Muska Sessions</span>
+</div>
+<div class="group" aria-hidden="true">
+<span>Afro House</span>
+<span>Amapiano</span>
+<span>Praia</span>
+<span>Worldwide Booking</span>
+<span>Muska Sessions</span>
+</div>
+</div>
+</div>
+<section class="section wrap" id="music">
+<div class="head reveal">
+<h2>Music</h2>
+<p>Releases, mixes and live recordings connected directly to the artist catalogue on Muska.</p>
+</div>
+<div class="music reveal">
+<article class="card">
+<div class="art disc-art">
+<span class="tag">Release</span>
+<span class="disc">HEAT<br>AFTER<br>DARK</span>
+</div>
+<h3>Heat After Dark</h3>
+<a href="#">Listen now</a>
+</article>
+<article class="card">
+<div class="art">
+<img src="assets/dj-template-01-hero.png" alt="Live session">
+<span class="tag">Live recording</span>
+</div>
+<h3>Atlantic Rooftop Session</h3>
+<a href="#">Listen now</a>
+</article>
+<article class="card">
+<div class="art">
+<img src="assets/dj-template-02-hero.png" alt="Featured mix">
+<span class="tag">Mix</span>
+</div>
+<h3>Night Motion 024</h3>
+<a href="#">Listen now</a>
+</article>
+<article class="card">
+<div class="art" style="background:linear-gradient(145deg,#ef5a3c,#172036);display:grid;place-items:center;color:white;font-size:55px;font-weight:950">K.</div>
+<h3>Praia Frequency</h3>
+<a href="#">Listen now</a>
+</article>
+<article class="card">
+<div class="art" style="aspect-ratio:2/1;background:linear-gradient(120deg,#171714 0 45%,#df402e 45% 68%,#dfb48c 68%);display:grid;place-items:center;color:white;font-size:8vw;font-weight:950">LIVE</div>
+<h3>Festival Closing Set</h3>
+<a href="#">Listen now</a>
+</article>
+</div>
+</section>
+<section class="tour" id="tour">
+<div class="wrap">
+<div class="head reveal">
+<h2>Tour</h2>
+<p>Upcoming clubs, festivals and special appearances.</p>
+</div>
+<div class="reveal">
+<article class="event">
+<time>20 <small>SEP</small>
+</time>
+<div>
+<h3>Frequency Room</h3>
+<span>Headline set</span>
+</div>
+<span class="city">Praia, CV</span>
+<a class="pill" href="#">Details</a>
+</article>
+<article class="event">
+<time>04 <small>OCT</small>
+</time>
+<div>
+<h3>Atlantic Motion</h3>
+<span>Festival stage</span>
+</div>
+<span class="city">Sal, CV</span>
+<a class="pill" href="#">Tickets</a>
+</article>
+<article class="event">
+<time>19 <small>OCT</small>
+</time>
+<div>
+<h3>After Hours</h3>
+<span>Extended set</span>
+</div>
+<span class="city">Mindelo, CV</span>
+<a class="pill" href="#">Details</a>
+</article>
+</div>
+</div>
+</section>
+<section class="section about" id="about">
+<div class="wrap about-grid">
+<h2 class="reveal">Sound<br>without<br>borders</h2>
+<div class="about-copy reveal">
+<p>KAIRO builds energetic journeys from Afro House, Amapiano and electronic music. Every set is shaped for the room, moving between deep percussion and bright emotional peaks.</p>
+<p>Based in Praia and available worldwide, his work brings together club culture, Cape Verdean identity and a restless curiosity for new sounds.</p>
+<a class="link" href="#contact">Download press kit</a>
+</div>
+</div>
+</section>
+<section class="contact" id="contact">
+<div class="wrap">
+<h2 class="reveal">LET'S MAKE<br>IT MOVE.</h2>
+<div class="contact-grid reveal">
+<div class="contact-block">
+<h3>Bookings</h3>
+<p>Clubs, festivals, private events and selected brand partnerships.</p>
+<button class="pill book">Check availability</button>
+</div>
+<div class="contact-block">
+<h3>Press kit</h3>
+<p>Photos, logos, biography, rider and stage visuals.</p>
+<a class="pill" href="#">Open complete EPK</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="wrap footer-row">
+<b>KAIRO</b>
+<span>Instagram · Muska · YouTube · SoundCloud</span>
+<span>Powered by My Page · Muska</span>
+</div>
+</footer>
+<div class="modal">
+<div class="box">
+<div class="box-top">
+<h3>CHECK<br>AVAILABILITY</h3>
+<button class="close">×</button>
+</div>
+<form class="form">
+<div class="field">
+<label>NAME</label>
+<input required>
+</div>
+<div class="field">
+<label>EMAIL</label>
+<input type="email" required>
+</div>
+<div class="field">
+<label>EVENT DATE</label>
+<input type="date" required>
+</div>
+<div class="field">
+<label>LOCATION</label>
+<input required>
+</div>
+<div class="field full">
+<label>EVENT DETAILS</label>
+<textarea>
+</textarea>
+</div>
+<button class="submit full">Send booking request</button>
+</form>
+</div>
+</div>
+<script>const modal=document.querySelector('.modal');document.querySelectorAll('.book').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();modal.classList.add('open')}));document.querySelector('.close').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};document.querySelector('.form').onsubmit=e=>{e.preventDefault();e.submitter.textContent='Request ready ✓';e.submitter.disabled=true};const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));document.querySelector('.menu').onclick=()=>document.querySelector('.links').classList.toggle('mobile-open');</script>
+</body>
+</html>

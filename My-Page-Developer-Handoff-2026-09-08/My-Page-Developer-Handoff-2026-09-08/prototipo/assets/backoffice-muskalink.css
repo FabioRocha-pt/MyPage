@@ -1,0 +1,29 @@
+/* Muska Link layout, shared by Dashboard and My Page */
+:root{--bg:#1b253b;--main:#151e31;--panel:#202a3f;--raised:#27334e}
+.app{padding-top:72px;grid-template-columns:190px minmax(0,1fr)}
+.muskalink-header{position:absolute;top:0;left:0;right:0;height:72px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:15px 20px;gap:20px}
+.muskalink-header .brand{font-size:29px}.muskalink-header .brand small{display:none}
+.muskalink-account{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:650}
+.account-badge{border-radius:50%;width:42px;height:42px;display:grid;place-items:center;background:#fff;color:#1b253b;font-size:9px;letter-spacing:-.5px}
+.sidebar{top:0;height:calc(100vh - 72px);padding:15px 14px}.sidebar>.brand,.workspace{display:none}
+.nav-button{padding:11px 10px;font-size:13px;border-radius:7px;background:transparent}
+.nav-button.active{background:var(--raised);color:var(--cyan);box-shadow:none;border-color:transparent}
+.nav-icon{font-size:18px}.sidebar nav{gap:7px}.side-caption{font-size:9px;margin:24px 10px 10px}
+.shortcuts button{padding:9px 12px;font-size:12px}.shortcuts button:hover{border-radius:0;box-shadow:inset 2px 0 var(--cyan)}
+.request-shortcut{font-size:12px;border-radius:7px}.side-bottom{font-size:10px}
+main{background:var(--main);border-radius:7px 0 0}.topbar{background:var(--main);padding:27px 30px 14px;flex-wrap:wrap}
+.topbar>div:first-child{display:none}.top-actions{margin-left:auto}
+.workspace-tabs{display:flex;align-items:center;gap:20px;background:var(--bg);border-radius:30px;padding:6px 12px;width:100%;order:-1;margin-bottom:12px}
+.workspace-tabs button{background:transparent;color:var(--text);border:0;border-bottom:2px solid transparent;padding:11px 12px;font-size:14px;font-weight:650}
+.workspace-tabs button.selected{border-color:var(--cyan);color:var(--cyan)}
+.workspace-tabs .back-button{border:0;background:#717e90;color:#fff;border-radius:50%;width:35px;height:35px;padding:0;font-size:23px}
+.workspace-tabs a{font-size:12px;margin-left:auto;padding:10px;color:var(--muted)}
+.content{margin:0;padding:12px 30px 30px;border-radius:0;min-height:calc(100vh - 200px)}
+.notice{border-radius:8px;padding:9px 13px}.view-head{padding:30px 0}.view-head h2{font-size:30px}
+.stat,.panel,.accordion{border-radius:15px}.accordion{max-width:1150px;margin:0 auto 14px}.section-body{padding:0 30px 30px}
+.field input,.field select{border-radius:22px;min-height:40px;padding:10px 14px}
+.field textarea{border-radius:12px}.accordion summary{padding:20px}.section-icon{width:32px;height:32px;border-radius:50%;font-size:12px}
+.primary{color:#fff;box-shadow:0 3px 2px #2dceef25}.uploads .upload{border-radius:13px}
+.view-head .eyebrow{display:none}
+@media(min-width:1450px){.section-body>.fields,.section-body>.uploads{max-width:940px;margin-left:auto;margin-right:auto}.content{padding-left:40px;padding-right:40px}}
+@media(max-width:720px){.app{padding-top:68px;display:block}.muskalink-header{height:68px;padding:14px 17px}.muskalink-header .brand{font-size:25px}.sidebar{height:auto;padding:9px 15px}.sidebar nav{margin:0}.topbar{padding:12px 15px}.workspace-tabs{gap:6px}.workspace-tabs button{font-size:12px;padding:9px}.workspace-tabs a{font-size:11px}.content{padding:10px 15px 25px}.section-body{padding:0 15px 22px}.top-actions{width:100%}.view-head h2{font-size:26px}}

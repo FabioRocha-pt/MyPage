@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="My Page DJ Template 01">
+<title>NOA | DJ Page</title>
+<style>
+:root{--bg:#07111f;--surface:#0d1b2e;--surface2:#13243b;--text:#f7f9fc;--muted:#9ba9bc;--line:rgba(255,255,255,.13);--accent:#2dceef;--accent2:#2ea2f0;--orange:#ff7440;--glass:rgba(11,27,47,.67);--shadow:0 35px 100px rgba(0,0,0,.42)}html[data-theme="light"]{--bg:#edf4f8;--surface:#fff;--surface2:#e4eef5;--text:#132035;--muted:#637287;--line:rgba(14,32,55,.13);--glass:rgba(255,255,255,.72);--shadow:0 30px 80px rgba(33,68,99,.15)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden;transition:.3s}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.noise{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.ambient{position:fixed;inset:-20%;pointer-events:none}.orb{position:absolute;border-radius:50%;filter:blur(28px);opacity:.25}.orb.a{width:460px;height:460px;left:0;top:3%;background:radial-gradient(circle,var(--orange),transparent 68%);animation:driftA 18s ease-in-out infinite alternate}.orb.b{width:560px;height:560px;right:0;top:27%;background:radial-gradient(circle,var(--accent),transparent 68%);animation:driftB 23s ease-in-out infinite alternate}@keyframes driftA{to{translate:35vw 40vh;scale:.85}}@keyframes driftB{to{translate:-42vw 35vh;scale:1.12}}.shell{width:min(1180px,calc(100% - 36px));margin:auto}.nav{position:fixed;left:50%;top:16px;translate:-50% 0;z-index:40;width:min(1160px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 17px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(20px);box-shadow:0 15px 50px rgba(0,0,0,.17)}.wordmark{font-size:19px;font-weight:950;letter-spacing:-.055em}.wordmark span{color:var(--accent)}.links{display:flex;gap:22px;color:var(--muted);font-size:12px}.nav-actions{display:flex;gap:8px}.icon,.pill{border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);cursor:pointer}.icon{width:40px;height:40px;border-radius:50%}.pill{padding:10px 16px;border-radius:999px}.pill.primary{border:0;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#102039;font-weight:900}.hero{min-height:100svh;position:relative;display:grid;align-items:end;padding:125px 0 46px}.hero-media{position:absolute;inset:0;overflow:hidden}.hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,9,18,.92) 0%,rgba(3,9,18,.6) 45%,rgba(3,9,18,.12) 72%),linear-gradient(0deg,var(--bg),transparent 36%)}.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:saturate(.85) contrast(1.05);animation:heroZoom 18s ease-in-out infinite alternate}@keyframes heroZoom{to{scale:1.055;translate:1.5% -1%}}.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px}.kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#c1ccda}.hero h1{font-size:clamp(86px,16vw,210px);line-height:.72;letter-spacing:-.085em;margin:24px 0 32px}.hero h1 i{font-style:normal;color:var(--accent)}.genres{font-size:14px;letter-spacing:.08em;text-transform:uppercase}.location{color:#b4c1d1;margin-top:8px}.hero-buttons{display:flex;gap:10px;margin-top:28px}.hero-social{display:grid;gap:9px;text-align:right;font-size:12px;color:#c3cedc}.hero-social a:hover{color:var(--accent)}.scroll-hint{position:absolute;right:18px;bottom:120px;z-index:3;writing-mode:vertical-rl;font-size:9px;letter-spacing:.2em;color:#a9b6c7}.section{position:relative;padding:120px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:50px}.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}.section h2{font-size:clamp(48px,7vw,92px);line-height:.9;letter-spacing:-.065em;margin:10px 0 0}.section-head p{max-width:410px;color:var(--muted);font-size:16px}.featured{display:grid;grid-template-columns:1fr 1.2fr;min-height:530px;border:1px solid var(--line);border-radius:34px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}.artwork{position:relative;min-height:430px;background:linear-gradient(145deg,#f46837,#5d2cd7 55%,#2dceef);display:grid;place-items:center;overflow:hidden}.artwork:before{content:"NOA";font-size:140px;font-weight:950;letter-spacing:-.1em;color:rgba(255,255,255,.16);rotate:-18deg}.artwork:after{content:"";position:absolute;width:280px;height:280px;border:1px solid rgba(255,255,255,.5);border-radius:50%;box-shadow:0 0 0 42px rgba(255,255,255,.05),0 0 0 84px rgba(255,255,255,.04)}.set-info{padding:46px;display:flex;flex-direction:column}.set-info h3{font-size:48px;line-height:.95;letter-spacing:-.055em;margin:auto 0 18px}.set-info p{color:var(--muted);max-width:540px}.wave{display:flex;align-items:center;gap:3px;height:64px;margin:25px 0}.wave i{display:block;width:3px;border-radius:9px;background:linear-gradient(var(--accent),var(--accent2));height:var(--h)}.set-controls{display:flex;justify-content:space-between;align-items:center;gap:15px}.play{width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#102039;font-size:19px}.time{color:var(--muted);font-variant-numeric:tabular-nums}.events{display:grid;gap:0;border-top:1px solid var(--line)}.event{display:grid;grid-template-columns:90px 1.5fr 1fr auto;align-items:center;gap:22px;padding:24px 8px;border-bottom:1px solid var(--line);transition:.3s}.event:hover{padding-inline:20px;background:var(--surface);border-radius:18px;transform:translateY(-2px)}.date strong{display:block;font-size:26px}.date small,.event .place,.event .city{color:var(--muted)}.event h3{font-size:22px;margin:0}.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}.portrait{min-height:630px;border-radius:32px;background-image:linear-gradient(0deg,rgba(5,14,26,.5),transparent),url("assets/dj-template-01-hero.png");background-size:cover;background-position:center;border:1px solid var(--line)}.about-copy{display:flex;flex-direction:column;justify-content:center}.about-copy blockquote{font-size:clamp(31px,4.3vw,58px);line-height:1.08;letter-spacing:-.045em;margin:0 0 36px}.about-copy p{color:var(--muted);font-size:17px;line-height:1.75}.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}.number{padding:18px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}.number strong{display:block;font-size:25px}.number small{color:var(--muted)}.booking{border:1px solid var(--line);border-radius:38px;padding:50px;min-height:440px;background:radial-gradient(circle at 80% 20%,rgba(45,206,239,.24),transparent 30%),radial-gradient(circle at 15% 90%,rgba(255,116,64,.22),transparent 34%),var(--surface);display:flex;flex-direction:column;justify-content:space-between}.booking h2{max-width:900px}.booking-row{display:flex;justify-content:space-between;align-items:end;gap:20px}.booking-row p{max-width:520px;color:var(--muted);font-size:16px}.footer{padding:38px 0 105px;border-top:1px solid var(--line)}.footer-row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}.player{position:fixed;z-index:35;left:50%;bottom:16px;translate:-50% 0;width:min(720px,calc(100% - 22px));padding:10px 12px;border:1px solid var(--line);border-radius:18px;background:var(--glass);backdrop-filter:blur(22px);box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:13px;transform:translateY(130%);transition:.4s}.player.show{transform:none}.player-art{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--orange),#772bdd,var(--accent))}.player b{display:block;font-size:12px}.player small{color:var(--muted)}.mini-progress{height:3px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:7px;overflow:hidden}.mini-progress i{display:block;width:0;height:100%;background:var(--accent)}.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;background:rgba(2,8,16,.72);backdrop-filter:blur(13px);opacity:0;visibility:hidden;transition:.25s}.modal.open{opacity:1;visibility:visible}.modal-card{width:min(620px,100%);max-height:95vh;overflow:auto;padding:32px;border:1px solid var(--line);border-radius:28px;background:var(--surface);box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;gap:20px}.modal-head h3{font-size:31px;margin:0}.close{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);color:var(--text);cursor:pointer}.form{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:24px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:10px;color:var(--muted);letter-spacing:.1em}.field input,.field textarea{border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);padding:12px;outline:none}.field textarea{min-height:100px;resize:vertical}.reveal{opacity:0;translate:0 35px;transition:opacity .75s,translate .75s}.reveal.visible{opacity:1;translate:0}.menu{display:none}
+@media(max-width:850px){.links{display:none}.hero-content{grid-template-columns:1fr}.hero-social{display:none}.featured,.about-grid{grid-template-columns:1fr}.event{grid-template-columns:70px 1fr auto}.event .city{display:none}.portrait{min-height:520px}.section{padding:85px 0}.section-head{align-items:flex-start;flex-direction:column}.booking-row{align-items:flex-start;flex-direction:column}.menu{display:block}}@media(max-width:560px){.shell{width:calc(100% - 24px)}.nav{top:9px}.nav-actions .pill{display:none}.hero h1{font-size:91px}.hero-buttons{flex-direction:column}.hero-buttons .pill{text-align:center}.featured{border-radius:25px}.set-info{padding:27px}.set-info h3{font-size:39px}.event{grid-template-columns:58px 1fr;padding:20px 2px}.event .event-action{display:none}.about-grid{gap:24px}.portrait{min-height:420px}.numbers{grid-template-columns:1fr}.booking{padding:28px;border-radius:27px}.form{grid-template-columns:1fr}.field.full{grid-column:1}.footer-row{align-items:flex-start;flex-direction:column;gap:14px}}
+</style>
+<noscript>
+<style>.reveal{opacity:1!important;translate:none!important;transform:none!important}</style>
+</noscript>
+</head>
+<body>
+<div class="noise">
+</div>
+<div class="ambient">
+<span class="orb a">
+</span>
+<span class="orb b">
+</span>
+</div>
+<nav class="nav">
+<a class="wordmark" href="#top">N<i style="font-style:normal;color:var(--accent)">Ø</i>A</a>
+<div class="links">
+<a href="#listen">Listen</a>
+<a href="#events">Events</a>
+<a href="#about">About</a>
+<a href="#booking">Booking</a>
+</div>
+<div class="nav-actions">
+<button class="icon" id="themeToggle">☀</button>
+<button class="pill primary book-trigger">Book NOA</button>
+<button class="icon menu">☰</button>
+</div>
+</nav>
+<main id="top">
+<section class="hero">
+<div class="hero-media">
+<img src="assets/dj-template-01-hero.png" alt="DJ NOA performing">
+</div>
+<div class="shell hero-content">
+<div>
+<div class="kicker">DJ · Producer · Praia, Cape Verde</div>
+<h1>N<i>Ø</i>A</h1>
+<div class="genres">Afro House · Amapiano · Electronic</div>
+<div class="location">Sound built for late nights and open skies.</div>
+<div class="hero-buttons">
+<button class="pill primary play-trigger">▶ Play featured set</button>
+<button class="pill book-trigger">Request booking</button>
+</div>
+</div>
+<div class="hero-social">
+<a href="#">Instagram ↗</a>
+<a href="#">Muska ↗</a>
+<a href="#">YouTube ↗</a>
+<a href="#">TikTok ↗</a>
+</div>
+</div>
+<div class="scroll-hint">SCROLL TO EXPLORE</div>
+</section>
+<section class="section" id="listen">
+<div class="shell">
+<div class="section-head reveal">
+<div>
+<div class="eyebrow">Featured set</div>
+<h2>Press play.<br>Stay awhile.</h2>
+</div>
+<p>One featured set sits at the heart of the page. The Muska player can replace this prototype while preserving the same experience.</p>
+</div>
+<article class="featured reveal">
+<div class="artwork">
+</div>
+<div class="set-info">
+<div class="eyebrow">NOA SESSION 001</div>
+<h3>Midnight<br>on the island</h3>
+<p>Afro House, deep percussion and warm electronic textures recorded live in Praia.</p>
+<div class="wave" aria-hidden="true">
+</div>
+<div class="set-controls">
+<button class="play play-trigger">▶</button>
+<span class="time">58:24</span>
+<a href="#">Open in Muska ↗</a>
+</div>
+</div>
+</article>
+</div>
+</section>
+<section class="section" id="events">
+<div class="shell">
+<div class="section-head reveal">
+<div>
+<div class="eyebrow">Upcoming</div>
+<h2>Meet me<br>on the floor.</h2>
+</div>
+<p>Upcoming events are synchronized from Muska and always place the next date first.</p>
+</div>
+<div class="events reveal">
+<article class="event">
+<div class="date">
+<strong>18</strong>
+<small>SEP</small>
+</div>
+<div>
+<h3>Ocean Night</h3>
+<span class="place">Ocean Club</span>
+</div>
+<span class="city">Praia · Cape Verde</span>
+<a class="pill event-action" href="#">Event info</a>
+</article>
+<article class="event">
+<div class="date">
+<strong>27</strong>
+<small>SEP</small>
+</div>
+<div>
+<h3>Atlantic Frequencies</h3>
+<span class="place">Kebra Cabana</span>
+</div>
+<span class="city">Praia · Cape Verde</span>
+<a class="pill event-action" href="#">Tickets</a>
+</article>
+<article class="event">
+<div class="date">
+<strong>11</strong>
+<small>OCT</small>
+</div>
+<div>
+<h3>Sunset Ritual</h3>
+<span class="place">Beach Stage</span>
+</div>
+<span class="city">Sal · Cape Verde</span>
+<a class="pill event-action" href="#">Event info</a>
+</article>
+</div>
+</div>
+</section>
+<section class="section" id="about">
+<div class="shell about-grid">
+<div class="portrait reveal">
+</div>
+<div class="about-copy reveal">
+<div class="eyebrow">About NOA</div>
+<blockquote>Rhythm is a meeting point between memory, movement and the people in front of me.</blockquote>
+<p>NOA is a Cape Verdean DJ and producer shaping sets around Afro House, Amapiano and electronic music. Her performances move between intimate rooms, beach stages and festival crowds while keeping percussion and atmosphere at the center.</p>
+<div class="numbers">
+<div class="number">
+<strong>42</strong>
+<small>Shows this year</small>
+</div>
+<div class="number">
+<strong>08</strong>
+<small>Countries played</small>
+</div>
+<div class="number">
+<strong>12K</strong>
+<small>Monthly listeners</small>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="booking">
+<div class="shell">
+<div class="booking reveal">
+<div>
+<div class="eyebrow">Booking</div>
+<h2>Bring this energy<br>to your next event.</h2>
+</div>
+<div class="booking-row">
+<p>Available for clubs, festivals, private events and selected brand collaborations.</p>
+<button class="pill primary book-trigger">Request availability</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="shell footer-row">
+<b>NOA</b>
+<span>Instagram · Muska · YouTube · TikTok</span>
+<span>Powered by My Page · Muska</span>
+</div>
+</footer>
+<div class="player" id="player">
+<span class="player-art">
+</span>
+<div>
+<b>Midnight on the island</b>
+<small>NOA Session 001</small>
+<div class="mini-progress">
+<i id="progress">
+</i>
+</div>
+</div>
+<button class="icon" id="playerToggle">Ⅱ</button>
+</div>
+<div class="modal" id="bookingModal">
+<div class="modal-card">
+<div class="modal-head">
+<div>
+<div class="eyebrow">Booking request</div>
+<h3>Book NOA</h3>
+</div>
+<button class="close" id="closeModal">×</button>
+</div>
+<form class="form" id="bookingForm">
+<div class="field">
+<label>NAME</label>
+<input required placeholder="Your name">
+</div>
+<div class="field">
+<label>EMAIL</label>
+<input required type="email" placeholder="you@email.com">
+</div>
+<div class="field">
+<label>EVENT DATE</label>
+<input required type="date">
+</div>
+<div class="field">
+<label>LOCATION</label>
+<input required placeholder="City, country">
+</div>
+<div class="field full">
+<label>EVENT TYPE</label>
+<input placeholder="Club, festival, private event">
+</div>
+<div class="field full">
+<label>MESSAGE</label>
+<textarea placeholder="Tell us about the event">
+</textarea>
+</div>
+<div class="field full">
+<button class="pill primary" type="submit">Send request</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+const root=document.documentElement,themeToggle=document.getElementById('themeToggle');function setTheme(t){root.dataset.theme=t;localStorage.setItem('dj-template-theme',t);themeToggle.textContent=t==='dark'?'☀':'☾'}setTheme(localStorage.getItem('dj-template-theme')||'dark');themeToggle.addEventListener('click',()=>setTheme(root.dataset.theme==='dark'?'light':'dark'));
+const wave=document.querySelector('.wave');for(let i=0;i<72;i++){const bar=document.createElement('i');bar.style.setProperty('--h',`${12+Math.abs(Math.sin(i*.55))*45}px`);wave.appendChild(bar)}
+const player=document.getElementById('player'),playerToggle=document.getElementById('playerToggle'),progress=document.getElementById('progress');let playing=false,timer;function togglePlay(){playing=!playing;player.classList.add('show');playerToggle.textContent=playing?'Ⅱ':'▶';document.querySelectorAll('.play-trigger').forEach(b=>{if(b.classList.contains('play'))b.textContent=playing?'Ⅱ':'▶'});clearInterval(timer);if(playing)timer=setInterval(()=>{const current=parseFloat(progress.style.width)||0;progress.style.width=`${current>=100?0:current+.18}%`},100)}document.querySelectorAll('.play-trigger').forEach(b=>b.addEventListener('click',togglePlay));playerToggle.addEventListener('click',togglePlay);
+const modal=document.getElementById('bookingModal');document.querySelectorAll('.book-trigger').forEach(b=>b.addEventListener('click',()=>modal.classList.add('open')));document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('open'));modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});document.getElementById('bookingForm').addEventListener('submit',e=>{e.preventDefault();e.submitter.textContent='Request ready ✓';e.submitter.disabled=true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.13});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

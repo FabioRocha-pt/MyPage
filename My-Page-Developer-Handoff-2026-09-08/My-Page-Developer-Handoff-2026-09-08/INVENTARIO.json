@@ -1,0 +1,311 @@
+{
+  "date": "2026-09-08",
+  "product": "My Page · Powered by Muska",
+  "files": [
+    {
+      "path": "LEIA-ME.md",
+      "bytes": 3306,
+      "sha256": "839ecf04d8dfd85f02ce24cbc111ee2b260d95f6bfe19ecf9ee5fdd2a2440346"
+    },
+    {
+      "path": "documentacao/01-PRODUTO-E-DECISOES.md",
+      "bytes": 6664,
+      "sha256": "e07a4ad183596e928b190d8994a1cef27a6a406994b22b650734e1107a1e26e3"
+    },
+    {
+      "path": "documentacao/02-TELAS-E-FUNCIONALIDADES.md",
+      "bytes": 8896,
+      "sha256": "4db62bbf21e90da7068bc7f669bb4811c0a0999331e6941556f357dd713b9c03"
+    },
+    {
+      "path": "documentacao/03-ARQUITETURA-E-INTEGRACOES.md",
+      "bytes": 6971,
+      "sha256": "c82f71936d88086ff03da65067fb47062ef90fbc51bbd4a96e05e9d268369528"
+    },
+    {
+      "path": "documentacao/04-IMPLEMENTACAO-E-TESTES.md",
+      "bytes": 6598,
+      "sha256": "69d8b339acfdec793d40cdb629793656d328bbc778edfc356737537812b2274d"
+    },
+    {
+      "path": "documentacao/historico/artists-integration-notes.md",
+      "bytes": 1522,
+      "sha256": "356098ebfc0a89427efa65c848886d04f6c06094117c26cfe252efa9f4d0f4f2"
+    },
+    {
+      "path": "documentacao/historico/backoffice-v2-fluxos.md",
+      "bytes": 2835,
+      "sha256": "b47ea6150ab75ff177239e00ce20844228853c714a52e4f4438756761c9ecaf4"
+    },
+    {
+      "path": "documentacao/historico/backoffice-v3-fluxos.md",
+      "bytes": 1952,
+      "sha256": "1e46eb4135827ed55519800b33552ac47634386e7d410d42bdb61a040e407831"
+    },
+    {
+      "path": "documentacao/historico/backoffice-v4-fluxos.md",
+      "bytes": 1350,
+      "sha256": "8bf8f9fa33d6a3c8ef7e339c8524cacc4c7422a9837482919dbb5cea053cd8f8"
+    },
+    {
+      "path": "documentacao/historico/backoffice-v5-testes-e-integracoes.md",
+      "bytes": 6529,
+      "sha256": "58e9bd899d388e4cc96e1c104dd5d3e3f7954fdce8b64ecc5acc13de3a5c4f70"
+    },
+    {
+      "path": "documentacao/historico/developer-handoff.md",
+      "bytes": 4374,
+      "sha256": "7c9fc9bdfcf7c38074d15c2d8c9321f4b2e0ffda145e89cfe897ea12dea6c645"
+    },
+    {
+      "path": "documentacao/historico/my-page-sprint-doc.md",
+      "bytes": 4011,
+      "sha256": "73bdd3fb5e6a2a372e1c0988269c14a523a44c9abdcd2b0b35afe571b0ef6a54"
+    },
+    {
+      "path": "documentacao/historico/templates-04-05-notes.md",
+      "bytes": 1407,
+      "sha256": "088d869a3b9d7c19b374d709513969bca338b33315197a24c83578d6f5c61838"
+    },
+    {
+      "path": "prototipo/artists.html",
+      "bytes": 7926,
+      "sha256": "01c2f2357104f3c03dd9c9a941b56825fa7ead178f0688cd30bbc8298c03e618"
+    },
+    {
+      "path": "prototipo/assets/backoffice-muskalink.css",
+      "bytes": 3375,
+      "sha256": "acaef8c991174def1ff0015dfea532652cdab91ddd977b16f7ae0707f4a1ab9e"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v2.css",
+      "bytes": 10458,
+      "sha256": "eeea5ae100716376e454e1cf08186de6d335d8b024cbb995e466b5869710bb66"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v2.js",
+      "bytes": 9727,
+      "sha256": "da4456cffc8365b4d0afa9e30cbe9d81a5ec15a6eb2b16afbbca82ce18204207"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v3.css",
+      "bytes": 3360,
+      "sha256": "2ca43f22745d81aeadcf95eed4b55ea8a67c394269e87b6c4792da670f5cf477"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v3.js",
+      "bytes": 4610,
+      "sha256": "87db90c1f18b59666fed9010e1e27e8bcf92ad2f8cfc64a3d939bd917cf6f1d0"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v4.css",
+      "bytes": 2132,
+      "sha256": "e9e9e85d0b0941f7590005184912b95324feb8716c20cc619ab01bf6042d5388"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v4.js",
+      "bytes": 9036,
+      "sha256": "a627ff5e423b72d8ca21d70d29feaa0a02b239569a890487ed5acb01f647ec1a"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v5.css",
+      "bytes": 4840,
+      "sha256": "d586b28e8be30b0acc052f2c9e94ff7cd732d90e72001f453c5d02b136d7ba4f"
+    },
+    {
+      "path": "prototipo/assets/backoffice-v5.js",
+      "bytes": 35696,
+      "sha256": "80a2a00119c4bf1ea10c5a847eae7d7e59879aad7c1e943156c08d31ba548079"
+    },
+    {
+      "path": "prototipo/assets/dj-template-01-hero.png",
+      "bytes": 1781900,
+      "sha256": "c9dec307dfb95f92dc00eaa4bdfe1cfe74bfa75136e3cdcef20835aff24d3c6c"
+    },
+    {
+      "path": "prototipo/assets/dj-template-02-hero.png",
+      "bytes": 1886173,
+      "sha256": "49e1c958a10157a34f02b56c90838ecd9f43af7a8ba6ef5381105a6ef0fa1533"
+    },
+    {
+      "path": "prototipo/assets/dj-template-04-ember.png",
+      "bytes": 1971047,
+      "sha256": "b03fa1a42ba779518001a1a4f3f03a1869a589f6e14ef21cbb173237804a51e8"
+    },
+    {
+      "path": "prototipo/assets/dj-template-04-ember.txt",
+      "bytes": 812,
+      "sha256": "2145c24451b1c63caea04b5dec5543ebbdaf169f4e5c3b5233c4f9a719670b5a"
+    },
+    {
+      "path": "prototipo/assets/dj-template-05-portrait.png",
+      "bytes": 1646009,
+      "sha256": "95deed21a3ce623de947ee0c49d93713a90b2e87380c61ab8b72852031f916e8"
+    },
+    {
+      "path": "prototipo/assets/front-template-catalog.js",
+      "bytes": 229,
+      "sha256": "5ed95aa374f392ffd4eee82e7e3dda4827a091d057b8dfad1032be598983fd95"
+    },
+    {
+      "path": "prototipo/assets/mypage.svg",
+      "bytes": 7743,
+      "sha256": "f86dbd1185f397f052cf6fb2c59a8fabb112ba703235d04493c55da6e4ef1ee7"
+    },
+    {
+      "path": "prototipo/assets/template-catalog.js",
+      "bytes": 2335,
+      "sha256": "d7707bcb2dfdc1a58ec4fca161440b36bb15714a6f2f9b84529926002f03407e"
+    },
+    {
+      "path": "prototipo/assets/templates-45.css",
+      "bytes": 1634,
+      "sha256": "6842d569084a5c09123e541f9173ea4666bf0169a1bc5570b60ba3415becc7e0"
+    },
+    {
+      "path": "prototipo/assets/templates-45.js",
+      "bytes": 2652,
+      "sha256": "6172b1a0630126eef92a3caec520ac6e889ecb68f81974168cbbe8eae2564a01"
+    },
+    {
+      "path": "prototipo/backoffice.html",
+      "bytes": 20121,
+      "sha256": "7667d155631c44e9265f66baa2ecc316e6f0a8dfdd141b461eb0f55e21fa1e1b"
+    },
+    {
+      "path": "prototipo/dj-template-01.html",
+      "bytes": 18800,
+      "sha256": "05ac575f00fe70c7440d2b2b89269597301e47c38b330e7fe1b75ca9c82a2fc5"
+    },
+    {
+      "path": "prototipo/dj-template-02.html",
+      "bytes": 16551,
+      "sha256": "9aecc50b69300d0758bbe238e39090d922eb21f5e0f7e4dc424dae3f1d176aa0"
+    },
+    {
+      "path": "prototipo/dj-template-03.html",
+      "bytes": 13674,
+      "sha256": "91f2bf6e956afd109828d7521df14f2ea58cddc9824ca013eeb1d248af22eff9"
+    },
+    {
+      "path": "prototipo/dj-template-04.html",
+      "bytes": 12788,
+      "sha256": "84365f149c413082664a0040f15f36dc3368c7f88054bc966a33d390bdc8e149"
+    },
+    {
+      "path": "prototipo/dj-template-05.html",
+      "bytes": 4483,
+      "sha256": "a9213ee2972635fefce63fecc34dcc9c9b58445b710ed37c43e13d132bd5da89"
+    },
+    {
+      "path": "prototipo/index.html",
+      "bytes": 504223,
+      "sha256": "bf55ba5dc5d476380a24373822ecb95928d21f8f200d9bd35151a609dcf304c4"
+    },
+    {
+      "path": "prototipo/my-page-landing.html",
+      "bytes": 504223,
+      "sha256": "bf55ba5dc5d476380a24373822ecb95928d21f8f200d9bd35151a609dcf304c4"
+    },
+    {
+      "path": "prototipo/templates.html",
+      "bytes": 971,
+      "sha256": "e4c4159abdfdbb40eac5787d53292d1336b07d96f6e6470989de7d5471d5d678"
+    },
+    {
+      "path": "referencias/LEIA-ME.md",
+      "bytes": 1465,
+      "sha256": "838db9c0487e3762bdcf7e1ad99f022566e404067634ad018750ac8df50a11c3"
+    },
+    {
+      "path": "referencias/acordeao-contorno-a-remover.png",
+      "bytes": 27583,
+      "sha256": "5ada222e464fb8d54a25297778588c017d561f200d70a4b208cafe04bb02979d"
+    },
+    {
+      "path": "referencias/acordeoes-ordem.png",
+      "bytes": 25584,
+      "sha256": "71deed1225ca3cd1386f8965fae592b9050dc421721f1602037f57a7bc0e8165"
+    },
+    {
+      "path": "referencias/avisos-amarelos.png",
+      "bytes": 15791,
+      "sha256": "75230988a556800f5009051edd5024d22a6d4172c5bc03399026a4e259f2035c"
+    },
+    {
+      "path": "referencias/campo-foco-duplo-a-remover.png",
+      "bytes": 4885,
+      "sha256": "a0df544a3672b6e2c3d601fd4b068ae965d605209378dbfece15d4455a772287"
+    },
+    {
+      "path": "referencias/icones-menu.png",
+      "bytes": 38008,
+      "sha256": "9d3021e64bb6bef58bb3648b07afedba672ba6226cb435e124638154c9158052"
+    },
+    {
+      "path": "referencias/inventario-referencias.json",
+      "bytes": 1931,
+      "sha256": "3e50a6e1bc6a8af2d3cd8baed2ce262557f44d3993c8aa2112e7a6cda6b1f23a"
+    },
+    {
+      "path": "referencias/logo-original-mypage.svg",
+      "bytes": 7743,
+      "sha256": "f86dbd1185f397f052cf6fb2c59a8fabb112ba703235d04493c55da6e4ef1ee7"
+    },
+    {
+      "path": "referencias/menu-contorno-a-remover.png",
+      "bytes": 16660,
+      "sha256": "d7bb6820c9190fc513949a9cdd18c2700263cb20db83456ec3f7386134ca8ff8"
+    },
+    {
+      "path": "referencias/menu-ferramentas-historico.png",
+      "bytes": 13835,
+      "sha256": "b18d1601cd45098a10c2640bbeb3c7b1c5a9f081ff06b0238ea43d54af018cae"
+    },
+    {
+      "path": "referencias/menu-muska-referencia.png",
+      "bytes": 45192,
+      "sha256": "4a7912077844efc4d15ce44fb4c9d1a54b56776bb3a827ce20e22fce0faaecca"
+    },
+    {
+      "path": "referencias/muska-bilhete-criacao.png",
+      "bytes": 62911,
+      "sha256": "51d543ee451ebc605d3c548d0f70703b1d0ead1734705ce4937b87e67982ee3a"
+    },
+    {
+      "path": "referencias/muska-bilhetes-lotes.png",
+      "bytes": 70090,
+      "sha256": "f8b029551960a1f7b7b9e38ce6d3c74e41c447bbc07674d341a2b578177e51cd"
+    },
+    {
+      "path": "referencias/muska-evento-criacao.png",
+      "bytes": 100910,
+      "sha256": "868fd5abf57e9d3e9b003078696a70f7d7e1d551f1abd91d2d0c3d02e6c61705"
+    },
+    {
+      "path": "referencias/muska-evento-detalhe.png",
+      "bytes": 396810,
+      "sha256": "d9ad1e58414fd08c15d78fe41b116bfe3e550dfc7983f22b57ec49fb4da60fd7"
+    },
+    {
+      "path": "referencias/muska-eventos-listagem.png",
+      "bytes": 1634019,
+      "sha256": "ffb67256de79525ef0723c65bc3b339984601370411c518b417d11d888d30f53"
+    },
+    {
+      "path": "referencias/muska-link-layout.png",
+      "bytes": 95530,
+      "sha256": "9f2868eea066ceb97446e34f53e4949c88f0a2665ca6440e402423eb48e7d38c"
+    },
+    {
+      "path": "referencias/template-04-referencia.png",
+      "bytes": 727346,
+      "sha256": "421c53235b3299bdff2668a6bb6c46df1e74aca2e5e428ed837e46ddf58c0333"
+    },
+    {
+      "path": "referencias/template-05-referencia.png",
+      "bytes": 498592,
+      "sha256": "5126d8974335ab9abc64d83c5f2524d5260e8ebba1e20055ad83fb9395e96f2e"
+    }
+  ]
+}

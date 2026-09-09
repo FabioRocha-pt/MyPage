@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Artistas · My Page by Muska</title>
+<meta name="description" content="Descobre artistas e explora as suas páginas no Muska.">
+<style>
+:root{color-scheme:dark;--bg:#111b2d;--panel:#1d2a41;--muted:#a5b2c8;--cyan:#2dceef}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f8ff;font:16px/1.5 system-ui,-apple-system,sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:5px}.wrap{width:min(1190px,calc(100% - 40px));margin:auto}header{border-bottom:1px solid #ffffff15}nav{min-height:85px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:24px;font-weight:800;letter-spacing:-1px}.brand small{font-size:10px;letter-spacing:1px;color:var(--muted);display:block}.navlinks{display:flex;align-items:center;gap:27px;font-size:14px}.navlinks .active{color:var(--cyan)}.button{display:inline-block;border:1px solid #ffffff35;border-radius:30px;padding:11px 20px;font-size:14px}.button.primary{background:linear-gradient(100deg,#2dceef,#2ea2f0);color:#102136;border:0;font-weight:750}.intro{padding:70px 0 35px;display:grid;grid-template-columns:1.2fr 1fr;gap:65px;align-items:end}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--cyan)}h1{font-size:clamp(40px,5.5vw,72px);line-height:1.02;letter-spacing:-3px;margin:17px 0}.intro p{color:var(--muted);font-size:17px;max-width:440px}.toolbar{display:flex;align-items:center;gap:18px;padding:22px 0;border-bottom:1px solid #ffffff18}.search{display:flex;align-items:center;gap:12px;flex:1;max-width:480px;background:var(--panel);border:1px solid #ffffff20;border-radius:30px;padding:12px 18px}.search span{color:var(--cyan)}.search input{width:100%;color:inherit;border:0;background:transparent;outline:none}.count{margin-left:auto;font-size:13px;color:var(--muted)}.selection-note{font-size:13px;color:var(--muted);margin:24px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.card{display:block;border:1px solid #ffffff18;border-radius:20px;overflow:hidden;background:var(--panel);transition:transform .25s,border-color .25s}.card:hover{transform:translateY(-5px);border-color:var(--cyan)}.portrait{height:270px;display:grid;place-items:center;background:linear-gradient(145deg,#293d5a,#142138);position:relative}.portrait>span{font-size:85px;font-weight:300;color:#6c8da6;letter-spacing:-7px}.portrait small{position:absolute;bottom:17px;left:20px;color:var(--muted);font-size:11px}.portrait.second{background:linear-gradient(145deg,#2b354f,#1b1e39)}.card-copy{padding:24px}.card-copy h2{font-size:24px;margin:0 0 9px;letter-spacing:-.7px}.card-copy p{font-size:13px;color:var(--muted);margin:0}.card-copy b{display:block;color:var(--cyan);font-size:14px;font-weight:600;margin-top:24px}.explore{border:1px dashed #2dceef50;border-radius:20px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;background:#2dceef06}.explore h2{font-size:32px;line-height:1.1;font-weight:550;letter-spacing:-1px}.explore p{color:var(--muted);font-size:15px}.free{margin:65px 0;background:var(--panel);border-radius:24px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}.free h2{font-size:34px;line-height:1.15;letter-spacing:-1px;margin:13px 0}.free p{color:var(--muted)}.free ul{padding:0;list-style:none}.free li{padding:12px 0;border-bottom:1px solid #ffffff15}.free li:before{content:"↗";color:var(--cyan);margin-right:14px}.free .button{margin-top:15px}footer{display:flex;justify-content:space-between;padding:25px 0 40px;font-size:12px;color:var(--muted)}#empty{padding:35px 0;color:var(--muted)}[hidden]{display:none!important}@media(max-width:800px){.intro{grid-template-columns:1fr;gap:5px;padding-top:40px}.grid{grid-template-columns:1fr 1fr}.explore{grid-column:1/-1}.free{grid-template-columns:1fr;gap:15px}.navlinks{gap:12px}.navlinks .optional{display:none}}@media(max-width:500px){.wrap{width:calc(100% - 28px)}.grid{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}.search{flex-basis:100%}.count{margin-left:0}.free{padding:24px}.navlinks{font-size:12px}.navlinks .button{font-size:12px;padding:10px 12px}h1{letter-spacing:-2px}footer{gap:20px;flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+<nav class="wrap">
+<a class="brand" href="my-page-landing.html">My Page<small>POWERED BY MUSKA</small>
+</a>
+<div class="navlinks">
+<a class="optional" href="my-page-landing.html">Conhecer My Page</a>
+<a class="active" href="artists.html" aria-current="page">Artistas</a>
+<a class="button" href="backoffice.html">O meu espaço ↗</a>
+</div>
+</nav>
+</header>
+<main class="wrap">
+<section class="intro">
+<div>
+<span class="eyebrow">A COMUNIDADE MUSKA</span>
+<h1>Encontra o artista.<br>Descobre o som.</h1>
+</div>
+<p>Explora as páginas dos artistas, conhece as suas histórias e encontra a música que partilham no Muska.</p>
+</section>
+<div class="toolbar">
+<label class="search">
+<span aria-hidden="true">⌕</span>
+<input type="search" id="search" aria-label="Pesquisar artistas por nome" placeholder="Pesquisar artista…">
+</label>
+<span class="count" id="count" role="status">2 artistas nesta seleção</span>
+</div>
+<p class="selection-note">Seleção inicial de perfis públicos Muska. O catálogo completo e as fotografias ainda não estão sincronizados.</p>
+<section class="grid" aria-label="Artistas">
+<a class="card" data-artist="Real_D1" href="https://www.muska.live/en/artists/774f52ff-5448-47da-a01f-863309ab8d80" target="_blank" rel="noopener">
+<div class="portrait">
+<span aria-hidden="true">R1</span>
+<small>PERFIL MUSKA</small>
+</div>
+<div class="card-copy">
+<h2>Real_D1</h2>
+<p>Música, discografia e página do artista</p>
+<b>Abrir página no Muska ↗</b>
+</div>
+</a>
+<a class="card" data-artist="Cleu Sanches" href="https://www.muska.live/artists/0000e535-633a-4a17-9a96-ceacc7eab922" target="_blank" rel="noopener">
+<div class="portrait second">
+<span aria-hidden="true">CS</span>
+<small>PERFIL MUSKA</small>
+</div>
+<div class="card-copy">
+<h2>Cleu Sanches</h2>
+<p>Biografia, música e vídeos do artista</p>
+<b>Abrir página no Muska ↗</b>
+</div>
+</a>
+<aside class="explore">
+<div>
+<span class="eyebrow">MAIS ARTISTAS</span>
+<h2>Continua a explorar.</h2>
+<p>Consulta todos os artistas diretamente no catálogo Muska Live.</p>
+</div>
+<a class="button" href="https://www.muska.live/en/artists" target="_blank" rel="noopener">Ver catálogo Muska ↗</a>
+</aside>
+</section>
+<p id="empty" hidden>Não encontrámos esse nome nesta seleção. Consulta o catálogo completo no Muska.</p>
+<section class="free">
+<div>
+<span class="eyebrow">MY PAGE FREE</span>
+<h2>A tua presença começa no Muska.</h2>
+<p>O perfil de artista já existente é o ponto de partida para a experiência My Page Free.</p>
+<a class="button primary" href="https://www.muska.live/en/artists/7618d975-55ef-4faf-9f16-5d8a0286d0af#biography" target="_blank" rel="noopener">Ver exemplo de My Page Free ↗</a>
+</div>
+<ul>
+<li>Biografia e ligações</li>
+<li>Músicas em destaque</li>
+<li>Discografia</li>
+<li>Vídeos</li>
+<li>Uma página para partilhar</li>
+</ul>
+</section>
+</main>
+<footer class="wrap">
+<span>My Page · Powered by Muska</span>
+<a href="my-page-landing.html#pricing">Conhecer os planos ↗</a>
+</footer>
+<script>
+const cards=[...document.querySelectorAll('[data-artist]')],normal=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();document.getElementById('search').addEventListener('input',e=>{const q=normal(e.target.value.trim());let n=0;cards.forEach(c=>{c.hidden=!normal(c.dataset.artist).includes(q);if(!c.hidden)n++;});document.getElementById('count').textContent=n+' artista'+(n===1?'':'s')+' nesta seleção';document.getElementById('empty').hidden=n>0;});
+</script>
+</body>
+</html>

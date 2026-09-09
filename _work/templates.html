@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Templates · My Page</title>
+<link rel="stylesheet" href="assets/backoffice-v2.css">
+<link rel="stylesheet" href="assets/backoffice-v5.css">
+<style>main{max-width:1250px;margin:40px auto;padding:24px}h1{font-size:42px}nav{display:flex;justify-content:space-between}a{color:var(--cyan)}.template-catalog{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}</style>
+</head>
+<body>
+<main>
+<nav>
+<a href="my-page-landing.html">My Page</a>
+<a href="backoffice.html">O meu backoffice ↗</a>
+</nav>
+<h1>Escolhe o teu palco.</h1>
+<p>Explora as mesmas bases disponíveis no editor. Cada miniatura mostra o próprio template.</p>
+<div id="templates">
+</div>
+</main>
+<script src="assets/template-catalog.js">
+</script>
+<script>renderTemplateCatalog(document.getElementById('templates'),window.chooseMyPageTemplate,'');</script>
+</body>
+</html>

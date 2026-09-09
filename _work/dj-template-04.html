@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAIRO · Ember / Template 04</title>
+<link rel="stylesheet" href="assets/templates-45.css">
+<style>
+:root{--orange:#ff4b0b;--cream:#fff2db;--dark:#1c0903}body{color:var(--cream);background:radial-gradient(ellipse at top left,#e34a06,#3e1304)}.page{width:min(1280px,calc(100% - 56px));margin:35px auto;border:1px solid #e65920;border-radius:34px;overflow:hidden;background:var(--dark)}.hero{min-height:680px;position:relative;isolation:isolate;padding:28px;background:var(--orange)}.hero-photo{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:65% 40%;filter:sepia(.8) saturate(1.8)}.hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#ee5105 0%,#ef5105d9 28%,#51150022 70%)}header{display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{font-size:24px;font-weight:900;letter-spacing:-1px}nav{display:flex;border:1px solid #fff5;border-radius:30px;padding:5px;background:#46160630;backdrop-filter:blur(12px)}nav a{padding:10px 16px;font-size:14px}nav a:first-child{color:var(--dark);background:var(--cream);border-radius:30px}.edition{font-size:12px}h1{max-width:580px;font-size:clamp(52px,7vw,92px);font-weight:500;line-height:.93;letter-spacing:-.065em;margin:65px 0 22px}.hero-copy p{font-size:17px;line-height:1.45}.hero-bottom{display:flex;justify-content:space-between;align-items:end;margin-top:45px;gap:28px}.tiles{display:flex;gap:10px}.mini{width:185px;padding:20px;border:1px solid #fff3;border-radius:20px;min-height:135px;background:#ffbe6620}.mini:first-child{background:var(--cream);color:var(--dark)}.mini b{display:block;font-size:30px;font-weight:500;letter-spacing:-1.5px}.mini span{font-size:13px}.artist-card{background:var(--cream);color:var(--dark);padding:15px;border-radius:23px;width:185px;margin-top:-220px}.artist-card img{height:150px;width:100%;object-fit:cover;border-radius:12px}.artist-card p{font-size:14px}.artist-card .button{background:var(--orange);color:white;width:100%;padding:10px 13px;border:0}.content{border-radius:34px 34px 0 0;margin-top:-25px;position:relative;background:var(--dark);padding:65px 34px 30px}.label{font-size:12px;border:1px solid #fff3;border-radius:30px;padding:6px 10px;display:inline-block}.content h2{font-size:clamp(42px,5.5vw,76px);font-weight:500;letter-spacing:-.06em;line-height:.96;margin:25px 0 38px}.content h2 em{font-style:normal;color:var(--orange)}.story{display:grid;grid-template-columns:.9fr 1.1fr;gap:7%}.story>img{width:100%;height:520px;object-fit:cover;border-radius:20px}.story-copy{display:flex;flex-direction:column;justify-content:space-between}.story-copy>p{font-size:26px;line-height:1.18;letter-spacing:-.8px}.story-panels{display:grid;grid-template-columns:1fr 1fr;gap:10px}.feature{padding:22px;border-radius:20px;min-height:240px;background:var(--cream);color:var(--dark);display:flex;flex-direction:column;justify-content:space-between}.feature.orange{background:var(--orange);color:var(--cream)}.feature h3{font-size:32px;font-weight:500;line-height:1;letter-spacing:-1px;margin:0}.feature p{font-size:14px}.tools{padding-top:85px}.tools h2{text-align:right}.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tool{min-height:245px;border:0;border-radius:20px;background:var(--cream);color:var(--dark);padding:24px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;transition:transform .3s}.tool:hover{transform:translateY(-7px)}.tool strong{font-size:32px;font-weight:500;line-height:1;letter-spacing:-1.4px}.tool span{font-size:14px}.tool:nth-child(2),.tool:last-child{background:var(--orange);color:var(--cream)}.tool:nth-child(3){grid-column:4}.tool:nth-child(4){grid-column:3}.outro{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:65px 0 35px}.outro p{font-size:32px;line-height:1;letter-spacing:-1px}footer{border-top:1px solid #fff2;padding-top:22px;display:flex;justify-content:space-between;font-size:12px;color:#c9ab9c}
+@media(max-width:850px){.page{width:calc(100% - 24px);margin:12px auto}.edition{display:none}.story{gap:20px}.story-panels{grid-template-columns:1fr}.feature{min-height:170px}.tool-grid{grid-template-columns:1fr 1fr}.tool:nth-child(n){grid-column:auto}.tool:last-child{grid-column:2}.content{padding:40px 22px 25px}}@media(max-width:560px){header{align-items:start}nav{flex-wrap:wrap;max-width:210px;justify-content:center}nav a{font-size:12px;padding:8px}.hero{padding:20px 20px 55px}.hero:after{background:linear-gradient(90deg,#ed5105ef,#9e260055)}.hero-photo{object-position:63%}h1{font-size:56px}.artist-card{display:none}.mini{width:50%}.tiles{width:100%}.story{grid-template-columns:1fr}.story>img{height:380px}.story-panels{grid-template-columns:1fr 1fr}.feature{padding:16px}.feature h3{font-size:25px}.feature .button{padding:10px;font-size:12px}.tool{min-height:220px;padding:20px}.tool strong{font-size:27px}.outro{align-items:start;flex-direction:column}footer{gap:18px;flex-wrap:wrap}}
+
+/* Reference-led composition */
+body{background:#6f2708 url('assets/dj-template-04-ember.png') center top/cover fixed}
+body:before{content:"";position:fixed;inset:0;background:#43150290;z-index:-1}
+.page{width:min(1240px,calc(100% - 96px));margin:60px auto;border-radius:36px}
+.hero{min-height:620px;padding:26px}
+.hero-photo{filter:none;object-position:center 42%}
+.hero:after{background:linear-gradient(90deg,#ca41003d,transparent 58%)}
+header{display:grid;grid-template-columns:1fr auto 1fr}
+header .edition{justify-self:end}.brand{font-size:21px}
+nav a{font-size:12px;padding:10px 18px}
+.hero-copy{position:relative;z-index:1}
+h1{font-size:clamp(42px,5.1vw,68px);max-width:460px;line-height:.94;letter-spacing:-.065em;margin:52px 0 18px;font-weight:400}
+.hero-copy p{font-size:14px;max-width:300px;line-height:1.35}
+.hero-copy .button{font-size:12px;padding:10px 16px}
+.hero-bottom{margin-top:58px;position:relative;z-index:1}
+.mini{width:190px;min-height:165px;border-radius:22px;padding:20px}
+.mini b{font-size:34px;line-height:1;margin-bottom:22px}
+.mini span{display:block;max-width:145px;font-size:12px;line-height:1.25}
+.artist-card{position:absolute;bottom:0;right:0;width:190px;margin:0;text-align:center;padding:16px}
+.artist-card:before{content:"● Available for bookings";font-size:10px;display:block;margin:0 0 13px}
+.artist-card img{height:156px;object-position:72% center}.artist-card p{font-size:13px;margin:12px 0}
+.hero:before{content:"KAIRO";position:absolute;bottom:2px;left:15px;font-size:clamp(150px,22vw,295px);font-weight:700;letter-spacing:-.09em;line-height:.8;color:#ffcc7529;pointer-events:none;z-index:0}
+.content{padding:62px 26px 28px;margin-top:-28px}
+.content h2{font-size:clamp(42px,5.2vw,70px);font-weight:400;max-width:920px;margin:28px 5% 40px}
+.story{grid-template-columns:.85fr 1.05fr;gap:9%}
+.story>img{height:580px;object-position:70% center}
+.story-copy>p{font-size:clamp(19px,2.4vw,30px);line-height:1.04;letter-spacing:-.8px;margin:6px 0 55px}
+.story-panels{margin-top:auto}
+.feature{min-height:310px;padding:22px}
+.feature.orange{background:linear-gradient(#d8330780,#ba3004a8),url('assets/dj-template-04-ember.png') 70% center/cover}
+.feature h3{font-size:35px;line-height:.95}
+.tools{padding-top:70px}.tools h2{max-width:650px;margin-left:auto;margin-right:0;text-align:left}
+.tool-grid{gap:10px;position:relative}
+.tool{min-height:300px;border-radius:19px;padding:22px}
+.tool strong{font-size:clamp(27px,3vw,41px);letter-spacing:-1.8px}
+.tool span{font-size:14px;line-height:1.15;max-width:205px}
+.grid-note{position:absolute;left:51%;top:100px;width:18%;font-size:14px;line-height:1.2}
+.outro{margin-top:-210px;min-height:210px;width:45%;display:block;padding:25px 0}
+.outro p{font-size:17px;line-height:1.3;max-width:300px;letter-spacing:-.4px}
+.outro .button{font-size:12px}
+footer{margin-top:38px}
+@media(max-width:950px){.page{width:calc(100% - 32px);margin:20px auto}.hero{min-height:610px}header{grid-template-columns:1fr auto}header .edition{display:none}.story{gap:30px}.story-panels{grid-template-columns:1fr 1fr}.feature{min-height:250px;padding:17px}.feature h3{font-size:28px}.story>img{height:510px}.grid-note{display:none}.tool{min-height:245px}.outro{margin-top:0;width:100%;min-height:0;display:flex;align-items:center}.tools h2{max-width:600px}}
+@media(max-width:560px){.page{width:calc(100% - 20px);margin:10px auto;border-radius:25px}.hero{padding:18px 18px 50px;min-height:670px}.hero-photo{object-position:65% center}.hero:after{background:linear-gradient(90deg,#9d3304d9,#72260440)}header{align-items:center;gap:10px}nav{max-width:200px}nav a{padding:7px 9px;font-size:11px}h1{font-size:49px;margin-top:65px;max-width:300px}.hero-bottom{margin-top:80px}.mini{width:50%;min-height:140px;padding:16px}.mini b{font-size:27px;margin-bottom:20px}.artist-card{display:none}.content{padding:40px 18px 22px}.content h2{font-size:42px;margin:25px 0 30px}.story{grid-template-columns:1fr;gap:25px}.story>img{height:400px}.story-copy>p{font-size:23px;margin-bottom:30px}.feature{min-height:220px}.feature h3{font-size:27px}.tools{padding-top:55px}.tool{min-height:235px;padding:18px}.tool strong{font-size:28px}.tool span{font-size:13px}.outro{display:block;padding:35px 0 10px}.outro p{font-size:20px}}
+
+</style>
+</head>
+<body>
+<div class="page">
+<section class="hero" id="home">
+<img class="hero-photo" src="assets/dj-template-04-ember.png" alt="DJ portrait in warm light">
+<header>
+<a class="brand" href="#home">KAIRO®</a>
+<nav aria-label="Main navigation">
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#tools">Explore</a>
+<a href="#contact">Contact</a>
+</nav>
+<span class="edition">PRAIA / WORLDWIDE</span>
+</header>
+<div class="hero-copy">
+<h1>Music that<br>moves you.</h1>
+<p>Afro House and electronic music.<br>From Cape Verde to your dancefloor.</p>
+<button class="button" data-panel="booking">Book KAIRO ↗</button>
+</div>
+<div class="hero-bottom">
+<div class="tiles">
+<div class="mini">
+<b>Afro<br>electronic</b>
+<span>The sound of KAIRO</span>
+</div>
+<div class="mini">
+<b>Praia<br>Worldwide</b>
+<span>Clubs, festivals & collaborations</span>
+</div>
+</div>
+<aside class="artist-card">
+<img src="assets/dj-template-04-ember.png" alt="KAIRO portrait">
+<p>KAIRO<br>DJ & producer</p>
+<button class="button" data-panel="press">Press kit ↗</button>
+</aside>
+</div>
+</section>
+<main class="content">
+<section id="about">
+<span class="label">About the artist</span>
+<h2 class="reveal">Island roots.<br>
+<em>A sound without borders.</em>
+</h2>
+<div class="story">
+<img class="reveal" src="assets/dj-template-04-ember.png" alt="Artist portrait" loading="lazy">
+<div class="story-copy">
+<p class="reveal">A connection between island rhythms and the club. Deep percussion, warm melodies and a feeling that stays with you.</p>
+<div class="story-panels">
+<article class="feature reveal">
+<h3>Stay for<br>the sound.</h3>
+<p>Selected mixes, releases and late-night sessions.</p>
+<button class="button" data-panel="music">Explore ↗</button>
+</article>
+<article class="feature orange reveal">
+<h3>See you<br>out there.</h3>
+<p>Next dates and appearances.</p>
+<button class="button" data-panel="dates">Dates ↗</button>
+</article>
+</div>
+</div>
+</div>
+</section>
+<section class="tools" id="tools">
+<span class="label">The artist's world</span>
+<h2 class="reveal">
+<em>Meet the sound.</em>
+<br>Feel the connection.</h2>
+<div class="tool-grid">
+<button class="tool reveal" data-panel="music">
+<strong>Music<br>& sets ↗</strong>
+<span>Selected sessions and releases.</span>
+</button>
+<button class="tool reveal" data-panel="dates">
+<strong>Next<br>dates ↗</strong>
+<span>Find the next dancefloor.</span>
+</button>
+<button class="tool reveal" data-panel="press">
+<strong>Press<br>kit ↗</strong>
+<span>Photos, logos and technical rider.</span>
+</button>
+<button class="tool reveal" data-panel="about">
+<strong>The<br>story ↗</strong>
+<span>The artist behind the sound.</span>
+</button>
+<button class="tool reveal" data-panel="booking">
+<strong>Let's<br>connect ↗</strong>
+<span>Bring KAIRO to your event.</span>
+</button>
+<p class="grid-note">Your night.<br>Your people.<br>Our connection.</p>
+</div>
+</section>
+<section class="outro" id="contact">
+<p>Your place.<br>Our next night together.</p>
+<button class="button" data-panel="booking">Check availability ↗</button>
+</section>
+<footer>
+<span>KAIRO® · Ember / Template 04</span>
+<span>My Page · Powered by Muska</span>
+</footer>
+</main>
+</div>
+<dialog aria-labelledby="dialog-title">
+<div class="dialog-head">
+<h2 id="dialog-title">
+</h2>
+<button class="close" aria-label="Close panel">×</button>
+</div>
+<div class="dialog-content">
+</div>
+</dialog>
+<script src="assets/templates-45.js">
+</script>
+</body>
+</html>

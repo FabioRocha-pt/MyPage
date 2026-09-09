@@ -1,0 +1,751 @@
+// My Page · Powered by Muska
+// Schema derived from "documentacao/03-ARQUITETURA-E-INTEGRACOES.md" (Entidades mínimas propostas).
+// SQLite for local development. Swap the datasource provider to postgresql for the Muska environment;
+// the only SQLite-specific choices here are String-encoded JSON columns and the absence of native enums.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Account / membership · Conta Muska, artist_id, papel e permissões
+// ---------------------------------------------------------------------------
+
+model Account {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  phone        String?
+  // Reserved for the real Muska identity provider. Null while auth is local.
+  muskaUserId  String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships  Membership[]
+  sessions     Session[]
+  toolRequests ToolRequest[]
+
+  @@map("accounts")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  accountId String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId])
+  @@map("sessions")
+}
+
+/// role: "owner" | "manager" | "viewer"
+model Membership {
+  id        String   @id @default(cuid())
+  accountId String
+  artistId  String
+  role      String   @default("owner")
+  createdAt DateTime @default(now())
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  artist  Artist  @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, artistId])
+  @@index([artistId])
+  @@map("memberships")
+}
+
+// ---------------------------------------------------------------------------
+// Artist · ID Muska, nome artístico, campos públicos e privados separados
+// ---------------------------------------------------------------------------
+
+model Artist {
+  id       String @id @default(cuid())
+  /// Immutable identifier from the Muska catalogue. Null until the integration exists.
+  muskaId  String? @unique
+  /// Public handle. Mutable — never use as a foreign key.
+  slug     String  @unique
+
+  // --- Public fields -------------------------------------------------------
+  displayName String
+  tagline     String?
+  bio         String?
+  city        String?
+  country     String?
+  genres      String? // comma separated
+
+  // --- Private fields · never copied into a published snapshot -------------
+  realName     String?
+  contactEmail String?
+  contactPhone String?
+  privateNotes String?
+
+  /// "free" | "pro" | "premium"
+  plan      String   @default("free")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships     Membership[]
+  draft           PageDraft?
+  publishedPages  PublishedPage[]
+  media           Media[]
+  albums          Album[]
+  externalLinks   ExternalLink[]
+  events          Event[]
+  availability    Availability[]
+  bookingRequests BookingRequest[]
+  campaigns       Campaign[]
+  products        Product[]
+  orders          Order[]
+  pressLinks      PressLink[]
+  toolRequests    ToolRequest[]
+
+  @@map("artists")
+}
+
+// ---------------------------------------------------------------------------
+// PageDraft · artist_id, slug, template_id, theme, paleta, image_refs,
+//             editor_order, sections, version
+// ---------------------------------------------------------------------------
+
+model PageDraft {
+  id       String @id @default(cuid())
+  artistId String @unique
+
+  templateId String @default("01")
+  /// "dark" | "light" | "system"
+  themeMode  String @default("dark")
+
+  background String @default("#101724")
+  textColor  String @default("#f4f7fb")
+  accent     String @default("#55d5ee")
+
+  heroMediaId     String?
+  portraitMediaId String?
+  logoMediaId     String?
+
+  /// JSON string[] · order of the accordions inside the editor (configuration).
+  editorOrder String @default("[]")
+  /// JSON Section[] · public page sections with enabled/position/contentIds.
+  sections    String @default("[]")
+
+  /// Bumped on every save. Sent back by the client for optimistic-concurrency checks.
+  version   Int      @default(1)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@map("page_drafts")
+}
+
+// ---------------------------------------------------------------------------
+// PublishedPage · snapshot validado, published_at, versão, domínio/slug
+// ---------------------------------------------------------------------------
+
+model PublishedPage {
+  id       String @id @default(cuid())
+  artistId String
+  /// Slug frozen at publish time so renaming the artist cannot break a live URL.
+  slug     String
+
+  /// Fully resolved, validated public snapshot. Contains no private fields.
+  snapshot String
+
+  version     Int
+  publishedAt DateTime @default(now())
+  /// Exactly one row per artist may be live; the others are recoverable history.
+  isLive      Boolean  @default(true)
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([artistId, version])
+  @@index([slug, isLive])
+  @@map("published_pages")
+}
+
+// ---------------------------------------------------------------------------
+// Media · owner, tipo MIME, original, derivados, tamanho/dimensões,
+//         estado, visibilidade
+// ---------------------------------------------------------------------------
+
+model Media {
+  id       String  @id @default(cuid())
+  artistId String
+  albumId  String?
+
+  title String
+  /// "image" | "video" | "audio" | "document"
+  kind  String
+  mimeType String
+
+  /// Opaque storage keys. Never a public URL — access always goes through the API.
+  originalKey  String?
+  derivedKey   String?
+  /// Populated instead of originalKey when the item is an external platform link.
+  externalUrl  String?
+  /// "muska" | "youtube" | "vimeo" | "spotify" | ...
+  platform     String?
+
+  sizeBytes    Int?
+  derivedBytes Int?
+  width        Int?
+  height       Int?
+  durationSec  Int?
+
+  /// "uploading" | "processing" | "ready" | "failed"
+  status     String  @default("ready")
+  /// Private by default. A file is only reachable publicly when both the media
+  /// and its album are public (doc 02, "Press kit").
+  isPublic   Boolean @default(false)
+  /// Placement for external links: "section" | "hero" | "both"
+  placement  String  @default("section")
+  position   Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  album  Album? @relation(fields: [albumId], references: [id], onDelete: SetNull)
+
+  @@index([artistId, kind])
+  @@index([albumId])
+  @@map("media")
+}
+
+// ---------------------------------------------------------------------------
+// Album · nome, categoria, owner, visibilidade, media_ids e ordenação
+// ---------------------------------------------------------------------------
+
+model Album {
+  id       String @id @default(cuid())
+  artistId String
+
+  name     String
+  /// One of PRESS_CATEGORIES (see src/lib/press.ts) or a custom name.
+  category String
+  isPublic Boolean @default(false)
+  position Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  artist Artist  @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  media  Media[]
+
+  @@index([artistId])
+  @@map("albums")
+}
+
+/// Google Drive (or other) folder link per press-kit category. Doc 02:
+/// "Não exigir integração Google Drive para aceitar links."
+model PressLink {
+  id       String @id @default(cuid())
+  artistId String
+
+  category String
+  url      String
+  isPublic Boolean @default(false)
+
+  updatedAt DateTime @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([artistId, category])
+  @@map("press_links")
+}
+
+// ---------------------------------------------------------------------------
+// ExternalLink · plataforma, URL normalizada, posição hero/secção/ambos
+// ---------------------------------------------------------------------------
+
+model ExternalLink {
+  id       String @id @default(cuid())
+  artistId String
+
+  /// Validated against PLATFORMS in src/lib/platforms.ts.
+  platform String
+  label    String?
+  /// Normalised at write time; only http/https survive validation.
+  url      String
+  /// "social" | "music"
+  group    String  @default("social")
+  /// "hero" | "section" | "both"
+  placement String @default("section")
+  position  Int    @default(0)
+
+  createdAt DateTime @default(now())
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, group])
+  @@map("external_links")
+}
+
+// ---------------------------------------------------------------------------
+// Event · owner, source, external_id, cartaz, data/timezone, local, texto,
+//         tickets_url
+// ---------------------------------------------------------------------------
+
+model Event {
+  id       String @id @default(cuid())
+  artistId String
+
+  /// "manual" | "muska" — reconciliation key together with externalId.
+  source     String  @default("manual")
+  externalId String?
+
+  title       String
+  /// Stored as UTC. startsAt + timezone together describe the local wall time.
+  startsAt    DateTime
+  endsAt      DateTime?
+  timezone    String  @default("Atlantic/Cape_Verde")
+  venue       String?
+  city        String?
+  country     String?
+  description String?
+  ticketsUrl  String?
+
+  posterMediaId String?
+  posterUrl     String?
+
+  /// Set when a Muska-sourced event disappears from the catalogue.
+  isArchived Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([artistId, source, externalId])
+  @@index([artistId, startsAt])
+  @@map("events")
+}
+
+// ---------------------------------------------------------------------------
+// Availability · artist_id, início/fim/timezone, available/busy/hold, nota
+// ---------------------------------------------------------------------------
+
+model Availability {
+  id       String @id @default(cuid())
+  artistId String
+
+  startsAt DateTime
+  endsAt   DateTime
+  timezone String   @default("Atlantic/Cape_Verde")
+  /// "available" | "busy" | "hold" — absence of a row means "por confirmar".
+  status   String   @default("available")
+  /// Never leaves the backoffice.
+  privateNote String?
+  /// Provisional holds expire; the public calendar ignores expired rows.
+  holdExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, startsAt])
+  @@map("availability")
+}
+
+// ---------------------------------------------------------------------------
+// BookingRequest · promotor/contacto, datas específicas ou flexíveis,
+//                  contexto e estado
+// ---------------------------------------------------------------------------
+
+model BookingRequest {
+  id       String @id @default(cuid())
+  artistId String
+
+  promoterName  String
+  promoterEmail String
+  promoterPhone String?
+  organisation  String?
+
+  /// "specific" | "flexible"
+  dateMode      String    @default("specific")
+  requestedDate DateTime?
+  flexibleFrom  DateTime?
+  flexibleTo    DateTime?
+  timezone      String    @default("Atlantic/Cape_Verde")
+
+  city      String?
+  country   String?
+  venue     String?
+  eventType String?
+  message   String?
+  budgetMinor Int?
+  currency    String @default("CVE")
+
+  /// "new" | "in_contact" | "proposal" | "confirmed" | "declined" | "cancelled"
+  status      String @default("new")
+  /// Never exposed on any public endpoint.
+  privateNote String?
+  /// Set when a request is accepted and a hold is created.
+  availabilityId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist  Artist                 @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  history BookingStatusChange[]
+
+  @@index([artistId, status])
+  @@map("booking_requests")
+}
+
+model BookingStatusChange {
+  id        String   @id @default(cuid())
+  requestId String
+  fromStatus String?
+  toStatus   String
+  note       String?
+  createdAt  DateTime @default(now())
+
+  request BookingRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@map("booking_status_changes")
+}
+
+// ---------------------------------------------------------------------------
+// Campaign / donation · campanha, vídeo, objetivo, pagamento confirmado
+//                       e preferência pública do doador
+// ---------------------------------------------------------------------------
+
+model Campaign {
+  id       String @id @default(cuid())
+  artistId String
+
+  title       String
+  description String
+  /// Minor units. Doc 03: "Valores monetários devem usar unidades mínimas inteiras".
+  goalMinor   Int
+  currency    String @default("CVE")
+
+  videoUrl     String?
+  videoMediaId String?
+
+  /// "draft" | "active" | "paused" | "closed"
+  status   String  @default("draft")
+  isPublic Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist    Artist     @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  donations Donation[]
+
+  @@index([artistId])
+  @@map("campaigns")
+}
+
+model Donation {
+  id         String @id @default(cuid())
+  campaignId String
+
+  amountMinor Int
+  currency    String @default("CVE")
+
+  /// Donor may choose to stay anonymous; displayName is only shown when
+  /// isAnonymous is false AND the payment is confirmed.
+  displayName String?
+  isAnonymous Boolean @default(true)
+  donorEmail  String?
+  message     String?
+
+  /// "pending" | "confirmed" | "failed" | "refunded"
+  /// Progress bars count confirmed only (doc 02).
+  status String @default("pending")
+
+  paymentId String? @unique
+
+  createdAt   DateTime  @default(now())
+  confirmedAt DateTime?
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  payment  Payment? @relation(fields: [paymentId], references: [id])
+
+  @@index([campaignId, status])
+  @@map("donations")
+}
+
+// ---------------------------------------------------------------------------
+// Product / variant · tipo, imagens, preço minor units/moeda, stock,
+//                     ficheiro privado ou envio
+// ---------------------------------------------------------------------------
+
+model Product {
+  id       String @id @default(cuid())
+  artistId String
+
+  title       String
+  description String
+  /// "digital" | "physical"
+  type        String @default("physical")
+
+  imageMediaId String?
+  imageUrl     String?
+
+  currency String @default("CVE")
+
+  /// Physical delivery information shown before confirmation (doc 04).
+  shippingMinor Int?
+  shippingInfo  String?
+  /// Digital goods: private asset released only after a verified payment.
+  assetMediaId  String?
+
+  isPublished Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist   Artist           @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  variants ProductVariant[]
+  items    OrderItem[]
+
+  @@index([artistId])
+  @@map("products")
+}
+
+model ProductVariant {
+  id        String @id @default(cuid())
+  productId String
+
+  name       String @default("Padrão")
+  priceMinor Int
+  /// Null means "not stock managed" (always the case for digital goods).
+  stock      Int?
+  sku        String?
+  position   Int    @default(0)
+
+  product Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  items   OrderItem[]
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+// ---------------------------------------------------------------------------
+// Order / orderItem · snapshot de preço/produto, comprador, totais, entrega
+// ---------------------------------------------------------------------------
+
+model Order {
+  id       String @id @default(cuid())
+  artistId String
+  /// Human-readable reference shown to the buyer.
+  reference String @unique
+
+  buyerName  String
+  buyerEmail String
+  buyerPhone String?
+
+  /// Physical orders require a delivery address (doc 04).
+  addressLine  String?
+  addressCity  String?
+  addressCountry String?
+  addressPostcode String?
+  deliveryNote String?
+
+  /// All totals recomputed on the server. Never trusted from the browser.
+  subtotalMinor Int
+  shippingMinor Int    @default(0)
+  totalMinor    Int
+  currency      String @default("CVE")
+
+  /// "pending_payment" | "paid" | "preparing" | "shipped" | "delivered"
+  /// | "cancelled" | "refunded" | "failed"
+  status String @default("pending_payment")
+  /// True once every digital item has been released to the buyer.
+  digitalReleased Boolean @default(false)
+
+  paymentId String? @unique
+
+  createdAt DateTime @default(now())
+  paidAt    DateTime?
+  updatedAt DateTime @updatedAt
+
+  artist  Artist      @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  items   OrderItem[]
+  payment Payment?    @relation(fields: [paymentId], references: [id])
+
+  @@index([artistId, status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+
+  productId String?
+  variantId String?
+
+  /// Frozen copies. A later price or name change must not rewrite history.
+  titleSnapshot   String
+  variantSnapshot String
+  typeSnapshot    String
+  priceMinor      Int
+  quantity        Int
+  lineTotalMinor  Int
+  /// Digital asset key frozen at purchase time.
+  assetMediaId    String?
+
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// ---------------------------------------------------------------------------
+// Payment · provider, referência, idempotency_key, moeda/valor, estado
+// ---------------------------------------------------------------------------
+
+model Payment {
+  id String @id @default(cuid())
+
+  /// "sisp" | "mock" — the mock provider is the sandbox used until SISP
+  /// documentation and credentials exist (doc 03, item 4).
+  provider  String @default("mock")
+  /// Provider-side reference.
+  reference String
+  /// Guarantees a repeated webhook cannot double-charge or double-credit.
+  idempotencyKey String @unique
+
+  amountMinor Int
+  currency    String @default("CVE")
+
+  /// "created" | "pending" | "verified" | "failed" | "cancelled" | "refunded"
+  /// Only "verified" — set from a server-side verification, never a redirect —
+  /// releases goods or advances a campaign (doc 03).
+  status String @default("created")
+
+  /// "order" | "donation"
+  purpose   String
+  /// Raw verified provider payload, kept for reconciliation.
+  rawPayload String?
+
+  createdAt  DateTime  @default(now())
+  verifiedAt DateTime?
+
+  order     Order?
+  donation  Donation?
+  events    PaymentEvent[]
+
+  @@unique([provider, reference])
+  @@map("payments")
+}
+
+/// Append-only webhook log. Guarantees idempotency across retries.
+model PaymentEvent {
+  id        String   @id @default(cuid())
+  paymentId String
+  /// Provider event id. A duplicate delivery is recognised and ignored.
+  eventKey  String   @unique
+  type      String
+  payload   String
+  createdAt DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@map("payment_events")
+}
+
+// ---------------------------------------------------------------------------
+// Notification outbox
+// ---------------------------------------------------------------------------
+
+/// Doc 04, etapa 5 acceptance: "notificações não duplicam".
+/// Every notification is written here first, keyed by a deterministic
+/// `dedupeKey`. A second attempt for the same event hits the unique index and
+/// is dropped, so a retried request cannot mail the artist twice.
+model Notification {
+  id        String @id @default(cuid())
+  artistId  String?
+  /// e.g. "booking.created:<requestId>" or "order.paid:<orderId>"
+  dedupeKey String @unique
+
+  channel String @default("inapp") // "inapp" | "email"
+  type    String
+  title   String
+  body    String
+  /// Deep link into the backoffice.
+  href    String?
+
+  readAt    DateTime?
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([artistId, readAt])
+  @@map("notifications")
+}
+
+// ---------------------------------------------------------------------------
+// ToolRequest · account_id, título, descrição, anexos e estado/resposta
+// ---------------------------------------------------------------------------
+
+model ToolRequest {
+  id        String  @id @default(cuid())
+  /// Null for requests submitted from the public landing page.
+  accountId String?
+  artistId  String?
+
+  title       String
+  description String
+  /// Only collected when the requester is not authenticated (doc 01).
+  contactEmail String?
+  contactPhone String?
+  /// JSON string[] of media ids.
+  attachments  String @default("[]")
+
+  /// "new" | "reviewing" | "answered" | "planned" | "declined"
+  status String  @default("new")
+  reply  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  artist  Artist?  @relation(fields: [artistId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@map("tool_requests")
+}
+
+// ---------------------------------------------------------------------------
+// PlanEntitlement · plano, limites e ferramentas autorizadas, no servidor
+// ---------------------------------------------------------------------------
+
+/// Server-side source of truth for what a plan may do. Doc 03: entitlements
+/// are "aplicados no servidor" — a checkbox in the browser never grants access.
+model PlanEntitlement {
+  id   String @id @default(cuid())
+  plan String @unique
+
+  label       String
+  priceMinor  Int
+  currency    String @default("EUR")
+
+  /// JSON string[] of tool ids the plan may activate.
+  tools           String @default("[]")
+  maxMediaItems   Int    @default(20)
+  maxStorageMb    Int    @default(200)
+  maxEvents       Int    @default(5)
+  maxProducts     Int    @default(0)
+  allowedTemplates String @default("[\"01\"]")
+  customDomain    Boolean @default(false)
+  removeBranding  Boolean @default(false)
+
+  @@map("plan_entitlements")
+}

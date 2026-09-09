@@ -1,0 +1,110 @@
+[
+  {
+    "file": "icones-menu.png",
+    "included": true
+  },
+  {
+    "file": "template-04-referencia.png",
+    "included": true
+  },
+  {
+    "file": "template-05-referencia.png",
+    "included": true
+  },
+  {
+    "file": "muska-link-layout.png",
+    "included": true
+  },
+  {
+    "file": "menu-contorno-a-remover.png",
+    "included": true
+  },
+  {
+    "file": "campo-foco-duplo-a-remover.png",
+    "included": true
+  },
+  {
+    "file": "avisos-amarelos.png",
+    "included": true
+  },
+  {
+    "file": "menu-ferramentas-historico.png",
+    "included": true
+  },
+  {
+    "file": "muska-eventos-listagem.png",
+    "included": true
+  },
+  {
+    "file": "muska-evento-detalhe.png",
+    "included": true
+  },
+  {
+    "file": "muska-evento-criacao.png",
+    "included": true
+  },
+  {
+    "file": "muska-bilhetes-lotes.png",
+    "included": true
+  },
+  {
+    "file": "muska-bilhete-criacao.png",
+    "included": true
+  },
+  {
+    "file": "acordeao-contorno-a-remover.png",
+    "included": true
+  },
+  {
+    "file": "acordeoes-ordem.png",
+    "included": true
+  },
+  {
+    "file": "presskit-referencia-01.png",
+    "included": false
+  },
+  {
+    "file": "presskit-referencia-02.png",
+    "included": false
+  },
+  {
+    "file": "presskit-referencia-03.png",
+    "included": false
+  },
+  {
+    "file": "paleta-gradiente-muska.png",
+    "included": false
+  },
+  {
+    "file": "menu-muska-referencia.png",
+    "included": true
+  },
+  {
+    "file": "deck-toolkit.png",
+    "included": false
+  },
+  {
+    "file": "landing-hero-historico.png",
+    "included": false
+  },
+  {
+    "file": "traco-titulos-a-remover.png",
+    "included": false
+  },
+  {
+    "file": "ticker-vazio-a-corrigir.png",
+    "included": false
+  },
+  {
+    "file": "galeria-inspiracao-historico.png",
+    "included": false
+  },
+  {
+    "file": "ticker-referencia-02.png",
+    "included": false
+  },
+  {
+    "file": "muska-backoffice-report.png",
+    "included": false
+  }
+]
