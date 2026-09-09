@@ -1,0 +1,147 @@
+/*
+ * Template catalogue.
+ *
+ * Doc 01: "Catálogo de templates público e backoffice devem partilhar as mesmas
+ * miniaturas e identificadores." One stylesheet, imported by the landing, the
+ * public /templates page and the editor, so the three cannot drift apart —
+ * ported from the prototype's backoffice-v5.css plus the page frame that lived
+ * inline in templates.html.
+ *
+ * Colours come from custom properties, so the cards inherit the landing's navy
+ * palette on the landing and the backoffice palette inside the studio.
+ */
+
+.template-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.template-choice {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: var(--input, rgba(255, 255, 255, 0.05));
+}
+
+.template-choice.selected {
+  border-color: var(--cyan, #2dceef);
+}
+
+.template-choice h4 {
+  margin: 12px 0 4px;
+  font-size: 16px;
+}
+
+.template-choice p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.template-choice button {
+  width: 100%;
+  margin-top: 12px;
+  border-radius: var(--radius-pill, 999px);
+  padding: 11px 21px;
+  font-size: 14px;
+  font-weight: 650;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: transparent;
+}
+
+.template-choice button:hover:not(:disabled) {
+  border-color: var(--cyan, #2dceef);
+}
+
+.template-choice button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.template-choice a {
+  display: block;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/*
+ * The thumbnail is the template itself, rendered at 1200px and scaled down —
+ * the prototype's approach, kept so a catalogue entry can never show a design
+ * that no longer matches the template.
+ */
+.template-frame {
+  position: relative;
+  height: 175px;
+  overflow: hidden;
+  border-radius: 7px;
+  pointer-events: none;
+  background: #172136;
+}
+
+.template-frame iframe {
+  width: 1200px;
+  height: 1000px;
+  border: 0;
+  transform-origin: top left;
+}
+
+.template-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Public catalogue page (prototipo/templates.html) --------------------- */
+
+.catalog-page {
+  max-width: 1250px;
+  margin: 40px auto;
+  padding: 24px;
+}
+
+.catalog-page nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.catalog-page nav a {
+  color: var(--cyan);
+}
+
+.catalog-page h1 {
+  font-size: 42px;
+  letter-spacing: -1px;
+  margin: 24px 0 8px;
+}
+
+.catalog-page > p {
+  color: var(--muted);
+}
+
+.catalog-page .template-catalog {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+@media (max-width: 720px) {
+  .template-catalog {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .template-choice {
+    padding: 8px;
+  }
+
+  .template-choice h4 {
+    font-size: 14px;
+  }
+
+  .template-frame {
+    height: 135px;
+  }
+}

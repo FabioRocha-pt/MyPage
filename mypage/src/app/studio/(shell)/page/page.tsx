@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
-import { PageEditor, type EditorAppearance, type EditorProfile } from "@/components/studio/PageEditor";
+import { PageEditor } from "@/components/studio/editor/PageEditor";
+import type {
+  EditorAppearance,
+  EditorProfile,
+  LinkRow,
+  SelectableItem,
+} from "@/components/studio/editor/types";
 import { db } from "@/lib/db";
 import { normaliseEditorOrder, normaliseSections } from "@/lib/page-model";
+import { PLATFORMS, getPlatform, resolveEmbed } from "@/lib/platforms";
+import { PRESS_CATEGORIES } from "@/lib/press";
 import { requireStudioContext } from "@/lib/studio";
 
 export const metadata: Metadata = { title: "Page" };
@@ -9,40 +17,64 @@ export const metadata: Metadata = { title: "Page" };
 /**
  * The editor screen.
  *
- * The draft is read here on the server rather than fetched from
- * /api/artists/{id}/page/draft: the API route exists for other clients, but a
- * server component reading through the same library avoids a round trip and a
- * loading state on first paint. Every write still goes through the API, so the
- * validation, plan checks and version conflict handling stay in one place.
+ * Everything the cards need is read here on the server through the same
+ * libraries the API routes use, so the first paint has no loading state. Every
+ * write still goes through the API, which keeps validation, plan checks and
+ * version-conflict handling in one place.
  */
 export default async function EditorPage() {
-  const { artist, entitlement } = await requireStudioContext();
+  const { account, artist, entitlement } = await requireStudioContext();
 
-  const [draft, images, links, published] = await Promise.all([
-    db.pageDraft.findUnique({ where: { artistId: artist.id } }),
-    db.media.findMany({
-      where: { artistId: artist.id, kind: "image", status: "ready" },
-      orderBy: [{ position: "asc" }, { createdAt: "desc" }],
-      select: { id: true, title: true },
-      take: 200,
-    }),
-    db.externalLink.findMany({
-      where: { artistId: artist.id },
-      orderBy: [{ group: "asc" }, { position: "asc" }],
-    }),
-    db.publishedPage.findFirst({
-      where: { artistId: artist.id, isLive: true },
-      select: { version: true },
-    }),
-  ]);
+  const [full, images, links, published, pressLinks, albums, audio, videos, events, toolRequests, attachments] =
+    await Promise.all([
+      db.artist.findUniqueOrThrow({ where: { id: artist.id } }),
+      db.media.findMany({
+        where: { artistId: artist.id, kind: "image", status: "ready" },
+        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
+        select: { id: true, title: true },
+        take: 200,
+      }),
+      db.externalLink.findMany({
+        where: { artistId: artist.id },
+        orderBy: [{ group: "asc" }, { position: "asc" }],
+      }),
+      db.publishedPage.findFirst({
+        where: { artistId: artist.id, isLive: true },
+        select: { version: true },
+      }),
+      db.pressLink.findMany({ where: { artistId: artist.id } }),
+      db.album.findMany({
+        where: { artistId: artist.id },
+        orderBy: { position: "asc" },
+        include: { _count: { select: { media: true } } },
+      }),
+      db.media.findMany({
+        where: { artistId: artist.id, kind: "audio", status: "ready" },
+        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
+        take: 200,
+      }),
+      db.media.findMany({
+        where: { artistId: artist.id, kind: "video", status: "ready" },
+        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
+        take: 200,
+      }),
+      db.event.findMany({
+        where: { artistId: artist.id, isArchived: false },
+        orderBy: { startsAt: "asc" },
+        take: 200,
+      }),
+      db.toolRequest.findMany({ where: { accountId: account.id }, orderBy: { createdAt: "desc" }, take: 20 }),
+      db.media.findMany({
+        where: { artistId: artist.id },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, title: true },
+        take: 20,
+      }),
+    ]);
 
   const record =
-    draft ??
-    (await db.pageDraft.create({
-      data: { artistId: artist.id, editorOrder: "[]", sections: "[]" },
-    }));
-
-  const full = await db.artist.findUniqueOrThrow({ where: { id: artist.id } });
+    (await db.pageDraft.findUnique({ where: { artistId: artist.id } })) ??
+    (await db.pageDraft.create({ data: { artistId: artist.id, editorOrder: "[]", sections: "[]" } }));
 
   const profile: EditorProfile = {
     displayName: full.displayName,
@@ -68,6 +100,33 @@ export default async function EditorPage() {
     logoMediaId: record.logoMediaId,
   };
 
+  const linkRows: LinkRow[] = links.map((link) => {
+    const platform = getPlatform(link.platform);
+    return {
+      id: link.id,
+      platform: link.platform,
+      platformLabel: platform?.label ?? link.platform,
+      mark: platform?.mark ?? "··",
+      label: link.label,
+      url: link.url,
+      group: link.group,
+      placement: link.placement,
+      embeddable: Boolean(resolveEmbed(link.url)),
+    };
+  });
+
+  const byCategory = new Map(pressLinks.map((row) => [row.category, row]));
+
+  const mediaItem = (row: { id: string; title: string; platform: string | null; externalUrl: string | null; isPublic: boolean }): SelectableItem => ({
+    id: row.id,
+    title: row.title,
+    note: row.externalUrl
+      ? `Link · ${getPlatform(row.platform ?? "")?.label ?? row.platform ?? "externo"}`
+      : row.isPublic
+        ? "Ficheiro público"
+        : "Ficheiro privado — não é publicado enquanto estiver assim",
+  });
+
   return (
     <PageEditor
       artistId={artist.id}
@@ -83,15 +142,39 @@ export default async function EditorPage() {
         title: image.title,
         viewUrl: `/api/media/${image.id}/view`,
       }))}
-      links={links.map((link) => ({
-        id: link.id,
-        platformLabel: link.platform,
-        mark: "··",
-        label: link.label,
-        url: link.url,
-        group: link.group,
-        placement: link.placement,
+      links={linkRows}
+      platforms={PLATFORMS.map((p) => ({ id: p.id, label: p.label, mark: p.mark, group: p.group }))}
+      pressCategories={PRESS_CATEGORIES.map((category) => ({
+        ...category,
+        url: byCategory.get(category.id)?.url ?? "",
+        isPublic: byCategory.get(category.id)?.isPublic ?? false,
       }))}
+      albums={albums.map((album) => ({
+        id: album.id,
+        name: album.name,
+        category: album.category,
+        isPublic: album.isPublic,
+        mediaCount: album._count.media,
+      }))}
+      audio={audio.map(mediaItem)}
+      videos={videos.map(mediaItem)}
+      events={events.map((event) => ({
+        id: event.id,
+        title: event.title,
+        note: `${new Intl.DateTimeFormat("pt-PT", { dateStyle: "medium" }).format(event.startsAt)}${
+          event.venue ? ` · ${event.venue}` : ""
+        }`,
+      }))}
+      toolRequests={toolRequests.map((request) => ({
+        id: request.id,
+        title: request.title,
+        description: request.description,
+        status: request.status,
+        reply: request.reply,
+        createdAt: request.createdAt.toISOString(),
+      }))}
+      toolAttachments={attachments}
+      contactEmail={account.email}
       publishedVersion={published?.version ?? null}
     />
   );

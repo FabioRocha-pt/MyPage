@@ -21,8 +21,8 @@ export const EDITOR_CARDS = [
   { id: "press", label: "Press kit", hint: "Álbuns, links partilhados e riders", configuration: false },
   { id: "music", label: "Músicas e sets", hint: "Conteúdos Muska ou ligações de outras plataformas", configuration: false },
   { id: "video", label: "Vídeos", hint: "Vídeos da biblioteca e links permitidos", configuration: false },
-  { id: "events", label: "Eventos", hint: "Escolhe os eventos que aparecem na página", configuration: false },
   { id: "booking", label: "Booking", hint: "Formulário de pedidos e disponibilidade", configuration: false },
+  { id: "events", label: "Eventos · Muska", hint: "Escolhe os eventos que aparecem na página", configuration: false },
   { id: "donations", label: "Donativos", hint: "Campanha de apoio e progresso", configuration: false },
   { id: "store", label: "Merchandising", hint: "Produtos digitais e físicos", configuration: false },
 ] as const;
@@ -40,11 +40,11 @@ export const DEFAULT_EDITOR_ORDER: EditorCardId[] = EDITOR_CARDS.map((c) => c.id
 export const SECTION_TYPES = [
   { id: "hero", label: "Hero", pinned: true, tool: null },
   { id: "biography", label: "Biografia", pinned: false, tool: null },
+  { id: "press", label: "Press kit", pinned: false, tool: "press" },
   { id: "music", label: "Músicas e sets", pinned: false, tool: "music" },
   { id: "video", label: "Vídeos", pinned: false, tool: "video" },
-  { id: "events", label: "Eventos", pinned: false, tool: "events" },
-  { id: "press", label: "Press kit", pinned: false, tool: "press" },
   { id: "booking", label: "Booking", pinned: false, tool: "booking" },
+  { id: "events", label: "Eventos", pinned: false, tool: "events" },
   { id: "donations", label: "Donativos", pinned: false, tool: "donations" },
   { id: "store", label: "Merchandising", pinned: false, tool: "store" },
 ] as const;

@@ -3,21 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * "Pedido de ferramenta" from the landing page.
+ * "Describe your toolkit" — the landing's custom-request modal.
  *
- * Doc 01: "Secção de pedido de ferramenta abaixo do toolkit: nome, descrição,
- * referências/anexos e contacto quando não autenticado."
- * Doc 02: "Fora da conta, na landing, será necessário recolher contacto."
+ * Copy is the prototype's, in the English the landing uses. Doc 01: "Secção de
+ * pedido de ferramenta abaixo do toolkit: nome, descrição, referências/anexos e
+ * contacto quando não autenticado." Doc 02: "Fora da conta, na landing, será
+ * necessário recolher contacto."
  *
- * Attachments are deliberately absent here: POST /api/tool-requests only
- * accepts media ids that already belong to an artist, so an anonymous visitor
- * has nothing to attach to. The form says so instead of pretending otherwise.
+ * The prototype offered a file drop here. POST /api/tool-requests only accepts
+ * media ids that already belong to an artist, so an anonymous visitor has
+ * nothing to attach to: the form says where attachments do work instead of
+ * accepting files it would have to throw away.
  */
 export function ToolRequestForm() {
   const [open, setOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<{ text: string; tone: "" | "is-ok" | "is-error" }>({
-    text: "A equipa entra em contacto depois de analisar o pedido.",
+    text: "Our team will contact you after reviewing the request.",
     tone: "",
   });
   const firstField = useRef<HTMLInputElement>(null);
@@ -42,30 +44,31 @@ export function ToolRequestForm() {
     event.preventDefault();
     if (sending) return;
 
-    const form = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     setSending(true);
-    setStatus({ text: "A enviar…", tone: "" });
+    setStatus({ text: "Sending…", tone: "" });
 
     try {
       const response = await fetch("/api/tool-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: form.get("title"),
-          description: form.get("description"),
-          contactEmail: form.get("contactEmail"),
-          contactPhone: form.get("contactPhone") || undefined,
+          title: data.get("title"),
+          description: data.get("description"),
+          contactEmail: data.get("contactEmail"),
+          contactPhone: data.get("contactPhone") || undefined,
         }),
       });
       const payload = await response.json();
       if (!response.ok) {
-        setStatus({ text: payload?.error?.message ?? "Não foi possível enviar o pedido.", tone: "is-error" });
+        setStatus({ text: payload?.error?.message ?? "The request could not be sent.", tone: "is-error" });
         return;
       }
-      setStatus({ text: payload.message ?? "Pedido registado.", tone: "is-ok" });
-      event.currentTarget.reset();
+      setStatus({ text: payload.message ?? "Request received.", tone: "is-ok" });
+      form.reset();
     } catch {
-      setStatus({ text: "Sem ligação ao servidor. Tenta novamente.", tone: "is-error" });
+      setStatus({ text: "No connection to the server. Please try again.", tone: "is-error" });
     } finally {
       setSending(false);
     }
@@ -74,7 +77,7 @@ export function ToolRequestForm() {
   return (
     <>
       <button type="button" className="lp-btn primary" onClick={() => setOpen(true)}>
-        Descrever ferramenta ↗
+        Describe toolkit ↗
       </button>
 
       {open && (
@@ -82,63 +85,58 @@ export function ToolRequestForm() {
           <button
             type="button"
             className="lp-modal-backdrop"
-            aria-label="Fechar formulário"
+            aria-label="Close form"
             onClick={() => setOpen(false)}
           />
           <div className="lp-modal-panel">
             <div className="lp-modal-head">
               <div>
-                <div className="lp-eyebrow">Pedido personalizado</div>
-                <h3 id="lp-toolkit-title">Descreve a tua ferramenta</h3>
+                <div className="lp-eyebrow">Custom request</div>
+                <h3 id="lp-toolkit-title">Describe your toolkit</h3>
               </div>
-              <button
-                type="button"
-                className="lp-modal-close"
-                onClick={() => setOpen(false)}
-                aria-label="Fechar formulário"
-              >
+              <button type="button" className="lp-modal-close" onClick={() => setOpen(false)} aria-label="Close form">
                 ×
               </button>
             </div>
 
             <form className="lp-form" onSubmit={submit}>
               <div className="lp-field full">
-                <label htmlFor="lp-tool-title">Nome da ferramenta</label>
+                <label htmlFor="lp-tool-title">Toolkit name</label>
                 <input
                   ref={firstField}
                   id="lp-tool-title"
                   name="title"
                   type="text"
                   maxLength={160}
-                  placeholder="ex.: reservas de mesa VIP"
+                  placeholder="e.g. VIP table reservations"
                   required
                 />
               </div>
 
               <div className="lp-field full">
-                <label htmlFor="lp-tool-description">O que precisas?</label>
+                <label htmlFor="lp-tool-description">What do you need?</label>
                 <textarea
                   id="lp-tool-description"
                   name="description"
                   maxLength={4000}
-                  placeholder="Descreve o problema, como a ferramenta deve funcionar e quem a vai usar…"
+                  placeholder="Describe the problem, how the tool should work and who will use it…"
                   required
                 />
               </div>
 
               <div className="lp-field">
-                <label htmlFor="lp-tool-email">Email</label>
-                <input id="lp-tool-email" name="contactEmail" type="email" placeholder="tu@email.com" required />
-              </div>
-
-              <div className="lp-field">
-                <label htmlFor="lp-tool-phone">Telefone / WhatsApp</label>
+                <label htmlFor="lp-tool-phone">Phone / WhatsApp</label>
                 <input id="lp-tool-phone" name="contactPhone" type="tel" maxLength={40} placeholder="+238 …" />
               </div>
 
+              <div className="lp-field">
+                <label htmlFor="lp-tool-email">Email</label>
+                <input id="lp-tool-email" name="contactEmail" type="email" placeholder="you@email.com" required />
+              </div>
+
               <p className="lp-field full lp-form-status">
-                Para anexar PDFs ou imagens de referência, envia o pedido a partir da tua conta: os anexos ficam
-                associados à biblioteca do artista.
+                References and files: send the request from inside your account to attach PDFs or images — they are
+                stored against your own library.
               </p>
 
               <div className="lp-form-actions">
@@ -146,7 +144,7 @@ export function ToolRequestForm() {
                   {status.text}
                 </span>
                 <button className="lp-btn primary" type="submit" disabled={sending}>
-                  {sending ? "A enviar…" : "Enviar pedido ↗"}
+                  {sending ? "Sending…" : "Send request ↗"}
                 </button>
               </div>
             </form>

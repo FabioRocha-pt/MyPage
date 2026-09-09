@@ -3,145 +3,149 @@ import Link from "next/link";
 import { LandingMotion } from "@/components/landing/LandingMotion";
 import { ToolDeck } from "@/components/landing/ToolDeck";
 import { ToolRequestForm } from "@/components/landing/ToolRequestForm";
+import { TemplateCatalog } from "@/components/TemplateCatalog";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { PLAN_SEED, getEntitlement, type Entitlement } from "@/lib/entitlements";
-import { formatMoney } from "@/lib/money";
-import { TEMPLATES } from "@/templates/registry";
 import "@/styles/landing.css";
+import "@/styles/catalog.css";
 
 /**
- * Landing page.
+ * Landing page — a port of prototipo/index.html.
  *
- * Ported from prototipo/index.html, with three corrections the handoff asks for:
- *   - Doc 01: the toolkit deck loses its background box, the "AS YOUR TOOLKIT"
- *     side label and the cursor light (see ToolDeck / landing.css).
- *   - Doc 04: "Campos ECV/benefícios de planos presentes nas telas carecem de
- *     validação comercial" — the plan cards are built from the entitlements the
- *     server actually enforces, and the note under them says the commercial
- *     terms are still open. Nothing here invents a benefit.
- *   - Doc 01: the template names come from the shared registry, so the landing,
- *     the catalogue and the editor cannot drift apart.
+ * Copy, section order and ids are the prototype's, in the English the handoff
+ * uses on this screen. Three things change, each because the handoff asks for
+ * it rather than because Next needed it:
+ *
+ *   - Doc 01: "Toolkit: baralho sem caixa de fundo (…). Remover o antigo texto
+ *     lateral 'AS YOUR TOOLKIT' e a iluminação do cursor por baixo das cartas."
+ *     See ToolDeck / landing.css.
+ *   - Doc 01: "Catálogo de templates público e backoffice devem partilhar as
+ *     mesmas miniaturas e identificadores." The prototype did this at runtime
+ *     with assets/front-template-catalog.js, which replaced the photo gallery
+ *     with the live catalogue; here the catalogue is rendered directly.
+ *   - Doc 01 / doc 04: plan names, benefits and ECV figures are "material a
+ *     validar". The lists below are the handoff's, kept verbatim, with the note
+ *     under them saying the commercial terms are not approved.
  */
 
 export const metadata: Metadata = {
-  title: "My Page · A tua página. O teu palco.",
+  title: "My Page · Your stage. Your page.",
+  description:
+    "Build a high-impact mobile page with motion, music, events, booking and the tools your audience actually uses.",
   alternates: { canonical: "/" },
 };
 
-const TICKER = ["DJs", "Artistas", "Clubes", "Eventos", "Espaços", "Booking", "Bilhetes", "Mobile First"];
-
-/** Reference imagery for the gallery; real template thumbnails live in the catalogue. */
-const GALLERY_IMAGES = [
-  "/landing/showcase-main.webp",
-  "/landing/gallery-experimental.webp",
-  "/landing/gallery-editorial.webp",
-  "/landing/showcase-a.webp",
-  "/landing/showcase-b.webp",
-];
+const TICKER = ["DJs", "Artists", "Clubs", "Events", "Venues", "Booking", "Tickets", "Mobile First"];
 
 const GROWTH = [
-  {
-    step: "01",
-    title: "Cria a tua página",
-    text: "Lança uma casa digital mobile-first para a tua identidade, história e trabalho.",
-  },
+  { step: "01", title: "Create your page", text: "Launch a mobile-first home for your identity, story and work." },
   {
     step: "02",
-    title: "Escolhe as ferramentas",
-    text: "Ativa apenas os módulos de que a tua carreira ou negócio precisa mesmo.",
+    title: "Choose your tools",
+    text: "Activate only the modules your career or business actually needs.",
   },
-  {
-    step: "03",
-    title: "Monetiza",
-    text: "Transforma visitas em bookings, bilhetes, reservas, serviços e vendas.",
-  },
+  { step: "03", title: "Monetize", text: "Turn visits into bookings, tickets, reservations, services and sales." },
   {
     step: "04",
-    title: "Cresce a carreira",
-    text: "Percebe a tua audiência, decide melhor e cria momentum.",
+    title: "Grow your career",
+    text: "Understand your audience, improve decisions and create momentum.",
   },
   {
     step: "05",
-    title: "Encontra parcerias",
-    text: "Liga artistas, espaços, promotores, marcas e novas oportunidades.",
+    title: "Find partnerships",
+    text: "Connect artists, venues, promoters, brands and new opportunities.",
   },
   {
     step: "06",
-    title: "Constrói o que falta",
-    text: "Em conjunto, criamos a ferramenta que a tua próxima etapa exigir.",
+    title: "Build what’s missing",
+    text: "Together, we can create any custom tool your next stage requires.",
     accent: true,
   },
 ];
 
 const AUDIENCES = [
   {
-    tag: "01 / TALENTO",
-    title: "Para DJs e MCs",
-    text: "Mostra o teu som, publica sets e eventos, recebe bookings, monta o EPK e percebe a tua audiência.",
-    tags: ["Sets", "Eventos", "Booking", "EPK", "Insights"],
+    tag: "01 / TALENT",
+    title: "For DJs & MCs",
+    text: "Show your sound, publish sets and events, receive bookings, build an EPK and understand your audience.",
+    tags: ["Sets", "Events", "Booking", "EPK", "Analytics"],
   },
   {
-    tag: "02 / ARTISTAS",
-    title: "Para cantores e artistas",
-    text: "Uma casa flexível para cantores, músicos, bandas, produtores e performers partilharem e venderem o seu trabalho.",
-    tags: ["Música", "Lançamentos", "Shows", "Media", "Parcerias"],
+    tag: "02 / ARTISTS",
+    title: "For singers & artists",
+    text: "A flexible home for singers, musicians, bands, producers, instrumentalists and performers to share and sell their work.",
+    tags: ["Music", "Releases", "Shows", "Media", "Partnerships"],
   },
   {
-    tag: "03 / ESPAÇOS",
-    title: "Para clubes e espaços",
-    text: "Gere eventos, bilhetes, reservas, mesas VIP, cartas e serviços personalizados a partir de um só backoffice.",
-    tags: ["Bilhetes", "Reservas", "VIP", "Serviços", "Clientes"],
+    tag: "03 / VENUES",
+    title: "For clubs & venues",
+    text: "Manage events, tickets, reservations, VIP tables, menus and any custom service from one backoffice.",
+    tags: ["Tickets", "Reservations", "VIP", "Services", "Customers"],
   },
 ];
 
-const TOOL_LABELS: Record<string, string> = {
-  basic: "Informações básicas",
-  visual: "Imagens e cores",
-  press: "Press kit",
-  music: "Música e sets",
-  video: "Vídeos",
-  events: "Eventos",
-  booking: "Booking",
-  donations: "Donativos",
-  store: "Loja",
-};
-
 /**
- * The plan cards read the entitlements the server enforces. If the database has
- * not been seeded yet the page still renders, from the same seed constant the
- * seeder uses — the landing never becomes a second source of truth for limits.
+ * The plan cards exactly as the handoff presents them.
+ * Doc 01: "Preços pedidos: Free limitado, €25/mês e €50/mês. Nomes Pro/Premium e
+ * listas de benefícios presentes nas telas são material a validar."
  */
-async function loadPlans(): Promise<Entitlement[]> {
-  try {
-    return await Promise.all(PLAN_SEED.map((plan) => getEntitlement(plan.plan)));
-  } catch {
-    return PLAN_SEED.map((plan) => ({
-      ...plan,
-      tools: [...plan.tools],
-      allowedTemplates: [...plan.allowedTemplates],
-    }));
-  }
-}
+const PLANS = [
+  {
+    id: "free",
+    name: "Free",
+    badge: "LIMITED",
+    amount: "€0",
+    period: "/ month",
+    cve: "0 ECV",
+    popular: false,
+    cta: "Start free",
+    features: [
+      "Professional DJ page",
+      "Core template",
+      "Music & social links",
+      "Upcoming events",
+      "Basic booking",
+      "My Page branding + ads",
+    ],
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    badge: "MOST POPULAR",
+    amount: "€25",
+    period: "/ month",
+    cve: "2.500 ECV / month",
+    popular: true,
+    cta: "Go Pro ↗",
+    features: [
+      "No advertising",
+      "Pro templates",
+      "More media & events",
+      "Advanced booking",
+      "EPK & professional tools",
+      "Analytics integrations",
+    ],
+  },
+  {
+    id: "premium",
+    name: "Premium",
+    badge: null,
+    amount: "€50",
+    period: "/ month",
+    cve: "4.500 ECV / month",
+    popular: false,
+    cta: "Choose Premium",
+    features: [
+      "Fully customized design",
+      "Custom domain",
+      "No My Page branding",
+      "Unlimited sections",
+      "Advanced integrations",
+      "Priority support",
+    ],
+  },
+];
 
-function planFeatures(entitlement: Entitlement): string[] {
-  const storage =
-    entitlement.maxStorageMb >= 1000
-      ? `${Math.round(entitlement.maxStorageMb / 1000)} GB`
-      : `${entitlement.maxStorageMb} MB`;
-
-  return [
-    `${entitlement.allowedTemplates.length} ${entitlement.allowedTemplates.length === 1 ? "template" : "templates"}`,
-    `${entitlement.maxMediaItems} ficheiros · ${storage}`,
-    `${entitlement.maxEvents} eventos`,
-    entitlement.tools.map((tool) => TOOL_LABELS[tool] ?? tool).join(" · "),
-    entitlement.removeBranding ? "Sem marca My Page na página" : "Marca My Page na página",
-    entitlement.customDomain ? "Domínio próprio" : "Endereço my page",
-  ];
-}
-
-export default async function LandingPage() {
-  const plans = await loadPlans();
-
+export default function LandingPage() {
   return (
     <div className="lp" id="top">
       <LandingMotion />
@@ -155,23 +159,28 @@ export default async function LandingPage() {
       <nav className="lp-nav">
         <a className="lp-brand" href="#top">
           <span className="lp-mark" aria-hidden="true">
-            M
+            Y
           </span>
           <span>My Page</span>
           <small className="lp-brand-meta">Powered by Muska</small>
         </a>
         <div className="lp-navlinks">
+          <Link className="keep" href="/artists">
+            Artistas
+          </Link>
           <a href="#templates">Templates</a>
-          <a href="#ferramentas">Ferramentas</a>
-          <a href="#planos">Planos</a>
+          <a href="#tools">Tools</a>
+          <a href="#pricing">Pricing</a>
         </div>
         <div className="lp-actions">
-          <Link className="lp-btn demo" href="/login">
-            Entrar
+          {/* The prototype linked to backoffice.html; the real backoffice is
+              behind a session, so /studio sends a visitor to sign in first. */}
+          <Link className="lp-btn demo" href="/studio">
+            Backoffice ↗
           </Link>
           <ThemeToggle className="lp-iconbtn" />
           <Link className="lp-btn primary keep" href="/signup">
-            Criar página ↗
+            Start free ↗
           </Link>
         </div>
       </nav>
@@ -182,57 +191,57 @@ export default async function LandingPage() {
           <div className="lp-glow g2" data-parallax="-.035" aria-hidden="true" />
           <div className="lp-shell lp-hero-grid">
             <div>
-              <div className="lp-eyebrow">Construtor de páginas para a cultura</div>
+              <div className="lp-eyebrow">Website builder for the culture</div>
               <h1>
-                O teu palco.
+                Your stage.
                 <br />
-                <span className="lp-gradient">A tua página.</span>
+                <span className="lp-gradient">Your page.</span>
               </h1>
               <p className="lp-lead">
-                Monta uma página mobile-first com movimento, música, eventos, booking e as ferramentas que a tua
-                audiência usa mesmo.
+                Build a high-impact mobile page with motion, music, events, booking and the tools your audience
+                actually uses.
               </p>
               <div className="lp-hero-ctas">
                 <Link className="lp-btn primary" href="/signup">
-                  Criar a minha página ↗
+                  Create your page ↗
                 </Link>
                 <a className="lp-btn" href="#templates">
-                  Ver o que é possível ↓
+                  See the potential ↓
                 </a>
               </div>
-              <div className="lp-micro">Começa nos DJs · A seguir: clubes, espaços, bilhetes e reservas</div>
+              <div className="lp-micro">Start with DJs · Next: clubs, venues, tickets &amp; reservations</div>
             </div>
 
             <div className="lp-showcase" id="lp-showcase">
               <div className="lp-panel main">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/landing/showcase-main.webp" alt="Referência de template mobile-first" />
+                <img src="/landing/showcase-main.webp" alt="Dynamic mobile-first template reference" />
                 <div className="lp-overlay">
-                  <span>MY PAGE / TEMPLATE</span>
-                  <b>Movimento primeiro.</b>
+                  <span>YOURPAGE / TEMPLATE</span>
+                  <b>Motion first.</b>
                 </div>
               </div>
               <div className="lp-panel small1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/landing/showcase-a.webp" alt="Referência de template imersivo" />
+                <img src="/landing/showcase-a.webp" alt="Immersive template reference" />
               </div>
               <div className="lp-panel small2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/landing/showcase-b.webp" alt="Referência de página de artista" />
+                <img src="/landing/showcase-b.webp" alt="Artist page reference" />
               </div>
               <div className="lp-floating f1">
                 <b>Mobile</b>
-                <span>feito para o primeiro ecrã</span>
+                <span>built for the first screen</span>
               </div>
               <div className="lp-floating f2">
-                <b>Movimento</b>
-                <span>parallax + interação</span>
+                <b>Motion</b>
+                <span>parallax + interactions</span>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="lp-marquee-space" aria-label="Ecossistema My Page">
+        <div className="lp-marquee-space" aria-label="My Page ecosystem">
           <div className="lp-marquee-band">
             <div className="lp-marquee">
               <div className="lp-track">
@@ -252,78 +261,62 @@ export default async function LandingPage() {
           <div className="lp-shell">
             <div className="lp-section-head lp-reveal">
               <div>
-                <div className="lp-eyebrow">Direção visual</div>
-                <h2>Templates que já parecem feitos à medida.</h2>
+                <div className="lp-eyebrow">Visual direction</div>
+                <h2>Templates that already feel custom.</h2>
               </div>
               <p>
-                Cinco direções visualmente distintas. O artista muda conteúdo, media e cor; a qualidade do desenho
-                mantém-se controlada.
+                We start with a strong library of visually distinct templates. Users change content, media and accent
+                while the design quality stays controlled.
               </p>
             </div>
-            <div className="lp-gallery">
-              {TEMPLATES.map((template, index) => (
-                <article className={`lp-shot s${index + 1} lp-reveal`} key={template.id}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={GALLERY_IMAGES[index]} alt={`Referência visual do template ${template.name}`} />
-                  <div className="lp-shot-info">
-                    <div>
-                      <span>{template.description.toUpperCase()}</span>
-                      <strong>{template.name}</strong>
-                    </div>
-                    <em>{template.id}</em>
-                  </div>
-                </article>
-              ))}
-            </div>
+            {/* Same catalogue the editor uses — shared ids and thumbnails. */}
+            <TemplateCatalog mode="signup" lang="en" />
           </div>
         </section>
 
-        <section id="ferramentas">
+        <section id="tools">
           <div className="lp-shell">
             <div className="lp-section-head lp-reveal">
               <div>
-                <div className="lp-eyebrow">O primeiro toolkit</div>
-                <h2>Simples para lançar. Útil para vender.</h2>
+                <div className="lp-eyebrow">The first toolkit</div>
+                <h2>Simple enough to launch. Useful enough to sell.</h2>
               </div>
               <p>
-                A primeira versão foca o que um DJ precisa todas as semanas. Novos módulos entram à medida que a
-                plataforma cresce.
+                The first version focuses on the things DJs need every week. More modules can be activated as the
+                builder grows.
               </p>
             </div>
             <ToolDeck />
           </div>
         </section>
 
-        <section className="lp-custom-toolkit" id="ferramenta-medida">
+        <section className="lp-custom-toolkit" id="custom-toolkit">
           <div className="lp-shell">
             <div className="lp-custom-card lp-reveal">
               <div className="lp-custom-copy">
-                <div className="lp-eyebrow">Construído à volta do que precisas</div>
-                <h2>Não encontras a ferramenta que procuras?</h2>
+                <div className="lp-eyebrow">Built around what you need</div>
+                <h2>Can’t find the toolkit you’re looking for?</h2>
                 <p>
-                  Descreve o que precisas. A equipa entra em contacto, percebe o teu fluxo de trabalho e traz a
-                  solução certa para a tua página.
+                  Describe what you need. Our team will get in touch, understand your workflow and bring the right
+                  solution to your page.
                 </p>
               </div>
               <div className="lp-custom-action">
-                <small>Partilha a ideia, as referências e o contacto. Respondemos depois de analisar o pedido.</small>
+                <small>Share your idea, references and contact details. You can attach PDF files or images from inside your account.</small>
                 <ToolRequestForm />
               </div>
             </div>
           </div>
         </section>
 
-        <section id="percurso">
+        <section id="product-path">
           <div className="lp-shell">
             <div className="lp-section-head lp-reveal">
               <div>
-                <div className="lp-eyebrow">O teu percurso</div>
-                <h2>Constrói a tua presença. Cresce na tua carreira.</h2>
+                <div className="lp-eyebrow">Your growth path</div>
+                <h2>Build your presence. Grow your career.</h2>
               </div>
-              <p>
-                O My Page começa como a tua casa digital e cresce com o teu trabalho, a tua audiência e a tua
-                ambição.
-              </p>
+              <p>My Page starts as your digital home and grows with your work, your audience and your ambitions.</p>
             </div>
             <div className="lp-growth">
               {GROWTH.map((item) => (
@@ -337,14 +330,14 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        <section id="para-quem">
+        <section id="for-who">
           <div className="lp-shell">
             <div className="lp-section-head lp-reveal">
               <div>
-                <div className="lp-eyebrow">Para quem é o My Page</div>
-                <h2>Um backoffice. Três formas de crescer.</h2>
+                <div className="lp-eyebrow">Who My Page is for</div>
+                <h2>One backoffice. Three ways to grow.</h2>
               </div>
-              <p>Cada perfil tem um espaço central para gerir conteúdo, oportunidades, audiência e negócio.</p>
+              <p>Every profile gets a central workspace to manage content, opportunities, audience and business.</p>
             </div>
             <div className="lp-audience-grid">
               {AUDIENCES.map((audience) => (
@@ -363,41 +356,40 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        <section id="planos">
+        <section id="pricing">
           <div className="lp-shell">
             <div className="lp-section-head lp-reveal">
               <div>
-                <div className="lp-eyebrow">Planos</div>
-                <h2>Começa grátis. Cresce para as ferramentas que precisares.</h2>
+                <div className="lp-eyebrow">Pricing</div>
+                <h2>Start free. Grow into the tools you need.</h2>
               </div>
               <p>
-                Uma página gratuita já tem de ficar bem. Os planos pagos desbloqueiam controlo e ferramentas
-                profissionais.
+                A free page must already look good. Upgrades unlock control, professional tools and customization.
               </p>
             </div>
             <div className="lp-pricing">
-              {plans.map((plan) => (
-                <article className={`lp-price lp-reveal ${plan.plan === "pro" ? "pop" : ""}`} key={plan.plan}>
-                  {plan.plan === "pro" && <div className="lp-popular">MAIS ESCOLHIDO</div>}
-                  {plan.plan === "free" && <div className="lp-popular">LIMITADO</div>}
-                  <h3>{plan.label}</h3>
+              {PLANS.map((plan) => (
+                <article className={`lp-price lp-reveal ${plan.popular ? "pop" : ""}`} key={plan.id}>
+                  {plan.badge && <div className="lp-popular">{plan.badge}</div>}
+                  <h3>{plan.name}</h3>
                   <div className="lp-amount">
-                    {formatMoney(plan.priceMinor, plan.currency === "CVE" ? "CVE" : "EUR")} <small>/ mês</small>
+                    {plan.amount} <small>{plan.period}</small>
                   </div>
-                  <div className="lp-cve">Valor equivalente em ECV por confirmar</div>
+                  <div className="lp-cve">{plan.cve}</div>
                   <ul>
-                    {planFeatures(plan).map((feature) => (
+                    {plan.features.map((feature) => (
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
-                  <Link className={`lp-btn ${plan.plan === "pro" ? "primary" : ""}`} href="/signup">
-                    {plan.plan === "free" ? "Começar grátis" : `Escolher ${plan.label}`}
+                  <Link className={`lp-btn ${plan.popular ? "primary" : ""}`} href="/signup">
+                    {plan.cta}
                   </Link>
                 </article>
               ))}
+              {/* Doc 01: "Não os tratar como preços ou conversões aprovados." */}
               <p className="lp-price-note">
-                Limites e preços vêm das autorizações aplicadas no servidor e podem mudar: as condições comerciais
-                finais, comissões e regras de downgrade ainda não foram fechadas com o proprietário.
+                Plan names, benefit lists and the ECV figures shown here still need to be confirmed with the owner.
+                Exact limits, per-tool access, storage, commissions and downgrade rules have not been approved.
               </p>
             </div>
           </div>
@@ -406,23 +398,25 @@ export default async function LandingPage() {
         <section>
           <div className="lp-shell">
             <div className="lp-cta-card lp-reveal">
-              <div className="lp-eyebrow">A tua página é o teu palco</div>
+              <div className="lp-eyebrow" style={{ color: "#ddd" }}>
+                Your page is your stage
+              </div>
               <h2>
-                Parece feita à medida.
+                Look custom.
                 <br />
-                <span style={{ color: "#ff9d47" }}>Move-se melhor.</span>
+                <span style={{ color: "#ff9d47" }}>Move better.</span>
               </h2>
               <div className="lp-cta-row">
                 <p>
-                  Começa hoje com uma página de DJ. Usa amanhã a mesma plataforma para o teu espaço, os teus eventos,
-                  reservas e bilhetes.
+                  Start with a beautiful DJ page today. Use the same platform tomorrow for your venue, event,
+                  reservations and ticket sales.
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   <Link className="lp-btn primary" href="/signup">
-                    Criar a minha página ↗
+                    Create your page ↗
                   </Link>
-                  <Link className="lp-btn" href="/login">
-                    Entrar no backoffice
+                  <Link className="lp-btn" style={{ color: "white", borderColor: "rgba(255,255,255,.2)" }} href="/studio">
+                    Open the backoffice
                   </Link>
                 </div>
               </div>
@@ -435,11 +429,11 @@ export default async function LandingPage() {
         <div className="lp-shell lp-footer-row">
           <div className="lp-brand">
             <span className="lp-mark" aria-hidden="true">
-              M
+              Y
             </span>
             <span>My Page</span>
           </div>
-          <div>© {new Date().getFullYear()} My Page · Powered by Muska · Feito mobile first.</div>
+          <div>© {new Date().getFullYear()} My Page · Powered by Muska · Built mobile first.</div>
         </div>
       </footer>
     </div>

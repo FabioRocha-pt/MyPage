@@ -5,10 +5,12 @@ import { useState } from "react";
 /**
  * The toolkit deck.
  *
- * Doc 01: "Toolkit: baralho sem caixa de fundo, glows/blur ambientais
- * preservados. Remover o antigo texto lateral 'AS YOUR TOOLKIT' e a iluminação
- * do cursor por baixo das cartas. Conteúdo legível; clique abre detalhes ao
- * lado, segundo clique/voltar repõe listagem. Mobile não depende de hover."
+ * Copy is verbatim from prototipo/index.html, including the English wording the
+ * landing uses throughout. Doc 01 fixes the behaviour:
+ * "Toolkit: baralho sem caixa de fundo, glows/blur ambientais preservados.
+ * Remover o antigo texto lateral 'AS YOUR TOOLKIT' e a iluminação do cursor
+ * por baixo das cartas. Conteúdo legível; clique abre detalhes ao lado, segundo
+ * clique/voltar repõe listagem. Mobile não depende de hover."
  *
  * Clicking the active card closes the detail again (the "segundo clique"
  * behaviour), and every card is a real <button> so keyboard and touch work
@@ -28,56 +30,52 @@ export const TOOLS: Tool[] = [
   {
     number: "01",
     category: "BUILD",
-    title: "Editor visual",
+    title: "Visual editor",
     description:
-      "Edita identidade, biografia, cores, capa, secções e chamadas para ação sem tocar em código.",
+      "Edit identity, biography, colors, cover, sections and calls-to-action without touching code.",
     icon: "✦",
-    tags: ["Preview real", "Controlo de tema", "Gestor de secções"],
+    tags: ["Live preview", "Theme controls", "Section manager"],
   },
   {
     number: "02",
     category: "PLAY",
-    title: "Música e media",
-    description:
-      "Destaca sets, Spotify, SoundCloud, Mixcloud, YouTube, galerias e vídeos numa só página.",
+    title: "Music & media",
+    description: "Feature sets, Spotify, SoundCloud, Mixcloud, YouTube, galleries and videos.",
     icon: "▶",
-    tags: ["Set em destaque", "Embeds", "Galeria"],
+    tags: ["Featured set", "Video embeds", "Media gallery"],
   },
   {
     number: "03",
     category: "SHOW",
-    title: "Eventos",
-    description:
-      "Coloca a próxima data primeiro, gere o calendário e liga cada show a bilhetes ou venues.",
+    title: "Events",
+    description: "Put the next event first, manage dates and connect every show to tickets or venues.",
     icon: "◇",
-    tags: ["Próximas datas", "Locais", "Link de bilhetes"],
+    tags: ["Upcoming dates", "Venue links", "Ticket CTA"],
   },
   {
     number: "04",
     category: "CONVERT",
     title: "Booking",
     description:
-      "Recebe pedidos sérios com data, local, tipo de evento e contacto direto do promotor.",
+      "Receive serious enquiries with date, location, budget, event type and direct contact details.",
     icon: "⌁",
-    tags: ["Caixa de pedidos", "Estados", "Disponibilidade"],
+    tags: ["Lead inbox", "WhatsApp CTA", "Status tracking"],
   },
   {
     number: "05",
-    category: "SELL",
-    title: "Loja e donativos",
-    description:
-      "Vende merchandising e ficheiros digitais, ou recebe apoio direto para um projeto.",
+    category: "LISTEN",
+    title: "Feedback inbox",
+    description: "Receive messages and feedback from fans, promoters and clients inside the backoffice.",
     icon: "◌",
-    tags: ["Carrinho", "Stock", "Campanhas"],
+    tags: ["Private feedback", "Replies", "Audience notes"],
   },
   {
     number: "06",
     category: "LEARN",
     title: "Insights",
-    description:
-      "Percebe visitas, cliques, interesse em booking e que conteúdos geram mais interação.",
+    description: "Understand visits, clicks, booking interest and the content generating interaction.",
     icon: "↗",
-    tags: ["Visitas", "Ações", "Sinais de conversão"],
+    tags: ["Page views", "Top actions", "Conversion signals"],
   },
 ];
 
@@ -93,12 +91,12 @@ export function ToolDeck() {
   return (
     <>
       <div className="lp-deck-intro">
-        <span>Clica numa carta para ver detalhes</span>
+        <span>Hover to explore · Click a card for details</span>
         <span className="lp-deck-line" />
-        <span>{String(TOOLS.length).padStart(2, "0")} ferramentas</span>
+        <span>01 / {String(TOOLS.length).padStart(2, "0")}</span>
       </div>
 
-      <div className={`lp-deck ${detail ? "detail-open" : ""}`} aria-label="Ferramentas My Page">
+      <div className={`lp-deck ${detail ? "detail-open" : ""}`} aria-label="My Page core tools">
         <span className="lp-blob a" aria-hidden="true" />
         <span className="lp-blob b" aria-hidden="true" />
         <span className="lp-blob c" aria-hidden="true" />
@@ -109,6 +107,7 @@ export function ToolDeck() {
             type="button"
             className={`lp-tool-card c${index + 1} ${active === index ? "active" : ""}`}
             aria-expanded={active === index}
+            aria-label={`Open ${tool.title} details`}
             onClick={() => select(index)}
           >
             <span className="lp-card-top">
@@ -133,8 +132,13 @@ export function ToolDeck() {
         <aside className="lp-tool-detail" aria-live="polite">
           {detail && (
             <>
-              <button type="button" className="lp-tool-detail-close" onClick={() => setActive(null)}>
-                ← Todas as ferramentas
+              <button
+                type="button"
+                className="lp-tool-detail-close"
+                onClick={() => setActive(null)}
+                aria-label="Back to all tools"
+              >
+                ← All tools
               </button>
               <div className="lp-tool-detail-number">{detail.number}</div>
               <small>{detail.category}</small>
@@ -146,7 +150,7 @@ export function ToolDeck() {
                 ))}
               </div>
               <button type="button" className="lp-btn primary" onClick={() => setActive(null)}>
-                Voltar ao toolkit
+                Back to toolkit
               </button>
             </>
           )}

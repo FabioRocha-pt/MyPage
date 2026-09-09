@@ -36,10 +36,13 @@ export function ToolRequestsManager({
   contactEmail,
   attachments,
   initialRequests,
+  /** Inside the page editor the card already has a heading and a frame. */
+  embedded = false,
 }: {
   contactEmail: string;
   attachments: { id: string; title: string }[];
   initialRequests: ToolRequestRow[];
+  embedded?: boolean;
 }) {
   const [requests, setRequests] = useState(initialRequests);
   const [form, setForm] = useState({ title: "", description: "" });
@@ -72,15 +75,22 @@ export function ToolRequestsManager({
   }
 
   return (
-    <div className="manager">
-      <div className="view-head">
-        <div>
-          <h2>Pedir uma ferramenta</h2>
-          <p>Conta à equipa My Page o que precisas. Respondemos para {contactEmail}.</p>
+    <div className={embedded ? "" : "manager"}>
+      {embedded ? (
+        <p className="hint">
+          Descreve o que precisas. Respondemos para {contactEmail} — o contacto vem da tua conta, por isso o
+          formulário não o volta a pedir.
+        </p>
+      ) : (
+        <div className="view-head">
+          <div>
+            <h2>Pedir uma ferramenta</h2>
+            <p>Conta à equipa My Page o que precisas. Respondemos para {contactEmail}.</p>
+          </div>
         </div>
-      </div>
+      )}
 
-      <form className="manager-form" onSubmit={submit}>
+      <form className={embedded ? "" : "manager-form"} onSubmit={submit}>
         <div className="fields">
           <label className="field wide">
             Nome da ferramenta

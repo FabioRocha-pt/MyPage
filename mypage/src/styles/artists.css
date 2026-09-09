@@ -1,0 +1,379 @@
+/*
+ * Artists listing — ported from the prototype's inline <style> in artists.html.
+ * The prototype hard-coded its own palette; here the same values come from the
+ * shared tokens so light mode works, which doc 01 asks for across the product.
+ */
+
+.ar-page {
+  --ar-bg: #111b2d;
+  --ar-panel: #1d2a41;
+  --ar-muted: #a5b2c8;
+  --ar-line: rgba(255, 255, 255, 0.13);
+
+  background: var(--ar-bg);
+  color: #f5f8ff;
+  min-height: 100dvh;
+}
+
+html[data-theme="light"] .ar-page {
+  --ar-bg: #eef2f8;
+  --ar-panel: #ffffff;
+  --ar-muted: #5d6e86;
+  --ar-line: rgba(32, 52, 87, 0.15);
+
+  color: #16233a;
+}
+
+.ar-wrap {
+  width: min(1190px, calc(100% - 40px));
+  margin: auto;
+}
+
+.ar-page header {
+  border-bottom: 1px solid var(--ar-line);
+}
+
+.ar-page nav {
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ar-brand {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.ar-brand small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--ar-muted);
+}
+
+.ar-navlinks {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  font-size: 14px;
+}
+
+.ar-navlinks .active {
+  color: var(--cyan);
+}
+
+.ar-button {
+  display: inline-block;
+  border: 1px solid var(--ar-line);
+  border-radius: 30px;
+  padding: 11px 20px;
+  font-size: 14px;
+}
+
+.ar-button.primary {
+  border: 0;
+  font-weight: 750;
+  color: #102136;
+  background: linear-gradient(100deg, #2dceef, #2ea2f0);
+}
+
+.ar-intro {
+  padding: 70px 0 35px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 65px;
+  align-items: end;
+}
+
+.ar-eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+
+.ar-page h1 {
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -3px;
+  margin: 17px 0;
+}
+
+.ar-intro p {
+  color: var(--ar-muted);
+  font-size: 17px;
+  max-width: 440px;
+}
+
+.ar-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--ar-line);
+}
+
+.ar-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 480px;
+  padding: 12px 18px;
+  border: 1px solid var(--ar-line);
+  border-radius: 30px;
+  background: var(--ar-panel);
+}
+
+.ar-search span {
+  color: var(--cyan);
+}
+
+.ar-search input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  outline: none;
+}
+
+.ar-count {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--ar-muted);
+}
+
+.ar-note {
+  font-size: 13px;
+  color: var(--ar-muted);
+  margin: 24px 0;
+}
+
+.ar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.ar-card {
+  display: block;
+  border: 1px solid var(--ar-line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--ar-panel);
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.ar-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--cyan);
+}
+
+.ar-portrait {
+  position: relative;
+  height: 270px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #293d5a, #142138);
+}
+
+.ar-portrait.second {
+  background: linear-gradient(145deg, #2b354f, #1b1e39);
+}
+
+.ar-portrait > span {
+  font-size: 85px;
+  font-weight: 300;
+  color: #6c8da6;
+  letter-spacing: -7px;
+}
+
+.ar-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ar-portrait small {
+  position: absolute;
+  bottom: 17px;
+  left: 20px;
+  font-size: 11px;
+  color: var(--ar-muted);
+}
+
+.ar-copy {
+  padding: 24px;
+}
+
+.ar-copy h2 {
+  margin: 0 0 9px;
+  font-size: 24px;
+  letter-spacing: -0.7px;
+}
+
+.ar-copy p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ar-muted);
+}
+
+.ar-copy b {
+  display: block;
+  margin-top: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cyan);
+}
+
+.ar-explore {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px;
+  border: 1px dashed rgba(45, 206, 239, 0.31);
+  border-radius: 20px;
+  background: rgba(45, 206, 239, 0.02);
+}
+
+.ar-explore h2 {
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 550;
+  letter-spacing: -1px;
+}
+
+.ar-explore p {
+  font-size: 15px;
+  color: var(--ar-muted);
+}
+
+.ar-empty {
+  padding: 35px 0;
+  color: var(--ar-muted);
+}
+
+.ar-free {
+  margin: 65px 0;
+  padding: 36px;
+  border-radius: 24px;
+  background: var(--ar-panel);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 45px;
+  align-items: center;
+}
+
+.ar-free h2 {
+  margin: 13px 0;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.ar-free p {
+  color: var(--ar-muted);
+}
+
+.ar-free ul {
+  padding: 0;
+  list-style: none;
+}
+
+.ar-free li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ar-line);
+}
+
+.ar-free li::before {
+  content: "↗";
+  color: var(--cyan);
+  margin-right: 14px;
+}
+
+.ar-free .ar-button {
+  margin-top: 15px;
+}
+
+.ar-page footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 0 40px;
+  font-size: 12px;
+  color: var(--ar-muted);
+}
+
+@media (max-width: 800px) {
+  .ar-intro {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    padding-top: 40px;
+  }
+
+  .ar-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ar-explore {
+    grid-column: 1 / -1;
+  }
+
+  .ar-free {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .ar-navlinks {
+    gap: 12px;
+  }
+
+  .ar-navlinks .optional {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .ar-wrap {
+    width: calc(100% - 28px);
+  }
+
+  .ar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ar-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .ar-search {
+    flex-basis: 100%;
+  }
+
+  .ar-count {
+    margin-left: 0;
+  }
+
+  .ar-free {
+    padding: 24px;
+  }
+
+  .ar-navlinks {
+    font-size: 12px;
+  }
+
+  .ar-navlinks .ar-button {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .ar-page h1 {
+    letter-spacing: -2px;
+  }
+
+  .ar-page footer {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+}
