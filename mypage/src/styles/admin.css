@@ -1,0 +1,60 @@
+/*
+ * Team area.
+ *
+ * Only what the admin screens add on top of studio.css. The counters reuse
+ * `.stats`/`.stat` and the accordions reuse `.editor-section`/`.accordion`, so
+ * the two areas stay visually one product; the rules below exist because the
+ * project has no table styling anywhere and the artist list needs a row layout.
+ */
+
+.admin-list {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.admin-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr) 90px minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.admin-row:last-child {
+  border-bottom: 0;
+}
+
+.admin-row.is-head {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--input);
+}
+
+.admin-row > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-row b {
+  font-weight: 500;
+}
+
+.admin-row .muted {
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .admin-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .admin-row.is-head {
+    display: none;
+  }
+}

@@ -25,6 +25,11 @@ model Account {
   phone        String?
   // Reserved for the real Muska identity provider. Null while auth is local.
   muskaUserId  String?  @unique
+  /// Platform-level role, deliberately distinct from Membership.role (which is
+  /// per-artist). "artist" | "staff". Doc 03 requires the My Page team to
+  /// "responder pela equipa" to tool requests, which no per-artist role can do.
+  /// Never settable from the registration endpoint: only seed or another staff.
+  platformRole String   @default("artist")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

@@ -69,6 +69,14 @@ export interface SessionAccount {
   email: string;
   displayName: string;
   phone: string | null;
+  /** Platform-level role. Distinct from the per-artist Membership.role. */
+  platformRole: PlatformRole;
+}
+
+export type PlatformRole = "artist" | "staff";
+
+export function isStaff(account: SessionAccount | null): boolean {
+  return account?.platformRole === "staff";
 }
 
 export async function getAccount(): Promise<SessionAccount | null> {
@@ -87,6 +95,7 @@ export async function getAccount(): Promise<SessionAccount | null> {
     email: session.account.email,
     displayName: session.account.displayName,
     phone: session.account.phone,
+    platformRole: session.account.platformRole === "staff" ? "staff" : "artist",
   };
 }
 
@@ -106,9 +115,29 @@ export async function requireAccount(): Promise<SessionAccount> {
   return account;
 }
 
+/**
+ * The gate for platform-wide screens and endpoints.
+ *
+ * 403 rather than 404 here: unlike an artist id, the existence of the admin
+ * area is not a secret worth protecting, and a signed-in artist hitting it
+ * deserves a comprehensible answer.
+ */
+export async function requireStaff(): Promise<SessionAccount> {
+  const account = await requireAccount();
+  if (account.platformRole !== "staff") {
+    throw new AuthError("Esta área é reservada à equipa My Page.", 403);
+  }
+  return account;
+}
+
 // --- Per-artist isolation ----------------------------------------------------
 
-export type Role = "owner" | "manager" | "viewer";
+/**
+ * `staff` is not a membership role: it is the role reported when a My Page team
+ * account reaches an artist it has no membership for. It is absent from
+ * WRITE_ROLES on purpose, so every existing `{ write: true }` call rejects it.
+ */
+export type Role = "owner" | "manager" | "viewer" | "staff";
 
 const WRITE_ROLES: Role[] = ["owner", "manager"];
 
@@ -124,6 +153,13 @@ export interface ArtistAccess {
  * Doc 03: "Isolamento por artista em todas as operações; testar acesso indevido
  * a IDs de outro artista." A missing membership returns 404 rather than 403 so
  * the endpoint does not confirm that an unrelated artist id exists.
+ *
+ * There is exactly one exception, and it is deliberate: a `staff` account reads
+ * any artist without a membership. That is the same isolation the doc asks to be
+ * tested against, so it is narrow by construction — read only, never write. A
+ * staff account that *does* hold a membership takes the membership path below
+ * and keeps its real role, so a team member who also owns an artist is not
+ * downgraded on their own page.
  */
 export async function requireArtistAccess(
   artistId: string,
@@ -133,7 +169,23 @@ export async function requireArtistAccess(
   const membership = await db.membership.findUnique({
     where: { accountId_artistId: { accountId: account.id, artistId } },
   });
-  if (!membership) throw new AuthError("Artista não encontrado.", 404);
+
+  if (!membership) {
+    if (account.platformRole !== "staff") throw new AuthError("Artista não encontrado.", 404);
+
+    // Still 404 for an id that does not exist, so staff access cannot be used
+    // to probe which artist ids are real.
+    const exists = await db.artist.findUnique({ where: { id: artistId }, select: { id: true } });
+    if (!exists) throw new AuthError("Artista não encontrado.", 404);
+
+    if (options.write) {
+      throw new AuthError(
+        "A equipa My Page tem acesso de leitura a este artista, não de escrita.",
+        403,
+      );
+    }
+    return { account, artistId, role: "staff" };
+  }
 
   const role = membership.role as Role;
   if (options.write && !WRITE_ROLES.includes(role)) {

@@ -102,6 +102,22 @@ async function main() {
     });
   }
 
+  // The team account. Created before the demo-account early return below, so
+  // it also lands on a database that was seeded before this account existed.
+  // It holds no membership on purpose: staff read any artist through the
+  // `platformRole` path in lib/auth `requireArtistAccess`, not through one.
+  const admin = await db.account.upsert({
+    where: { email: "admin@mypage.cv" },
+    update: { platformRole: "staff" },
+    create: {
+      email: "admin@mypage.cv",
+      passwordHash: hashPassword("admin123"),
+      displayName: "Equipa My Page",
+      platformRole: "staff",
+    },
+  });
+  console.log(`Conta de equipa pronta: ${admin.email} (platformRole=${admin.platformRole})`);
+
   const existing = await db.account.findUnique({ where: { email: "artista@exemplo.cv" } });
   if (existing) {
     console.log("Conta de demonstração já existe. Nada a fazer.");

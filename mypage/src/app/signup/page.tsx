@@ -2,14 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import { SignOutButton } from "@/components/studio/SignOutButton";
 import { getAccount } from "@/lib/auth";
+import { landingFor } from "@/lib/studio";
 import "@/styles/auth.css";
 
 export const metadata: Metadata = { title: "Criar página" };
 
 export default async function SignUpPage() {
   const account = await getAccount();
-  if (account) redirect("/studio");
+  // Never redirect straight to /studio: it sends an account with no artist
+  // back here, which is an infinite loop. `landingFor` returns null when there
+  // is nowhere safe to go, and then this page renders instead of bouncing.
+  const landing = account ? await landingFor(account) : null;
+  if (landing) redirect(landing);
 
   // Doc 01: the public address format is still to be confirmed with the owner,
   // so the prefix is configuration, not a decision baked into the screen.
@@ -50,6 +56,17 @@ export default async function SignUpPage() {
           </Link>
           <h1>Criar a tua página</h1>
           <p>Leva menos de um minuto. Podes mudar tudo depois.</p>
+
+          {account && (
+            // Reachable only in the anomalous state landingFor returns null
+            // for: a live session whose account manages no artist. Saying so is
+            // better than showing a registration form that will reject the
+            // email it is already signed in with.
+            <p className="auth-alt" role="status">
+              Tens sessão aberta como <b>{account.email}</b>, mas esta conta não tem nenhum artista associado. Termina
+              a sessão para criar uma conta nova, ou fala com a equipa My Page. <SignOutButton />
+            </p>
+          )}
 
           <RegisterForm domain={domain} />
 
