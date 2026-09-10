@@ -54,10 +54,9 @@ export const PATCH = handle(async (request: Request, { params }: { params: Promi
       type: "tool.answered",
       title: "A equipa respondeu ao teu pedido",
       body: `"${existing.title}": ${(reply ?? "").slice(0, 200)}`,
-      // Same destination as the `tool.created` notification in ../route.ts.
-      // /studio/tools is no longer in the submenu but the route still renders
-      // the artist's request history, reply included.
-      href: "/studio/tools",
+      // The tool-request accordion inside the Page editor, which is where the
+      // submenu now keeps this feature. Same destination as `tool.created`.
+      href: "/studio/page#tools",
     });
   }
 

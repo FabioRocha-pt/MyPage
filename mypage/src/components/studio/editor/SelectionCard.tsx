@@ -59,7 +59,12 @@ export function SelectionCard({
           )}
         </>
       ) : (
-        <div className="empty-library">{emptyLabel}</div>
+        // Booking, donations and store pass no label: the snapshot does not
+        // filter those sections by id, so there is nothing to select and the
+        // card is visibility and position only. Rendering the box regardless
+        // left a blank grey slab, since `.empty-library` carries padding and a
+        // background of its own.
+        emptyLabel !== "" && <div className="empty-library">{emptyLabel}</div>
       )}
 
       {manager && (

@@ -72,24 +72,79 @@ export interface PageEditorProps {
 
 type Status = { text: string; tone: "" | "ok" | "error" } | null;
 
+/**
+ * Derives the public section order from the editor card order.
+ *
+ * The two lists cannot be kept in step by swapping both: they have different
+ * lengths and different members. `visual` is a card with no section, `hero` is a
+ * pinned section with no card, so the nth card and the nth section are not the
+ * same thing. Swapping each independently drifted as soon as a card moved past
+ * `visual` — the editor showed Biografia above Press kit while the published
+ * page rendered the opposite.
+ *
+ * Re-deriving instead of swapping makes that drift unrepresentable: the card
+ * order is the single source of truth, and `editorOrder` stays separate from
+ * `sections` in the payload exactly as doc 02 requires.
+ */
+function alignSectionsToEditor(order: EditorCardId[], sections: Section[]): Section[] {
+  const byId = new Map(sections.map((section) => [section.id, section]));
+  const pinned = sections.filter((section) => sectionMeta(section.id).pinned);
+
+  const ordered: Section[] = [];
+  for (const cardId of order) {
+    const sectionId = CARD_SECTION[cardId];
+    if (!sectionId) continue;
+    const section = byId.get(sectionId);
+    if (section && !sectionMeta(section.id).pinned) ordered.push(section);
+  }
+
+  // A section no card drives keeps its relative order after the derived ones,
+  // so a future section type cannot be dropped by an editor that predates it.
+  const placed = new Set(ordered.map((section) => section.id));
+  const rest = sections.filter(
+    (section) => !sectionMeta(section.id).pinned && !placed.has(section.id),
+  );
+
+  return [...pinned, ...ordered, ...rest].map((section, position) => ({ ...section, position }));
+}
+
 export function PageEditor(props: PageEditorProps) {
+  /**
+   * A draft saved by the version that swapped both lists independently can
+   * already hold a section order the cards never expressed. Aligning on load
+   * makes the editor honest, and the mismatch is surfaced as unsaved changes:
+   * `publish` reads the stored draft on the server, not this state, so the
+   * repair only reaches the public page once it is saved.
+   */
+  const alignedSections = useMemo(
+    () => alignSectionsToEditor(props.initialEditorOrder, props.initialSections),
+    [props.initialEditorOrder, props.initialSections],
+  );
+  const driftedOnLoad =
+    alignedSections.map((section) => section.id).join() !==
+    props.initialSections.map((section) => section.id).join();
+
   const [profile, setProfile] = useState(props.initialProfile);
   const [appearance, setAppearance] = useState(props.initialAppearance);
   const [editorOrder, setEditorOrder] = useState(props.initialEditorOrder);
-  const [sections, setSections] = useState(props.initialSections);
+  const [sections, setSections] = useState(alignedSections);
   const [links, setLinks] = useState(props.links);
   const [pressCategories, setPressCategories] = useState(props.pressCategories);
   const [albums, setAlbums] = useState(props.albums);
   const [version, setVersion] = useState(props.initialVersion);
-  const [dirty, setDirty] = useState(false);
+  const [dirty, setDirty] = useState(driftedOnLoad);
   const [busy, setBusy] = useState<"" | "save" | "publish">("");
   const [status, setStatus] = useState<Status>(null);
   const [open, setOpen] = useState<EditorCardId | null>("basic");
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   // The dashboard links to /studio/page#visual and friends; open that card.
+  // `#tools` is not a card: it is the tool-request accordion below the ordered
+  // list, and it is where the tool.created / tool.answered notifications land.
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (EDITOR_CARDS.some((card) => card.id === hash)) setOpen(hash as EditorCardId);
+    else if (hash === "tools") setToolsOpen(true);
   }, []);
 
   const sectionById = useMemo(() => new Map(sections.map((s) => [s.id, s])), [sections]);
@@ -105,29 +160,15 @@ export function PageEditor(props: PageEditorProps) {
   }
 
   function move(cardId: EditorCardId, direction: -1 | 1) {
-    setEditorOrder((current) => {
-      const index = current.indexOf(cardId);
-      const target = index + direction;
-      if (index < 0 || target < 0 || target >= current.length) return current;
-      const next = [...current];
-      [next[index], next[target]] = [next[target], next[index]];
-      return next;
-    });
+    const index = editorOrder.indexOf(cardId);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= editorOrder.length) return;
 
-    const sectionId = CARD_SECTION[cardId];
-    if (sectionId) {
-      setSections((current) => {
-        // Pinned sections (the hero) never move.
-        const pinned = current.filter((s) => sectionMeta(s.id).pinned);
-        const movable = current.filter((s) => !sectionMeta(s.id).pinned);
-        const index = movable.findIndex((s) => s.id === sectionId);
-        const target = index + direction;
-        if (index < 0 || target < 0 || target >= movable.length) return current;
-        const next = [...movable];
-        [next[index], next[target]] = [next[target], next[index]];
-        return [...pinned, ...next].map((section, position) => ({ ...section, position }));
-      });
-    }
+    const nextOrder = [...editorOrder];
+    [nextOrder[index], nextOrder[target]] = [nextOrder[target], nextOrder[index]];
+
+    setEditorOrder(nextOrder);
+    setSections((current) => alignSectionsToEditor(nextOrder, current));
     setDirty(true);
   }
 
@@ -391,8 +432,8 @@ export function PageEditor(props: PageEditorProps) {
         backoffice-v4.js moves it. It is not a page section, so it has no
         arrows and no visibility switch.
       */}
-      <div className="editor-section">
-        <details className="accordion">
+      <div className="editor-section" id="tools">
+        <details className="accordion" open={toolsOpen}>
           <summary>
             <span className="section-icon">＋</span>
             <span>

@@ -4,12 +4,19 @@ import { redirect } from "next/navigation";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { SignOutButton } from "@/components/studio/SignOutButton";
 import { getAccount } from "@/lib/auth";
+import { getEntitlement } from "@/lib/entitlements";
 import { landingFor } from "@/lib/studio";
+import { getTemplate } from "@/templates/registry";
 import "@/styles/auth.css";
 
 export const metadata: Metadata = { title: "Criar página" };
 
-export default async function SignUpPage() {
+interface Props {
+  /** `?template=NN` arrives from the public catalogue (TemplateCatalog). */
+  searchParams: Promise<{ template?: string }>;
+}
+
+export default async function SignUpPage({ searchParams }: Props) {
   const account = await getAccount();
   // Never redirect straight to /studio: it sends an account with no artist
   // back here, which is an infinite loop. `landingFor` returns null when there
@@ -20,6 +27,17 @@ export default async function SignUpPage() {
   // Doc 01: the public address format is still to be confirmed with the owner,
   // so the prefix is configuration, not a decision baked into the screen.
   const domain = process.env.PAGE_DOMAIN ?? "muska.cv";
+
+  /**
+   * The catalogue promises the choice "fica logo aplicado ao teu rascunho", so
+   * it has to survive registration. New artists start on the free plan, which
+   * does not include every template — say so here rather than letting the
+   * server quietly fall back to the default.
+   */
+  const { template } = await searchParams;
+  const chosen = template ? getTemplate(template) : undefined;
+  const freePlan = await getEntitlement("free");
+  const chosenIsFree = chosen ? freePlan.allowedTemplates.includes(chosen.id) : false;
 
   return (
     <div className="auth">
@@ -68,7 +86,22 @@ export default async function SignUpPage() {
             </p>
           )}
 
-          <RegisterForm domain={domain} />
+          {chosen && (
+            <p className="auth-alt" role="status">
+              {chosenIsFree ? (
+                <>
+                  Template escolhido: <b>{chosen.id} · {chosen.name}</b>. Fica aplicado ao teu rascunho.
+                </>
+              ) : (
+                <>
+                  O template <b>{chosen.id} · {chosen.name}</b> faz parte de um plano pago. A tua página começa no
+                  template incluído no plano Free e podes trocar quando mudares de plano.
+                </>
+              )}
+            </p>
+          )}
+
+          <RegisterForm domain={domain} templateId={chosenIsFree ? chosen?.id : undefined} />
 
           <p className="auth-alt">
             Já tens conta? <Link href="/login">Entrar</Link>.

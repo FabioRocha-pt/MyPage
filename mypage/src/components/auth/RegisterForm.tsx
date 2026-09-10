@@ -30,7 +30,7 @@ function previewSlug(value: string): string {
     .slice(0, 48);
 }
 
-export function RegisterForm({ domain }: { domain: string }) {
+export function RegisterForm({ domain, templateId }: { domain: string; templateId?: string }) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
   const [slug, setSlug] = useState("");
@@ -63,6 +63,9 @@ export function RegisterForm({ domain }: { domain: string }) {
           email: form.get("email"),
           password,
           slug: effectiveSlug || undefined,
+          // The catalogue's choice, carried through /signup?template=NN. The
+          // server re-checks it against the free plan before applying it.
+          templateId,
         }),
       });
       const payload = await response.json();

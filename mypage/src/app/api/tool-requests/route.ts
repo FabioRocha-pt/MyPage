@@ -82,7 +82,9 @@ export const POST = handle(async (request: Request) => {
     type: "tool.created",
     title: "Pedido de ferramenta registado",
     body: `"${title}" foi enviado à equipa My Page.`,
-    href: "/studio/tools",
+    // The accordion inside the Page editor: the submenu dropped the standalone
+    // /studio/tools entry when tool requests moved into the editor.
+    href: "/studio/page#tools",
   });
 
   return ok(
