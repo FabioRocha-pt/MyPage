@@ -49,12 +49,41 @@
   color: var(--muted);
 }
 
-@media (max-width: 900px) {
+/*
+ * A five-column row cannot survive a phone, so each cell becomes its own line
+ * carrying the label the header row used to supply. The header itself steps
+ * aside because it would otherwise repeat those labels once per column with
+ * nothing under them — no column is lost, only relabelled in place.
+ */
+@media (max-width: 720px) {
   .admin-row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    padding: 16px 18px;
   }
 
   .admin-row.is-head {
     display: none;
+  }
+
+  .admin-row > span[data-label] {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .admin-row > span[data-label]::before {
+    content: attr(data-label);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .admin-row a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
   }
 }

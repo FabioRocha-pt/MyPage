@@ -180,20 +180,24 @@ export function BookingManager({ artistId, initialSlots, initialEvents, initialR
         </button>
       </div>
 
-      <div className="calendar">
-        {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map((weekday) => (
-          <div className="weekday" key={weekday}>
-            {weekday}
-          </div>
-        ))}
-        {days.map((day) => (
-          <div key={day.key} className={day.className}>
-            {day.label}
-            {day.notes.map((note, index) => (
-              <small key={index}>{note}</small>
-            ))}
-          </div>
-        ))}
+      {/* Seven columns cannot be read at 360px, so on a phone the month scrolls
+          sideways inside this wrapper rather than losing days or notes. */}
+      <div className="calendar-scroll">
+        <div className="calendar">
+          {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map((weekday) => (
+            <div className="weekday" key={weekday}>
+              {weekday}
+            </div>
+          ))}
+          {days.map((day) => (
+            <div key={day.key} className={day.className}>
+              {day.label}
+              {day.notes.map((note, index) => (
+                <small key={index}>{note}</small>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
       <p className="hint">
         Dias sem indicação significam “por confirmar”. Os eventos já criados aparecem no calendário para evitares
@@ -346,8 +350,10 @@ function buildMonth(cursor: Date, slots: Slot[], events: CalendarEvent[]): Day[]
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
   const days: Day[] = [];
 
+  // `pad`, not `weekday`: these are the blank cells before the 1st, and reusing
+  // the header class made them indistinguishable from the seven column titles.
   for (let index = 0; index < offset; index += 1) {
-    days.push({ key: `pad-${index}`, label: "", className: "weekday", notes: [] });
+    days.push({ key: `pad-${index}`, label: "", className: "pad", notes: [] });
   }
 
   for (let day = 1; day <= daysInMonth; day += 1) {

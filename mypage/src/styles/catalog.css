@@ -106,10 +106,15 @@
 
 .catalog-page nav {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   justify-content: space-between;
 }
 
 .catalog-page nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
   color: var(--cyan);
 }
 
@@ -143,5 +148,23 @@
 
   .template-frame {
     height: 135px;
+  }
+
+  /* "Ver em tamanho real" was a 19px-tall text link between two cards. */
+  .template-choice button,
+  .template-choice a {
+    min-height: var(--tap);
+  }
+
+  .template-choice a {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 380px) {
+  .template-catalog {
+    grid-template-columns: 1fr;
   }
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { DashboardIcon, MyPageIcon } from "./icons";
 
 /**
@@ -26,6 +27,24 @@ export interface SubmenuItem {
 export function StudioSidebar({ submenu }: { submenu: SubmenuItem[] }) {
   const pathname = usePathname();
   const inMyPage = pathname !== "/studio";
+  const rail = useRef<HTMLDivElement>(null);
+
+  /*
+   * On a phone the submenu is a horizontal rail (studio.css, max-width 720px),
+   * so the entry for the screen you are on can start out scrolled off to the
+   * right — "Merchandising" sits ~400px into the rail. Centre it on arrival.
+   *
+   * `scrollLeft` rather than `scrollIntoView`: the latter also scrolls the
+   * window, which would move the page under the reader on every navigation.
+   * Desktop is unaffected, where the rail does not overflow and the assignment
+   * is a no-op.
+   */
+  useEffect(() => {
+    const node = rail.current;
+    const active = node?.querySelector<HTMLElement>("a.active");
+    if (!node || !active) return;
+    node.scrollLeft = active.offsetLeft - (node.clientWidth - active.clientWidth) / 2;
+  }, [pathname]);
 
   return (
     <aside className="sidebar">
@@ -48,7 +67,7 @@ export function StudioSidebar({ submenu }: { submenu: SubmenuItem[] }) {
         </Link>
 
         {inMyPage && (
-          <div className="mypage-submenu">
+          <div className="mypage-submenu" ref={rail}>
             {submenu.map((item) => (
               <Link
                 key={item.href}
@@ -87,10 +106,15 @@ export function WorkspaceTabs() {
       >
         ‹
       </button>
-      <Link className={pathname === "/studio" ? "selected" : ""} href="/studio">
+      {/*
+        `ws-tab` marks the two links the sidebar's segmented control repeats.
+        Below 720px the sidebar owns them and these copies step aside, so a
+        phone shows each destination once instead of twice.
+      */}
+      <Link className={`ws-tab ${pathname === "/studio" ? "selected" : ""}`} href="/studio">
         Dashboard
       </Link>
-      <Link className={inMyPage ? "selected" : ""} href="/studio/page">
+      <Link className={`ws-tab ${inMyPage ? "selected" : ""}`} href="/studio/page">
         My Page
       </Link>
       {/* Doc 01: "'Explorar artistas' deve abrir https://muskalive.com". */}

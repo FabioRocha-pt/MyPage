@@ -1137,7 +1137,6 @@ html[data-theme="light"] .lp-tool-card:hover {
 }
 
 @media (max-width: 950px) {
-  .lp-navlinks a:not(.keep) { display: none; }
   .lp-hero-grid { grid-template-columns: 1fr; }
   .lp-showcase { min-height: 600px; }
   .lp-section-head { flex-direction: column; align-items: flex-start; }
@@ -1210,9 +1209,10 @@ html[data-theme="light"] .lp-tool-card:hover {
 @media (max-width: 620px) {
   .lp-shell { width: calc(100% - 22px); }
   .lp-nav { top: 9px; }
-  .lp-actions .demo { display: none; }
   .lp-btn { padding: 10px 13px; }
-  .lp-hero { padding-top: 125px; }
+  /* Two nav rows push the hero down; 125px was measured against the old
+     one-row bar that hid half its links. */
+  .lp-hero { padding-top: 178px; }
   .lp-hero-ctas .lp-btn { width: 100%; justify-content: center; }
   .lp-showcase { min-height: 470px; }
   .lp-panel.main { inset: 20px 5px 28px 20px; }
@@ -1234,4 +1234,95 @@ html[data-theme="light"] .lp-tool-card:hover {
   .lp-marquee-space { height: 90px; }
   .lp-ticker-group { font-size: 11px; gap: 34px; }
   .lp-ticker-group span::after { margin-left: 34px; }
+}
+
+/*
+ * Nav bar on a phone.
+ *
+ * The pill used to keep one row by dropping four of its five links
+ * (`.lp-navlinks a:not(.keep)`) and the Backoffice button. Both are back: the
+ * bar wraps into brand + actions on top and the section links as a snap rail
+ * underneath, so at 360px every entry is present and every one clears 44px.
+ */
+@media (max-width: 780px) {
+  .lp-nav {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 9px 10px;
+    border-radius: 24px;
+  }
+
+  .lp-brand {
+    min-width: 0;
+    min-height: var(--tap);
+  }
+
+  .lp-brand > span:not(.lp-mark) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lp-actions { margin-left: auto; }
+
+  .lp-navlinks {
+    order: 2;
+    width: 100%;
+    gap: 6px;
+    margin: 0 -10px -3px;
+    padding: 0 10px 3px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .lp-navlinks::-webkit-scrollbar { display: none; }
+
+  .lp-navlinks a {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--chip);
+    white-space: nowrap;
+  }
+
+  .lp-btn,
+  .lp-iconbtn {
+    min-height: var(--tap);
+  }
+}
+
+/*
+ * Narrowest phones. Brand, four section links, Backoffice, the theme switch and
+ * "Start free" cannot share two rows at 360px without something being cut, so
+ * the bar takes a third row and stops being fixed: a 165px floating bar would
+ * eat a fifth of the viewport for the whole visit. It scrolls away like the
+ * rest of the page instead, and nothing is dropped to make room.
+ */
+@media (max-width: 440px) {
+  .lp-nav {
+    position: static;
+    width: calc(100% - 22px);
+    margin: 9px auto 0;
+    transform: none;
+  }
+
+  .lp-brand { width: 100%; }
+
+  .lp-brand-meta { margin-left: auto; }
+
+  .lp-actions {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .lp-actions .lp-btn { flex: 1; justify-content: center; }
+
+  .lp-hero { padding-top: 34px; }
 }

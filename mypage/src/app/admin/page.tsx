@@ -92,11 +92,14 @@ export default async function AdminPage() {
           {artists.map((artist) => {
             const live = artist.publishedPages[0];
             return (
+              // `data-label` repeats the header row's wording. On a phone the
+              // row stacks and admin.css prints the label beside each cell,
+              // so a column is never read without knowing which one it is.
               <div className="admin-row" key={artist.id}>
-                <span>
+                <span data-label="Artista">
                   <b>{artist.displayName}</b>
                 </span>
-                <span>
+                <span data-label="Endereço">
                   {live ? (
                     <a href={`/p/${artist.slug}`} target="_blank" rel="noopener noreferrer">
                       /p/{artist.slug} ↗
@@ -105,11 +108,13 @@ export default async function AdminPage() {
                     <span className="muted">/p/{artist.slug}</span>
                   )}
                 </span>
-                <span>{artist.plan}</span>
-                <span className={live ? undefined : "muted"}>
+                <span data-label="Plano">{artist.plan}</span>
+                <span data-label="Publicada" className={live ? undefined : "muted"}>
                   {live ? `v${live.version} · ${formatDateTime(live.publishedAt)}` : "Não publicada"}
                 </span>
-                <span className="muted">{formatDateTime(artist.createdAt)}</span>
+                <span data-label="Criado" className="muted">
+                  {formatDateTime(artist.createdAt)}
+                </span>
               </div>
             );
           })}

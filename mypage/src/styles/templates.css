@@ -1569,7 +1569,13 @@
 .tpl-hero-05 .tpl-poster {
   min-height: 100svh;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /*
+   * `minmax(0, 1fr)`, not `1fr`. A plain `1fr` track refuses to shrink below
+   * its content's min-content width, so the display type in these cells blew
+   * the three-column phone grid out to 450px inside a 360px viewport — the
+   * overflow was invisible only because the hero crops it.
+   */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   grid-auto-rows: minmax(112px, 20svh);
 }
 
@@ -1674,8 +1680,63 @@
    ========================================================================== */
 
 @media (max-width: 900px) {
+  /*
+   * The section nav used to be removed outright below this width, which left a
+   * published page with no way to reach its own sections on a phone. It wraps
+   * to its own scrollable row instead.
+   */
+  .tpl-nav {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding: 16px 0;
+  }
+
   .tpl-nav ul {
+    order: 3;
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .tpl-nav ul::-webkit-scrollbar {
     display: none;
+  }
+
+  .tpl-nav ul li {
+    flex: 0 0 auto;
+  }
+
+  .tpl-nav ul a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 13px;
+    border-radius: var(--radius-pill);
+    background: var(--p-surface);
+    white-space: nowrap;
+  }
+
+  /*
+   * Every standalone link and button on a published page gets a real touch
+   * target. These sat between 14px and 39px, which is a coin flip on a phone.
+   */
+  .tpl-nav-social a,
+  .tpl-hero-social a,
+  .tpl-footer-links a,
+  .tpl-badge-link,
+  .tpl-link,
+  .tpl-underline,
+  .tpl-cta,
+  .tpl-hero-04 .tpl-pill-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  .tpl-form-modes button {
+    min-height: var(--tap);
   }
 
   .tpl-biography-grid,
@@ -1715,35 +1776,76 @@
     width: 100%;
   }
 
+  /* The edition line moves under the title instead of being dropped. */
   .tpl-hero-04 .tpl-hero-top {
     grid-template-columns: 1fr auto;
   }
 
   .tpl-hero-04 .tpl-edition {
-    display: none;
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
   .tpl-hero-05 .tpl-poster {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: minmax(104px, 16.6svh);
   }
 
-  .tpl-hero-05 .tpl-desktop {
+  /*
+   * `.tpl-desktop` cells are empty spacers that shape the poster grid, except
+   * the one carrying the genres. The spacers go; the cell with content stays
+   * and takes a row of its own.
+   */
+  .tpl-hero-05 .tpl-desktop:empty {
     display: none;
   }
 
+  .tpl-hero-05 .tpl-cell-small.tpl-desktop {
+    grid-column: 1 / -1;
+  }
+
+  /*
+   * Poster, date, body and CTA all keep their place. The poster used to be
+   * dropped, and it is the first thing a visitor scans in a date listing.
+   * The poster and the ticket link are both optional, so the column track is
+   * chosen from what the item actually contains rather than assumed.
+   */
   .tpl-event {
-    grid-template-columns: 64px 1fr;
-    row-gap: 12px;
+    grid-template-columns: 62px minmax(0, 1fr);
+    align-items: start;
+    gap: 6px 14px;
+  }
+
+  .tpl-event:not(:has(.tpl-event-poster)) {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .tpl-event-poster {
-    display: none;
+    grid-row: span 2;
+  }
+
+  .tpl-event-date,
+  .tpl-event-body {
+    grid-column: -2;
+  }
+
+  .tpl-event-date {
+    grid-auto-flow: column;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .tpl-event-date strong {
+    font-size: 24px;
   }
 
   .tpl-event-cta {
     grid-column: 1 / -1;
     justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    margin-top: 6px;
   }
 }
 
@@ -1773,5 +1875,39 @@
 
   .tpl-cart-lines li {
     grid-template-columns: 1fr auto;
+  }
+
+  /*
+   * Template 05's poster cells are display type in ~110px columns, where a
+   * single word ("Artista®" at 28px) is wider than the cell and gets cut. The
+   * type scales down and long words may break, so the whole line is readable
+   * instead of half of it.
+   */
+  .tpl-hero-05 .tpl-cell {
+    padding: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .tpl-hero-05 .tpl-cell-small {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .tpl-hero-05 .tpl-cell-brand {
+    font-size: 17px;
+    letter-spacing: -0.04em;
+  }
+
+  .tpl-hero-05 .tpl-cell-name {
+    font-size: clamp(26px, 8vw, 34px);
+    letter-spacing: -0.05em;
+  }
+
+  .tpl-hero-05 .tpl-cell-action {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .tpl-hero-05 .tpl-cell-copy {
+    font-size: clamp(15px, 4.4vw, 20px);
   }
 }

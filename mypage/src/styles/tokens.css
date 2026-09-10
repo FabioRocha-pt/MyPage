@@ -41,6 +41,15 @@
   --header-h: 72px;
   --sidebar-w: 224px;
 
+  /*
+   * Minimum comfortable touch target. WCAG 2.5.5 asks for 44×44 CSS pixels;
+   * every standalone control (nav item, button, chip, field) is sized against
+   * this token rather than a hand-picked height, so a control can't quietly
+   * end up at 30px on a phone again. Inline links inside prose are exempt,
+   * as the success criterion allows.
+   */
+  --tap: 44px;
+
   --font: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 

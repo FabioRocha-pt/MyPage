@@ -328,9 +328,46 @@ html[data-theme="light"] .ar-page {
   .ar-navlinks {
     gap: 12px;
   }
+}
 
-  .ar-navlinks .optional {
+/*
+ * Header on a phone. "Conhecer My Page" used to be dropped below 800px
+ * (`.ar-navlinks .optional`); instead the header wraps, so the brand keeps its
+ * row and the links get a full-width row of their own with real tap targets.
+ */
+@media (max-width: 620px) {
+  .ar-page nav {
+    flex-wrap: wrap;
+    min-height: 0;
+    padding: 12px 0;
+    gap: 10px;
+  }
+
+  .ar-navlinks {
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .ar-navlinks::-webkit-scrollbar {
     display: none;
+  }
+
+  .ar-navlinks > a {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--ar-panel);
+    white-space: nowrap;
+  }
+
+  .ar-navlinks > a.ar-button {
+    padding: 0 18px;
   }
 }
 
@@ -349,6 +386,7 @@ html[data-theme="light"] .ar-page {
 
   .ar-search {
     flex-basis: 100%;
+    min-height: var(--tap);
   }
 
   .ar-count {
@@ -375,5 +413,11 @@ html[data-theme="light"] .ar-page {
   .ar-page footer {
     gap: 20px;
     flex-wrap: wrap;
+  }
+
+  .ar-page footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
   }
 }

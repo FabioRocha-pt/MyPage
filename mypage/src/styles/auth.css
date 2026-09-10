@@ -235,17 +235,64 @@
   color: var(--muted);
 }
 
+/*
+ * The two columns stack. The aside used to be removed, which took the brand,
+ * the pitch and the three-point summary with it and left a bare form; it now
+ * sits above the card as a compact block, with the decorative blurs toned down
+ * so it does not compete with the fields.
+ */
 @media (max-width: 900px) {
   .auth {
     grid-template-columns: 1fr;
   }
 
   .auth-aside {
+    padding: 26px 20px 22px;
+    gap: 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .auth-aside::before {
+    width: 260px;
+    height: 260px;
+    top: -150px;
+    right: -90px;
+  }
+
+  .auth-aside::after {
     display: none;
+  }
+
+  .auth-pitch h2 {
+    font-size: 24px;
   }
 
   .auth-panel {
     padding: 32px 20px;
     align-items: start;
+  }
+
+  .auth-brand,
+  .auth-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+}
+
+/* Narrow phones only tighten the block further; every line still renders. */
+@media (max-width: 560px) {
+  .auth-aside {
+    padding: 20px 18px 18px;
+    gap: 14px;
+  }
+
+  .auth-pitch h2 {
+    font-size: 21px;
+  }
+
+  .auth-foot {
+    font-size: 11px;
   }
 }
