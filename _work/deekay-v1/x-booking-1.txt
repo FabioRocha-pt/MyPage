@@ -1,0 +1,1 @@
+<style>.reveal{opacity:1!important;translate:none!important;transform:none!important}</style>

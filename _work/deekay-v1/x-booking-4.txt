@@ -1,0 +1,25 @@
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* O pedido é montado localmente e aberto no WhatsApp do manager. Não há envio nem servidor. */
+document.addEventListener('mypage:artista', ev => {
+  const dados = ev.detail, b = dados.booking || {};
+  const form = document.getElementById('pedidoForm'), aviso = document.getElementById('pedidoAviso');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = n => (new FormData(form).get(n) || '').toString().trim();
+    const texto = ['Pedido de booking para ' + dados.perfil.nomeArtistico,
+      'Nome: ' + v('nome'), 'Evento: ' + v('evento'), 'Data: ' + v('data'),
+      'Local: ' + v('local'), v('nota') && ('Nota: ' + v('nota'))].filter(Boolean).join('\n');
+    const numero = String(b.telefone || '').replace(/[^\d]/g, '');
+    if (!numero || !b.whatsapp) {
+      aviso.hidden = false;
+      aviso.textContent = 'Este artista ainda não tem WhatsApp público. Copia o pedido: ' + texto.replace(/\n/g, ' · ');
+      return;
+    }
+    window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+    aviso.hidden = false;
+    aviso.textContent = 'Pedido aberto no WhatsApp. Se a janela não abriu, verifica o bloqueador de popups.';
+  });
+});
+</script>

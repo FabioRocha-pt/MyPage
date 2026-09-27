@@ -1,0 +1,24 @@
+import { chromium } from "file:///E:/Projects/MyPage/mypage/node_modules/playwright/index.mjs";
+const B = "http://localhost:3100";
+const browser = await chromium.launch();
+const page = await (await browser.newContext({ storageState: "state.json", viewport: { width: 1280, height: 900 } })).newPage();
+const errors = [];
+page.on("pageerror", (e) => errors.push(e.message));
+await page.goto(B + "/studio/page#highlights", { waitUntil: "networkidle" });
+await page.screenshot({ path: "editor-full.png" }); console.log(page.url()); const hl = page.locator("details[open] .section-body").first();
+await hl.screenshot({ path: "editor-highlights.png" });
+// edit first highlight title
+const first = hl.locator('.repeat-item input[type="text"]').first();
+await first.fill("Cabo Verde Music Awards 2023 · TESTE");
+await page.getByRole("button", { name: "Atualizar página" }).click();
+await page.waitForTimeout(1500);
+console.log("status after save:", await page.locator(".page-actions p").textContent());
+await page.getByRole("button", { name: "Publicar" }).click();
+await page.waitForTimeout(2500);
+console.log("status after publish:", await page.locator(".page-actions p").textContent());
+await page.goto(B + "/studio/page#rider", { waitUntil: "networkidle" });
+await page.locator("details[open] .section-body").screenshot({ path: "editor-rider.png" });
+const html = await (await page.request.get(B + "/p/deekay")).text();
+console.log("public has edit:", html.includes("TESTE"));
+console.log("errors", errors);
+await browser.close();

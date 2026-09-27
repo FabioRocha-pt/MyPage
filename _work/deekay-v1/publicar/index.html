@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="pt" data-mp-titulo-fixo data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DJ Deekay · De Cabo Verde para o mundo. Afro House com identidade.</title>
+<style>
+:root{--ink:#0b0c0f;--paper:#e8e3d8;--orange:#ff5c1a;--acid:#d7ff45;--blue:#19233a;--text:#f6f2e9;--muted:#a9a7a1;--line:rgba(255,255,255,.17);--panel:#15171c}html[data-theme="light"]{--ink:#eee9df;--paper:#111216;--text:#16171a;--muted:#65635f;--line:rgba(12,13,16,.17);--panel:#f8f3e9}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:14px/1.5 Arial,Helvetica,sans-serif;overflow-x:hidden;transition:.3s}button,input,textarea{font:inherit}a{color:inherit;text-decoration:none}.shell{width:min(1320px,calc(100% - 36px));margin:auto}.nav{position:fixed;z-index:40;top:0;left:0;right:0;height:68px;padding:0 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ink) 82%,transparent);backdrop-filter:blur(18px)}.logo{font-size:21px;font-weight:950;letter-spacing:-.06em}.nav-links{display:flex;gap:27px;font-size:10px;letter-spacing:.16em;text-transform:uppercase}.nav-actions{justify-self:end;display:flex;gap:8px}.icon,.button{border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}.icon{width:38px;height:38px;border-radius:50%}.button{padding:11px 17px;border-radius:99px;text-transform:uppercase;font-size:10px;letter-spacing:.1em}.button.hot{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:900}.hero{min-height:100svh;padding-top:68px;display:grid;grid-template-columns:47% 53%;position:relative}.hero-image{position:relative;overflow:hidden}.hero-image img{width:100%;height:100%;object-fit:cover;object-position:43% center;filter:saturate(.86) contrast(1.06);animation:breathe 15s ease-in-out infinite alternate}@keyframes breathe{to{scale:1.05;translate:-1% 0}}.hero-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.5),transparent 42%)}.vertical{position:absolute;z-index:2;left:20px;bottom:25px;writing-mode:vertical-rl;rotate:180deg;font-size:9px;letter-spacing:.25em;color:white}.hero-copy{background:var(--orange);color:#fff;padding:clamp(35px,5vw,85px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}.hero-copy:before{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(255,255,255,.2);border-radius:50%;right:-120px;top:-110px;box-shadow:0 0 0 55px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.025)}.hero-meta{display:flex;justify-content:space-between;text-transform:uppercase;font-size:10px;letter-spacing:.16em;position:relative}.hero h1{font-size:clamp(92px,13vw,205px);line-height:.69;letter-spacing:-.105em;margin:60px 0 42px;position:relative}.hero-tag{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;position:relative}.hero-tag p{font-size:clamp(20px,2.2vw,31px);line-height:1.15;max-width:560px;margin:0}.round-play{width:78px;height:78px;border:1px solid white;border-radius:50%;background:white;color:var(--orange);font-size:23px;cursor:pointer;transition:.25s}.round-play:hover{rotate:8deg;scale:1.06}.ticker{overflow:hidden;border-block:1px solid var(--line);padding:18px 0}.track{display:flex;width:max-content;animation:slide 24s linear infinite}.group{display:flex;gap:34px;padding-right:34px;flex:none;align-items:center;text-transform:uppercase;font-size:11px;letter-spacing:.14em}.group span:after{content:"✳";color:var(--orange);margin-left:34px}@keyframes slide{to{translate:-50% 0}}.section{padding:120px 0}.intro{display:grid;grid-template-columns:1fr 1.25fr;gap:80px}.label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}.intro h2,.head h2{font-size:clamp(52px,7.5vw,108px);line-height:.86;letter-spacing:-.075em;margin:14px 0}.intro-copy{padding-top:70px}.intro-copy p{font-size:20px;line-height:1.65;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:34px}.stat{padding:20px 12px 0;border-right:1px solid var(--line)}.stat:last-child{border:0}.stat b{display:block;font-size:31px}.stat span{font-size:10px;color:var(--muted);text-transform:uppercase}.release{display:grid;grid-template-columns:1fr 1fr;background:var(--acid);color:#111;border-radius:2px}.release-art{min-height:600px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(145deg,#111 0 45%,#ff5c1a 45% 72%,#d7ff45 72%)}.disc{width:min(70%,420px);aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 3px,#292929 4px 7px);box-shadow:0 40px 90px rgba(0,0,0,.35);animation:spin 15s linear infinite}.disc:after{content:"KAIRO";position:absolute;inset:36%;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-weight:950;letter-spacing:-.05em;color:white}@keyframes spin{to{rotate:360deg}}.release-copy{padding:55px;display:flex;flex-direction:column}.release-copy small{text-transform:uppercase;letter-spacing:.16em}.release-copy h3{font-size:clamp(55px,7vw,100px);line-height:.78;letter-spacing:-.085em;margin:auto 0 28px}.release-copy p{max-width:520px;font-size:18px}.release-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:32px}.events{margin-top:55px;border-top:1px solid var(--line)}.event{display:grid;grid-template-columns:100px 1.4fr 1fr auto;gap:22px;align-items:center;padding:25px 10px;border-bottom:1px solid var(--line);transition:.3s}.event:hover{background:var(--panel);padding-inline:22px}.event time{font-size:28px;font-weight:900}.event time small{font-size:10px;color:var(--orange)}.event h3{font-size:25px;margin:0}.event p{margin:0;color:var(--muted)}.presskit{display:grid;grid-template-columns:1fr 1fr;min-height:560px}.press-copy{padding:60px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;justify-content:space-between}.press-copy h2{font-size:clamp(58px,8vw,114px);line-height:.77;letter-spacing:-.09em;margin:0}.press-copy p{font-size:18px;max-width:540px}.assets{display:grid;grid-template-columns:1fr 1fr;background:var(--blue);color:#fff}.asset{padding:28px;border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;justify-content:space-between;min-height:280px;transition:.3s}.asset:hover{background:var(--orange)}.asset i{font-style:normal;font-size:29px}.asset b{font-size:24px}.asset small{color:#b5c0d2}.booking{min-height:640px;display:grid;place-items:center;text-align:center;background:var(--orange);color:#fff}.booking h2{font-size:clamp(70px,12vw,175px);line-height:.72;letter-spacing:-.105em;margin:0 0 45px}.booking p{font-size:18px;max-width:590px;margin:0 auto 28px}.footer{padding:35px 0 100px}.footer-row{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.player{position:fixed;z-index:35;left:20px;bottom:20px;width:min(420px,calc(100% - 40px));padding:11px;background:var(--paper);color:var(--ink);display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;box-shadow:0 30px 70px rgba(0,0,0,.28);translate:0 150%;transition:.4s}.player.show{translate:0}.cover{width:46px;height:46px;background:linear-gradient(135deg,#111 50%,var(--orange) 50%)}.player b{display:block}.player small{opacity:.6}.reveal{opacity:0;translate:0 35px;transition:.8s}.reveal.visible{opacity:1;translate:0}.modal{position:fixed;z-index:60;inset:0;background:rgba(0,0,0,.74);display:grid;place-items:center;padding:18px;opacity:0;visibility:hidden;transition:.25s}.modal.open{opacity:1;visibility:visible}.modal-box{width:min(650px,100%);padding:32px;background:var(--paper);color:var(--ink)}.modal-top{display:flex;justify-content:space-between}.modal h3{font-size:42px;letter-spacing:-.06em;margin:0}.close{border:1px solid currentColor;background:none;color:inherit;width:38px;height:38px;border-radius:50%;cursor:pointer}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}.field{display:grid;gap:6px;text-align:left}.field.full{grid-column:1/-1}.field label{font-size:9px;letter-spacing:.14em}.field input,.field textarea{padding:12px;border:1px solid rgba(0,0,0,.18);background:transparent;color:inherit}.field textarea{min-height:100px}.mobile-menu{display:none}
+@media(max-width:850px){.nav{grid-template-columns:1fr auto}.nav-links{display:none}.hero{grid-template-columns:1fr}.hero-image{min-height:58vh}.hero-copy{min-height:58vh}.intro,.release,.presskit{grid-template-columns:1fr}.intro-copy{padding-top:0}.release-art{min-height:480px}.event{grid-template-columns:75px 1fr auto}.event .venue{display:none}.mobile-menu{display:block}.section{padding:85px 0}}@media(max-width:560px){.shell{width:calc(100% - 24px)}.nav{height:58px;padding:0 12px}.hero{padding-top:58px}.hero-image{min-height:54vh}.hero-copy{padding:30px 22px}.hero h1{font-size:92px}.hero-tag{grid-template-columns:1fr}.round-play{width:64px;height:64px}.stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line);padding:16px 0}.release-copy,.press-copy{padding:30px 24px}.release-art{min-height:390px}.events{margin-top:35px}.event{grid-template-columns:58px 1fr;padding:20px 0}.event .event-button{display:none}.assets{grid-template-columns:1fr}.asset{min-height:190px}.booking{min-height:560px;padding:70px 20px}.form{grid-template-columns:1fr}.field.full{grid-column:1}.footer-row{flex-direction:column;gap:12px}}
+</style>
+<noscript><style>.reveal{opacity:1!important;translate:none!important;transform:none!important}</style></noscript><style>/* ===== My Page · dados do artista ===== */
+:root[data-mypage="on"]{--ink:var(--mp-fundo);--text:var(--mp-texto);--orange:var(--mp-destaque);--acid:var(--mp-destaque);--paper:color-mix(in srgb,var(--mp-texto) 88%,var(--mp-fundo));--panel:color-mix(in srgb,var(--mp-fundo) 88%,var(--mp-texto));--muted:color-mix(in srgb,var(--mp-texto) 62%,var(--mp-fundo));--blue:var(--mp-fundo)}
+:root[data-mypage="on"] .hero-copy,:root[data-mypage="on"] .button.hot,:root[data-mypage="on"] .booking,:root[data-mypage="on"] .release,:root[data-mypage="on"] .asset:hover{color:var(--mp-destaque-texto)}
+.player-embed{margin:26px 0 0;border-radius:14px;overflow:hidden;min-height:352px;background:color-mix(in srgb,var(--text) 8%,transparent)}
+.player-embed iframe{width:100%;height:352px;border:0;display:block}
+.player-note{margin:12px 0 0;font-size:12px}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}
+.video-card h3{font-size:17px;margin:12px 0 4px;line-height:1.25}
+.video-card small{color:var(--muted);font-size:12px}
+.video-frame{display:block;position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#111}
+.video-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.video-frame:hover img{transform:scale(1.04)}
+.video-play{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;color:#fff;background:linear-gradient(0deg,#0009,transparent 60%)}
+.booking-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
+.footer-links{display:flex;flex-wrap:wrap;gap:14px}
+@media(max-width:720px){.video-grid{grid-template-columns:1fr;gap:18px}.player-embed,.player-embed iframe{min-height:300px;height:300px}}</style>
+<style>/* My Page · folha partilhada das secções alimentadas por dados.
+   Usa só as variáveis --mp-*, para servir qualquer template. */
+
+/* ---------- logótipo ---------- */
+.mp-logo{display:block;height:26px;width:auto;max-width:190px;object-fit:contain}
+.footer .mp-logo{height:22px}
+
+/* ---------- números ---------- */
+.mp-numeros{display:flex;flex-wrap:wrap;gap:28px;margin-top:30px}
+.mp-numero b{display:block;font-size:clamp(28px,4vw,40px);line-height:1;color:var(--mp-destaque)}
+.mp-numero span{display:block;margin-top:6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.65;max-width:150px}
+
+/* ---------- grelhas ---------- */
+.mp-grelha{display:grid;gap:18px}
+.mp-grelha.tres{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.mp-grelha.duas{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+
+/* ---------- discografia ---------- */
+.mp-faixas{display:grid;gap:2px;margin-top:26px;counter-reset:faixa}
+.mp-faixa{display:flex;align-items:center;gap:16px;padding:15px 18px;border:1px solid color-mix(in srgb,var(--mp-texto) 14%,transparent);border-radius:10px;text-decoration:none;color:inherit;transition:border-color .25s,background .25s,transform .25s}
+.mp-faixa:hover{border-color:var(--mp-destaque);background:color-mix(in srgb,var(--mp-destaque) 10%,transparent);transform:translateX(4px)}
+.mp-faixa .n{counter-increment:faixa;font-variant-numeric:tabular-nums;font-size:12px;opacity:.5;min-width:24px}
+.mp-faixa .n::before{content:counter(faixa,decimal-leading-zero)}
+.mp-faixa b{font-size:16px;letter-spacing:.02em}
+.mp-faixa small{opacity:.6;font-size:13px}
+.mp-faixa .abre{margin-left:auto;font-size:13px;opacity:.6}
+.mp-faixa[href=""],.mp-faixa:not([href]) .abre{display:none}
+
+/* ---------- destaques ---------- */
+.mp-destaque-cartao{padding:22px;border:1px solid color-mix(in srgb,var(--mp-texto) 14%,transparent);border-radius:12px;background:color-mix(in srgb,var(--mp-texto) 4%,transparent)}
+.mp-destaque-cartao b{display:block;font-size:17px;margin-bottom:6px}
+.mp-destaque-cartao span{font-size:14px;opacity:.7;line-height:1.5}
+
+/* ---------- galeria ---------- */
+.mp-galeria{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mp-foto{position:relative;display:block;overflow:hidden;border-radius:12px;aspect-ratio:3/4;background:color-mix(in srgb,var(--mp-texto) 8%,transparent);cursor:zoom-in;border:0;padding:0;margin:0}
+.mp-foto:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;height:100%}
+.mp-foto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+.mp-foto:hover img{transform:scale(1.05)}
+.mp-foto figcaption{position:absolute;inset:auto 0 0 0;padding:26px 16px 14px;font-size:13px;text-align:left;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.78));opacity:0;transition:opacity .3s}
+.mp-foto:hover figcaption,.mp-foto:focus-visible figcaption{opacity:1}
+
+/* ---------- rider ---------- */
+.mp-rider-lista{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.mp-rider-lista li{display:flex;gap:14px;align-items:baseline;padding:13px 16px;border-radius:10px;background:color-mix(in srgb,var(--mp-texto) 5%,transparent)}
+.mp-rider-lista li b{color:var(--mp-destaque);min-width:34px;font-variant-numeric:tabular-nums}
+.mp-notas{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.mp-notas li{position:relative;padding-left:22px;font-size:14px;line-height:1.6;opacity:.8}
+.mp-notas li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--mp-destaque)}
+.mp-esquema{width:100%;border-radius:12px;background:#fff;padding:14px;cursor:zoom-in;border:0;display:block}
+.mp-esquema img{width:100%;display:block}
+.mp-aviso{margin-top:26px;padding:20px;border-left:3px solid var(--mp-destaque);background:color-mix(in srgb,var(--mp-texto) 5%,transparent);border-radius:0 10px 10px 0}
+.mp-aviso li{font-size:14px;line-height:1.6;opacity:.85;margin-bottom:8px}
+
+/* ---------- descargas ---------- */
+.mp-descargas{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:24px}
+.mp-descarga{display:flex;gap:14px;align-items:center;padding:16px 18px;border:1px solid color-mix(in srgb,var(--mp-texto) 16%,transparent);border-radius:12px;text-decoration:none;color:inherit;transition:border-color .25s,background .25s}
+.mp-descarga:hover{border-color:var(--mp-destaque);background:color-mix(in srgb,var(--mp-destaque) 10%,transparent)}
+.mp-descarga i{font-style:normal;font-size:18px;color:var(--mp-destaque)}
+.mp-descarga b{display:block;font-size:15px}
+.mp-descarga small{opacity:.6;font-size:12.5px}
+
+/* ---------- pop up ---------- */
+.mp-lightbox{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,56px);background:rgba(6,6,8,.94);backdrop-filter:blur(6px);animation:mp-entra .22s ease}
+.mp-lightbox[hidden]{display:none}
+@keyframes mp-entra{from{opacity:0}to{opacity:1}}
+.mp-lb-palco{margin:0;max-width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;gap:14px;align-items:center}
+.mp-lb-media{display:flex;align-items:center;justify-content:center;max-height:80vh;width:100%}
+.mp-lb-media img{max-width:100%;max-height:80vh;width:auto;height:auto;border-radius:10px;display:block;animation:mp-sobe .3s cubic-bezier(.2,.7,.3,1)}
+.mp-lb-media[data-tipo="video"]{width:min(1100px,92vw);aspect-ratio:16/9;max-height:none}
+.mp-lb-media iframe{width:100%;height:100%;border-radius:10px;border:0}
+@keyframes mp-sobe{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.mp-lb-legenda{color:#f3f1ec;font-size:13.5px;text-align:center;opacity:.8;max-width:640px}
+.mp-lb-fechar,.mp-lb-passo{position:absolute;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:background .2s,transform .2s}
+.mp-lb-fechar:hover,.mp-lb-passo:hover{background:rgba(255,255,255,.2)}
+.mp-lb-fechar{top:18px;right:18px;width:42px;height:42px;font-size:15px}
+.mp-lb-passo{top:50%;transform:translateY(-50%);width:48px;height:48px;font-size:26px;line-height:1}
+.mp-lb-passo:hover{transform:translateY(-50%) scale(1.06)}
+.mp-lb-anterior{left:14px}
+.mp-lb-seguinte{right:14px}
+.mp-lb-passo[hidden]{display:none}
+
+@media(max-width:720px){
+  .mp-galeria{grid-template-columns:repeat(2,1fr)}
+  .mp-foto:first-child{grid-column:span 2;grid-row:span 1;aspect-ratio:16/10;height:auto}
+  .mp-lb-passo{width:40px;height:40px;font-size:22px}
+  .mp-numeros{gap:20px}
+}
+
+.booking-quem{display:inline-flex;align-items:center;font-size:13px;opacity:.7;letter-spacing:.04em}
+.booking-quem:empty{display:none}
+
+/* ---------- formulário de pedido ---------- */
+.mp-form{grid-template-columns:1fr;gap:14px;margin-top:22px;max-width:520px}
+.mp-form .field label{font-size:10px;letter-spacing:.14em;opacity:.6}
+.mp-form .field input,.mp-form .field textarea{border:1px solid color-mix(in srgb,var(--mp-texto) 22%,transparent);border-radius:8px;background:color-mix(in srgb,var(--mp-texto) 4%,transparent);color:inherit;font:inherit;padding:12px 14px}
+.mp-form .field input:focus,.mp-form .field textarea:focus{outline:0;border-color:var(--mp-destaque)}
+.mp-form button{justify-self:start;cursor:pointer}
+.mp-form textarea{resize:vertical}
+
+/* ---------- correções ao template quando os dados entram ---------- */
+.asset b{display:block;margin-bottom:4px}
+.asset small{display:block;line-height:1.5;opacity:.65}
+.booking .label{color:var(--mp-destaque-texto);opacity:.75}
+:root[data-mypage="on"] .booking .button.hot{background:var(--mp-destaque-texto);color:var(--mp-destaque);border-color:transparent}
+:root[data-mypage="on"] .booking .button.hot:hover{opacity:.88}
+:root[data-mypage="on"] .booking .button:not(.hot){color:var(--mp-destaque-texto);border-color:currentColor}
+.booking .booking-quem{color:var(--mp-destaque-texto);opacity:.75}
+.video-card h3{min-height:2.6em}
+
+/* ---------- página secundária ---------- */
+.mp-pagina-interior{padding-top:64px}
+.mp-descarga>div{display:grid;gap:3px}
+
+@media(max-width:720px){
+  .asset{min-height:0;padding:20px;gap:14px}
+  .mp-faixa{padding:13px 14px;gap:10px}
+  .mp-faixa .abre{font-size:12px}
+}
+
+/* =====================================================================
+   26/09 · segunda passagem: hero, biografia, palmarés, fundo e movimento
+   ===================================================================== */
+
+.mp-oculto{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- fundo: grelha espaçada, grão e luz que segue o cursor ----------
+   Alinhada às seis colunas do conteúdo, para as áreas vazias continuarem a ter estrutura. */
+body{--mp-col:min(1320px,calc(100vw - 36px));--mp-passo:calc(var(--mp-col) / 6)}
+body::before,body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-size:var(--mp-passo) var(--mp-passo),var(--mp-passo) var(--mp-passo),180px 180px;
+  background-position:calc((100vw - var(--mp-col)) / 2) 0,0 0,0 0}
+body::before{
+  background-image:
+    linear-gradient(to right,color-mix(in srgb,var(--mp-texto,#fff) 6%,transparent) 1px,transparent 1px),
+    linear-gradient(to bottom,color-mix(in srgb,var(--mp-texto,#fff) 3.5%,transparent) 1px,transparent 1px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);
+          mask:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+body::after{
+  background-image:
+    linear-gradient(to right,color-mix(in srgb,var(--mp-destaque,#c8452a) 70%,transparent) 1px,transparent 1px),
+    linear-gradient(to bottom,color-mix(in srgb,var(--mp-destaque,#c8452a) 45%,transparent) 1px,transparent 1px);
+  background-size:var(--mp-passo) var(--mp-passo),var(--mp-passo) var(--mp-passo);
+  -webkit-mask:radial-gradient(260px circle at var(--mp-mx,50%) var(--mp-my,50%),#000,transparent 72%);
+          mask:radial-gradient(260px circle at var(--mp-mx,50%) var(--mp-my,50%),#000,transparent 72%);
+  opacity:0;transition:opacity .5s}
+.mp-luz body::after{opacity:.55}
+
+/* ---------- espaço entre título e conteúdo ---------- */
+.head{margin-bottom:clamp(56px,7vw,112px)}
+.label{display:inline-flex;align-items:center;gap:12px}
+.label::before{content:"";width:30px;height:1px;background:currentColor;transform-origin:left center}
+
+/* ---------- hero ---------- */
+.mp-hero-nome{margin:clamp(40px,6vh,70px) 0 clamp(30px,5vh,52px)!important;line-height:1!important}
+.mp-logo-hero{display:block;width:min(100%,780px);height:auto;filter:drop-shadow(0 10px 30px rgba(0,0,0,.12))}
+.mp-hero-texto{display:grid;gap:26px;align-content:end}
+.hero-tag p{font-weight:700;letter-spacing:-.052em;line-height:.96;font-size:clamp(28px,3.05vw,50px);max-width:17ch}
+.mp-sociais{display:flex;flex-wrap:wrap;gap:10px}
+.mp-social{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:currentColor;border:1px solid color-mix(in srgb,currentColor 45%,transparent);
+  transform:translate(var(--mp-ix,0),var(--mp-iy,0));transition:transform .35s cubic-bezier(.2,.8,.2,1),background .25s,color .25s,border-color .25s}
+.mp-social svg{width:19px;height:19px}
+.mp-social:hover,.mp-social:focus-visible{background:var(--mp-destaque-texto,#fff);color:var(--mp-destaque,#c8452a);border-color:transparent}
+
+/* vinil: disco que gira, reflexo parado, ondas a sair */
+.mp-vinil-caixa{align-self:end}
+.mp-vinil{position:relative;display:block;width:clamp(100px,9.2vw,142px);aspect-ratio:1;border-radius:50%;text-decoration:none;color:inherit;
+  transform:translate(var(--mp-ix,0),var(--mp-iy,0));transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.mp-vinil::before,.mp-vinil::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid color-mix(in srgb,var(--mp-destaque-texto,#fff) 55%,transparent);animation:mp-onda 3s cubic-bezier(.2,.6,.3,1) infinite;pointer-events:none}
+.mp-vinil::after{animation-delay:1.5s}
+.mp-vinil-disco{position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle,#09090a 0 2.6%,transparent 2.9%),
+    radial-gradient(circle,var(--mp-texto,#f6f2e9) 0 29%,transparent 29.6%),
+    radial-gradient(circle,transparent 0 30.5%,rgba(255,255,255,.08) 31% 31.6%,transparent 32.2%),
+    radial-gradient(circle,transparent 0 47%,rgba(255,255,255,.06) 47.4% 48%,transparent 48.6%),
+    radial-gradient(circle,transparent 0 66%,rgba(255,255,255,.06) 66.4% 67%,transparent 67.6%),
+    repeating-radial-gradient(circle,#0f0f11 0 1.4px,#1a1a1d 1.4px 2.5px);
+  box-shadow:0 22px 44px rgba(0,0,0,.38),inset 0 0 0 2px #0a0a0b;
+  animation:mp-gira 6.5s linear infinite}
+.mp-vinil-rotulo{position:absolute;inset:25%;display:grid;place-items:center;border-radius:50%}
+.mp-vinil-rotulo img{width:72%;height:auto;display:block}
+.mp-vinil-brilho{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 215deg,transparent 0 7%,rgba(255,255,255,.2) 11%,transparent 17% 55%,rgba(255,255,255,.12) 60%,transparent 66%);
+  -webkit-mask:radial-gradient(circle,transparent 0 30%,#000 30.6%);mask:radial-gradient(circle,transparent 0 30%,#000 30.6%)}
+.mp-vinil-dica{position:absolute;left:50%;top:calc(100% + 12px);translate:-50% 0;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;opacity:.55;transition:opacity .3s,letter-spacing .3s;white-space:nowrap}
+.mp-vinil:hover .mp-vinil-dica,.mp-vinil:focus-visible .mp-vinil-dica{opacity:1;letter-spacing:.28em}
+.mp-vinil:hover .mp-vinil-disco{animation-duration:2.4s}
+@keyframes mp-gira{to{transform:rotate(360deg)}}
+@keyframes mp-onda{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.3);opacity:0}}
+.hero-copy::before{animation:mp-pulso 7s ease-in-out infinite alternate}
+@keyframes mp-pulso{to{scale:1.1;opacity:.75}}
+
+/* ---------- biografia: fotografia fixa, capítulos a deslizar ---------- */
+.mp-bio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(40px,6vw,110px);align-items:start}
+.mp-bio-media{position:sticky;top:96px;height:calc(100svh - 140px);min-height:480px;max-height:900px;border-radius:16px;overflow:hidden;background:color-mix(in srgb,var(--mp-texto,#fff) 6%,transparent)}
+.mp-bio-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 26%,transparent 66%,rgba(0,0,0,.6));pointer-events:none;z-index:1}
+.mp-bio-fotos{position:absolute;inset:0}
+.mp-bio-foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.1);transition:opacity 1.1s ease,transform 7s cubic-bezier(.2,.7,.2,1);cursor:zoom-in}
+.mp-bio-foto.mp-ativo{opacity:1;transform:scale(1)}
+.mp-bio:not(.mp-bio-vivo) .mp-bio-foto:first-child{opacity:1;transform:none}
+.mp-bio-marca{position:absolute;left:24px;top:22px;right:24px;z-index:2;color:#fff;font-weight:700;letter-spacing:-.045em;line-height:1;font-size:clamp(30px,3.2vw,50px)}
+.mp-bio-marca.mp-troca{animation:mp-marca .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes mp-marca{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mp-bio-contador{position:absolute;left:24px;bottom:30px;z-index:2;color:rgba(255,255,255,.75);font-size:12px;letter-spacing:.18em;font-variant-numeric:tabular-nums}
+.mp-bio-contador b{color:#fff;font-size:15px}
+.mp-bio-progresso{position:absolute;left:24px;right:24px;bottom:18px;height:2px;z-index:2;background:rgba(255,255,255,.22);border-radius:2px;overflow:hidden}
+.mp-bio-progresso i{display:block;height:100%;background:var(--mp-destaque,#c8452a);transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.mp-capitulo{min-height:58vh;padding:5vh 0;display:flex;flex-direction:column;justify-content:center;transition:opacity .6s ease}
+.mp-capitulo:first-child{padding-top:0;justify-content:flex-start;min-height:52vh}
+.mp-bio-vivo .mp-capitulo{opacity:.26}
+.mp-bio-vivo .mp-capitulo.mp-ativo{opacity:1}
+.mp-capitulo-marca{display:flex;gap:14px;align-items:baseline;margin-bottom:18px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mp-destaque,#c8452a)}
+.mp-capitulo-marca em{font-style:normal;font-variant-numeric:tabular-nums;opacity:.7}
+.mp-capitulo p{margin:0;font-size:clamp(19px,1.65vw,24px);line-height:1.62;color:var(--mp-texto,#f6f2e9)}
+.mp-bio-texto .mp-numeros{margin-top:30px;padding-top:34px;border-top:1px solid color-mix(in srgb,var(--mp-texto,#fff) 14%,transparent)}
+
+/* ---------- palmarés: fotografia de fundo e cartões em vidro ---------- */
+.mp-palmares{position:relative;overflow:hidden;isolation:isolate}
+.mp-palmares-fundo{position:absolute;left:0;right:0;top:-20%;bottom:-20%;z-index:-2;background-size:cover;background-position:center 35%;opacity:.46;filter:saturate(.92) contrast(1.06);animation:mp-zoom 26s ease-in-out infinite alternate}
+.mp-palmares::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,var(--mp-fundo,#0b0c0f) 0%,color-mix(in srgb,var(--mp-fundo,#0b0c0f) 40%,transparent) 28%,color-mix(in srgb,var(--mp-fundo,#0b0c0f) 52%,transparent) 72%,var(--mp-fundo,#0b0c0f) 100%)}
+@keyframes mp-zoom{to{scale:1.1}}
+.mp-palmares-grelha{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:conquista}
+.mp-conquista{position:relative;isolation:isolate;overflow:hidden;min-height:260px;padding:26px 26px 24px;border-radius:18px;display:flex;flex-direction:column;gap:9px;counter-increment:conquista;
+  border:1px solid color-mix(in srgb,var(--mp-texto,#fff) 15%,transparent);
+  background:color-mix(in srgb,var(--mp-fundo,#0b0c0f) 58%,transparent);
+  -webkit-backdrop-filter:blur(16px) saturate(1.25);backdrop-filter:blur(16px) saturate(1.25);
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s}
+.mp-conquista::before{content:counter(conquista,decimal-leading-zero);position:absolute;top:6px;right:18px;z-index:-1;font-size:clamp(72px,7.4vw,118px);font-weight:700;letter-spacing:-.085em;line-height:1;
+  color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--mp-texto,#fff) 28%,transparent);transition:color .4s,-webkit-text-stroke-color .4s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.mp-conquista:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--mp-destaque,#c8452a) 80%,transparent);background:color-mix(in srgb,var(--mp-fundo,#0b0c0f) 42%,transparent)}
+.mp-conquista:hover::before{color:color-mix(in srgb,var(--mp-destaque,#c8452a) 85%,transparent);-webkit-text-stroke-color:transparent;transform:translateY(-4px)}
+.mp-conquista-img{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;opacity:0;transition:opacity .5s,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.mp-conquista[data-com-imagem] .mp-conquista-img{opacity:.55}
+.mp-conquista[data-com-imagem]::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.78))}
+.mp-conquista[data-com-imagem]:hover .mp-conquista-img{opacity:.8;transform:scale(1.07)}
+.mp-conquista-topo{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:auto}
+.mp-chip{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;border-radius:99px;border:1px solid color-mix(in srgb,var(--mp-texto,#fff) 24%,transparent);background:color-mix(in srgb,var(--mp-fundo,#0b0c0f) 35%,transparent)}
+.mp-chip-ano{background:var(--mp-destaque,#c8452a);border-color:transparent;color:var(--mp-destaque-texto,#fff)}
+.mp-conquista b{font-size:clamp(21px,1.85vw,27px);letter-spacing:-.035em;line-height:1.08;margin-top:26px}
+.mp-conquista-detalhe{font-size:14.5px;line-height:1.5;opacity:.74}
+.mp-conquista-ver{display:none;margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mp-destaque,#c8452a)}
+.mp-conquista[data-mp-lightbox-src]{cursor:pointer}
+.mp-conquista[data-mp-lightbox-src] .mp-conquista-ver{display:inline-block}
+
+/* =====================================================================
+   Movimento. Só existe com html.mp-mov, que o JavaScript liga quando o
+   sistema não pede movimento reduzido. Sem isso, tudo está visível e parado.
+   ===================================================================== */
+
+/* títulos palavra a palavra */
+.mp-palavra{display:inline-block;overflow:hidden;vertical-align:top;padding:.14em .04em .18em;margin:-.14em -.04em -.18em}
+.mp-palavra>span{display:inline-block}
+.mp-mov .mp-palavra>span{transform:translateY(115%) rotate(4deg);transform-origin:left bottom;transition:transform 1.05s cubic-bezier(.2,.85,.2,1)}
+.mp-mov .mp-visivel .mp-palavra>span{transform:none}
+
+/* linha da etiqueta */
+.mp-mov .label::before{transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.8,.2,1) .1s}
+.mp-mov .label.mp-visivel::before{transform:scaleX(1)}
+
+/* grupos com entrada escalonada */
+.mp-mov [data-mp-grupo]>*{opacity:0;transform:translateY(38px);transition:opacity .75s ease,transform .95s cubic-bezier(.2,.85,.2,1);transition-delay:calc(var(--i,0) * 85ms)}
+.mp-mov [data-mp-grupo].mp-visivel>*{opacity:1;transform:none}
+
+/* imagens reveladas por máscara */
+.mp-mov .mp-mascara{clip-path:inset(100% 0 0 0 round 12px);transition:clip-path 1.25s cubic-bezier(.77,0,.18,1),opacity .75s ease,transform .95s cubic-bezier(.2,.85,.2,1);transition-delay:calc(var(--i,0) * 90ms)}
+.mp-mov .mp-mascara.mp-visivel,.mp-mov [data-mp-grupo].mp-visivel>.mp-mascara{clip-path:inset(0 0 0 0 round 12px)}
+.mp-mov .mp-mascara img{transform:scale(1.22);transition:transform 1.8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0) * 90ms)}
+.mp-mov .mp-mascara.mp-visivel img{transform:none}
+
+/* biografia e palmarés */
+.mp-mov .mp-bio-media{clip-path:inset(8% 8% 8% 8% round 16px);opacity:.3;transition:clip-path 1.3s cubic-bezier(.77,0,.18,1),opacity 1s ease}
+.mp-mov .mp-bio-media.mp-visivel{clip-path:inset(0 round 16px);opacity:1}
+.mp-mov .mp-capitulo p{transform:translateY(22px);transition:transform .9s cubic-bezier(.2,.85,.2,1)}
+.mp-mov .mp-capitulo.mp-visivel p{transform:none}
+.mp-mov .mp-palmares-fundo{opacity:0;transition:opacity 1.6s ease}
+.mp-mov .mp-palmares-fundo.mp-visivel{opacity:.46}
+
+/* entrada do hero */
+.mp-mov .hero-image{clip-path:inset(0 0 100% 0);transition:clip-path 1.35s cubic-bezier(.77,0,.18,1)}
+.mp-mov .hero-copy{clip-path:inset(0 0 0 100%);transition:clip-path 1.15s cubic-bezier(.77,0,.18,1) .18s}
+.mp-mov.mp-entrou .hero-image,.mp-mov.mp-entrou .hero-copy{clip-path:inset(0)}
+.mp-mov .hero-meta,.mp-mov .mp-hero-nome,.mp-mov .mp-hero-texto>p{opacity:0;transform:translateY(46px);transition:opacity .9s ease,transform 1.15s cubic-bezier(.2,.85,.2,1)}
+.mp-mov.mp-entrou .hero-meta{opacity:1;transform:none;transition-delay:.7s}
+.mp-mov.mp-entrou .mp-hero-nome{opacity:1;transform:none;transition-delay:.82s}
+.mp-mov.mp-entrou .mp-hero-texto>p{opacity:1;transform:none;transition-delay:1s}
+.mp-mov .hero [data-mp-grupo]>*{transition-delay:calc(1.15s + var(--i,0) * 70ms)}
+.mp-mov .mp-vinil-caixa{opacity:0;transform:translateX(160%) rotate(-220deg);transition:opacity .6s ease 1s,transform 1.5s cubic-bezier(.2,.85,.2,1) 1s}
+.mp-mov.mp-entrou .mp-vinil-caixa{opacity:1;transform:none}
+.mp-mov .hero-image img{height:calc(100% + 140px);margin-top:-70px}
+
+/* barra de navegação encolhe ao descer */
+.nav{transition:background .35s,backdrop-filter .35s,height .35s}
+.mp-rolou .nav{background:color-mix(in srgb,var(--mp-fundo,#0b0c0f) 93%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+
+@media (prefers-reduced-motion:reduce){
+  .mp-vinil-disco,.mp-vinil::before,.mp-vinil::after,.hero-copy::before,.mp-palmares-fundo,.hero-image img{animation:none!important}
+  body::after{display:none}
+}
+
+@media(max-width:850px){
+  .mp-bio{grid-template-columns:1fr;gap:26px}
+  .mp-bio-media{top:62px;height:44svh;min-height:300px;z-index:3;box-shadow:0 -14px 0 4px var(--mp-fundo,#0b0c0f)}
+  .mp-capitulo{min-height:44vh}
+  .mp-capitulo:first-child{min-height:40vh;padding-top:3vh}
+  .mp-palmares-grelha{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mp-hero-nome{margin:34px 0 26px!important}
+}
+@media(max-width:560px){
+  .mp-palmares-grelha{grid-template-columns:1fr}
+  .mp-conquista{min-height:200px}
+  .mp-social{width:40px;height:40px}
+  .hero-tag p{font-size:30px}
+  body{--mp-col:calc(100vw - 24px);--mp-passo:calc(var(--mp-col) / 3)}
+}
+
+/* =====================================================================
+   27/09 · versão 1: hero em vidro, faixa contínua, partilha, menu, créditos
+   ===================================================================== */
+
+/* hero: fotografia desfocada por trás do laranja */
+.hero-copy{isolation:isolate}
+.mp-hero-vidro{position:absolute;inset:-40px;z-index:-2;background-size:cover;background-position:center 40%;
+  filter:blur(14px) saturate(1.3) brightness(.9);transform:scale(1.12);animation:mp-vidro 24s ease-in-out infinite alternate}
+.mp-hero-tinta{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 85% 10%,color-mix(in srgb,#fff 12%,transparent),transparent 55%),
+    linear-gradient(150deg,color-mix(in srgb,var(--mp-destaque,#c8452a) 80%,transparent) 0%,color-mix(in srgb,var(--mp-destaque,#c8452a) 62%,transparent) 50%,color-mix(in srgb,var(--mp-destaque,#c8452a) 86%,transparent) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 1px 0 0 rgba(255,255,255,.12)}
+.mp-hero-tinta::after{content:"";position:absolute;inset:0;opacity:.5;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>")}
+@keyframes mp-vidro{to{transform:scale(1.2) translate(-2%,1.5%)}}
+
+/* faixa dos géneros: duração calculada pela largura */
+.ticker .track{animation-duration:var(--mp-faixa-duracao,24s)}
+
+/* pop up: descarregar e partilhar */
+.mp-lb-acoes{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;position:relative}
+.mp-lb-acoes[hidden]{display:none}
+.mp-lb-acao{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;font:600 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s}
+.mp-lb-acao:hover,.mp-lb-acao:focus-visible{background:var(--mp-destaque,#c8452a);border-color:transparent}
+.mp-lb-acao svg{width:17px;height:17px}
+.mp-lb-redes{position:absolute;bottom:calc(100% + 10px);left:50%;translate:-50% 0;display:flex;gap:6px;padding:6px;border-radius:14px;background:rgba(20,20,24,.96);border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 40px rgba(0,0,0,.45);white-space:nowrap}
+.mp-lb-redes[hidden]{display:none}
+.mp-lb-redes a,.mp-lb-redes button{padding:9px 13px;border-radius:9px;border:0;background:transparent;color:#fff;font:600 12.5px/1 inherit;text-decoration:none;cursor:pointer}
+.mp-lb-redes a:hover,.mp-lb-redes button:hover{background:rgba(255,255,255,.1)}
+.mp-lb-media img{max-height:72vh}
+
+/* créditos no rodapé */
+.mp-powered{display:inline-flex;align-items:center;gap:10px;color:inherit;text-decoration:none;opacity:.72;transition:opacity .25s}
+.mp-powered:hover,.mp-powered:focus-visible{opacity:1}
+.mp-powered span{font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.mp-powered img{height:17px;width:auto;display:block}
+.footer-row{flex-wrap:wrap;row-gap:18px}
+
+/* menu do telemóvel */
+@media(max-width:850px){
+  .mp-menu-aberto .nav-links{display:flex!important;position:fixed;left:0;right:0;top:58px;bottom:0;z-index:80;flex-direction:column;align-items:flex-start;gap:4px;padding:34px 22px;
+    background:color-mix(in srgb,var(--mp-fundo,#0b0c0f) 97%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:mp-menu .35s cubic-bezier(.2,.8,.2,1)}
+  .mp-menu-aberto .nav-links a{font-size:34px;font-weight:700;letter-spacing:-.05em;text-transform:none;padding:8px 0;color:var(--mp-texto,#fff)}
+  /* backdrop-filter na barra faria dela o contentor do menu fixo; com o menu aberto sai. */
+  .mp-menu-aberto .nav{background:var(--mp-fundo,#0b0c0f);-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .mp-menu-aberto .nav-links{height:calc(100dvh - 58px)}
+  .mobile-menu{cursor:pointer}
+}
+@media(max-width:560px){.mp-menu-aberto .nav-links{top:58px}}
+@media(min-width:561px) and (max-width:850px){.mp-menu-aberto .nav-links{top:68px;height:calc(100dvh - 68px)}}
+@keyframes mp-menu{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion:reduce){
+  .mp-hero-vidro{animation:none}
+  .ticker .track{animation:none}
+}
+</style><meta name="description" content="De Cabo Verde para o mundo. Afro House com identidade. DJ Deekay · Afro House · Kuduro · Afro Tech · Lisboa, Portugal">
+<meta name="theme-color" content="#0b0c0f">
+<link rel="canonical" href="https://SEU-DOMINIO/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="DJ Deekay">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="DJ Deekay · De Cabo Verde para o mundo. Afro House com identidade.">
+<meta property="og:description" content="De Cabo Verde para o mundo. Afro House com identidade. DJ Deekay · Afro House · Kuduro · Afro Tech · Lisboa, Portugal">
+<meta property="og:url" content="https://SEU-DOMINIO/">
+<meta property="og:image" content="https://SEU-DOMINIO/assets/deekay-palco.jpg">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="933">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DJ Deekay · De Cabo Verde para o mundo. Afro House com identidade.">
+<meta name="twitter:description" content="De Cabo Verde para o mundo. Afro House com identidade. DJ Deekay · Afro House · Kuduro · Afro Tech · Lisboa, Portugal">
+<meta name="twitter:image" content="https://SEU-DOMINIO/assets/deekay-palco.jpg">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAH5klEQVR42u2Za1AV5xnH/2d30dFd2MNBASHKBBF6AQQvjbGmdBS1Qo2XWOutaes4mdSxTTRWY9XG4KWC6aRf2rQzmbZq1DRYFYWOkGk7mo4R26kRMIog1mKgh6seOXI453333w9yNiDeMmM7nbrPzH7YfZ/39nvf53aOSzdM4jEWBY+5OAAcAA4AB4ADwAHgAHAAOAAcAA4AB4ADwAHgAHAAOAAcAA4AB4AD4HESTVEGMnC5XHC5XLAsC5ZlfUpLUXA3/TtFSgkAUFX1gbrhOVRVhcvlAkm7f3gtfce5W3t4reH3sN4DT19R4HrQHyOqqvab8L8pYSD/ib6KosCyLLgqKt5nX2ok0d3djZrz51Fc/HvU19cjIiICoVAIs2Z9DXPnPAshxO2b0Nuv7+m4ABQWvQEhQti8aePtSVwu3LkUKSRUVcHpyjPYvXsPdmzfBk+MB16vF1u2FNinmpiYgPXr19knTxI7duxER0cHACA+Pg5Dh+poaGgASaSkpKClpQU+n8/e5L0ONS0tFeB9pKvLz7U/XEfdMGlEurmzsIgPI9NyZ/DLU77yULqHDh+hbpi8fv06SbK5+V+M9gynbphMTfs8a2sv9dNfuXIVI6Oi6Y4eRt0wuXfvOzxz5q/UDZO6YXLVqh/w1KkP7fbIqGi7TTdMmu4Y6obJnJyp9Hq9VK5cuYJQKAQpJdra2lBbewlNTc0AAF0fil1FhXjhhRUgiWAwCCEEAoHAA3yABSEEhBAIBoP31Q31tnd2dkIIgZs3fQgGg0hIGIFjR0uQmjoGPT096O7uxoIFC7F7z14oigIhBNLSUrFw4TcwceIE5OXNAgBcv3EDTz89CQf2v4PBgwfDsizbb2maBiEEsrOzcOhQMWJjY4GxWePp8/lIkrt2/ZSRUdFMSBzF761cRb//FqWUvHXrFuPiE/mjjZvsk9i0+TVmZGYzK3s8MzKz7ScrewJjhsVxWu4MW/fIkZIBuukZWcwcO45PJo+hO3oYGxoaSJLV1TVM+9wXePFiLUkyGAwyFApx0eKl1A2T7uhhjDI91A2Tx4+XkySFEKyrq6NumPzu8hUMhUIkyYqK9+mJiaVumPatmjIlh+3t7XY/ra+Dk5aEZVnw+/3Ys2evfQOGDBmCmTNnwN/lt2195MgnkJGRPsBJKoqCtrY2SGnZuu5o9wBdklAUBY2Njejo6LBPye12o/RYCVJSUmBZFjRNw+Ily1BaWgZN02BZFqSUmJ6bi5kzZ9g2nZKSgm8tW4rqmhpomoZAIIDp03Px7oF9WLJ0Gbq7Axg/bhwOHz4Ij8cDAPD7/UDm2HH2DSgs2kUj0k1PTCyjTA9Hp6Tx5s2btCyLOwuL+NLLa0jSJnwvmTptOp+aNJkkKaV8KB/Q2Hit33chBH0+H2fPnmvbrhHptu2/urqGUkqeq6riiZMnaVkWOzs7OTx2BNev30CS7O7uJkmWlpYxL382Ozs77fG9Xi9zcqZSuzNU9H0nLTuuftYQ9ChECAGfz9fPewshsGLFcqSnfxEA8PqWAtReqsNHZ/8Gt9uN7du3YvXqVxAxaBC2FmxBMBhEfn4e8vPz7HE6Ojowd95zqKqqhtY3IQkvXkoJKSXmzZsLXdcBAB9/fAFut9u+5vv2H0Bl5RmoqtLvumuaisuXG5CUlGSPV1l5Bvv2HxigqygK6urqoKoqLOu2aXi9XgghkZiYALfbjePHyzBv/gJ88MFfoGkaPB4PXu0Ni6dPV+KPf/ozhBB493fvYdnSJfjOt5/Hb3+zG2+++TOQxLatr0MIYSdUbW1tmDNn/u3Na9ptEwiHoKJdb1A3TI5IGMkXX1xpO8FAIMC4+ERu2LDRvkJr167jqKRkJo9O5aikZPt5MnkMTXcMc6fPtHXfKz54V91RScmMH/EEoz3DbSdYVVXN7HET+M/GRtsUurq6mJc/m7ph8q1f/so2rYlfmmSHt7j4RDY3N9vOz4h0UzdMbtr8GqWUDIVCbGlp4eTJz/QLh0jPyCJJ1tfX87kFC3nixMkB9rjmlbXUDZMFW7dRCMFAIEAhBC3L6veEfUPOV6fxqUmTKYRgMBiklHKArhCCJPnNRUuoGyYbGhoohGB9fT11w+TYrPH2OoQQ7Ozs5Mur1/DGjRskybff/jU3bvoxS0vLePToMZaUHOW1a5+wp6eHUkrOn7+AumFydEoau7q6KIRgWdkf+m1eN0xiyjM5vHz5MpcvX8GrV6/227jff4vr1r1qJ0I/2Vn4SBOhv589S90w6YmJZWtrK0myqanZDl1Z2RN47donA/q1t7dz1fdfuu/YTU3NHB47gunpY+1vp059yMio6H7Jkdba2oqly57H4kWLcOXKP1BVXQPLsnD+/HkUFx/EpUt1dip84cJFlJdXQPb6CyklXICd5rI36Whra4cUAuXlFbBo9Tq0T3UtKaGqKn7+i7dsx3T0WCniYmPR1NSMUCgEVVVRV1eH/K8/i4KCLdA0DVJKDIqIwOHDRxAVFYXj5eUIhQRUVQVJqKoCF1ywaGFQxCBkZmaguqoaJSVHoWkaPjp3zk7NbYf9v1wM3SuXf6TlcF8afUvdcDFyZ+n5MOWwZVm9J3L/cpikvcG+uuE5w2ms6y5FVziKfJayvO98D30DnF+EHAAOAAeAA8AB4ABwADgAHAAOAAeAA8AB4ABwADgAHAAOAAeAA8AB4AD4v5F/A0NJk2U1p/hEAAAAAElFTkSuQmCC">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor"/></symbol>
+<symbol id="i-facebook" viewBox="0 0 24 24"><path d="M13.6 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.6-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.6V21h3z" fill="currentColor"/></symbol>
+<symbol id="i-youtube" viewBox="0 0 24 24"><rect x="2.4" y="5.2" width="19.2" height="13.6" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10.2 9.2v5.6l4.8-2.8z" fill="currentColor"/></symbol>
+<symbol id="i-spotify" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.2 9.5c3.3-1 7-.7 9.7.9M7.8 12.5c2.7-.8 5.6-.5 7.9.9M8.4 15.3c2.1-.6 4.3-.4 6 .7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-apple" viewBox="0 0 24 24"><path d="M9.3 17.8V6.9l9.4-2.2v10.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.1" cy="17.8" r="2.3" fill="currentColor"/><circle cx="16.5" cy="15.6" r="2.3" fill="currentColor"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14l4-4M8.5 11.5l-2 2a3 3 0 004.2 4.2l2-2M15.5 12.5l2-2a3 3 0 00-4.2-4.2l-2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</defs></svg>
+<nav class="nav"><a class="logo" href="#top"><img class="mp-logo" src="" alt="" data-mp-img="logo" data-mp-vazio="esconder"><span data-mp="perfil.nomeArtistico" data-mp-se-logo="nao">KAIRO</span></a><div class="nav-links"><a href="#story">História</a><a href="#music">Música</a><a href="#videos">Vídeos</a><a href="#galeria">Galeria</a><a href="#dates" data-mp-seccao="eventos">Datas</a><a href="#press" data-mp-seccao="presskit">Press kit</a><a href="#booking">Booking</a></div><div class="nav-actions"><button class="icon" id="theme" data-mp-demo>☀</button><a class="button hot" data-mp-pagina="booking.html" href="#">Booking</a><button class="icon mobile-menu">☰</button></div></nav>
+<main id="top">
+<section class="hero"><div class="hero-image"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-mp-img="retrato" data-mp-paralaxe=".08"><span class="vertical" data-mp="perfil.local">PRAIA · CAPE VERDE · EST 2018</span></div><div class="hero-copy"><div class="mp-hero-vidro" data-mp-img="principal" data-mp-como="fundo" aria-hidden="true"></div><div class="mp-hero-tinta" aria-hidden="true"></div><div class="hero-meta"><span>DJ · PRODUTOR</span><span data-mp="perfil.generosLinha">AFRO ELECTRONIC</span></div><h1 class="mp-hero-nome"><img class="mp-logo-hero" src="" alt="" data-mp-img="logo" data-mp-vazio="esconder" data-mp-alt-fixo><span data-mp="perfil.nomeArtistico" data-mp-se-logo="sr">KAI<br>RO.</span></h1><div class="hero-tag"><div class="mp-hero-texto"><p data-mp="perfil.frase">Movement without borders. Percussion, pressure and late-night energy.</p><nav class="mp-sociais" aria-label="Redes e plataformas" data-mp-lista="links"><a class="mp-social" data-mp-linha data-mp-mapa="url:href,rotulo:attr:aria-label,rotulo:attr:title" href="#"><svg aria-hidden="true"><use data-mp-mapa="icone:attr:href" href="#i-link"></use></svg></a></nav></div><div class="mp-vinil-caixa"><a class="mp-vinil" href="#music" aria-label="Ouvir a música"><span class="mp-vinil-disco"><span class="mp-vinil-rotulo"><img src="" alt="" data-mp-img="logoEscuro" data-mp-vazio="esconder" data-mp-alt-fixo></span></span><span class="mp-vinil-brilho"></span><span class="mp-vinil-dica">Ouvir</span></a></div></div></div></section>
+<div class="ticker"><div class="track"><div class="group" data-mp-lista="generos"><span data-mp-linha data-mp-campo="valor">Afro House</span></div><div class="group" aria-hidden="true" data-mp-lista="generos"><span data-mp-linha data-mp-campo="valor">Afro House</span></div></div></div>
+<section class="section" id="story" data-mp-seccao="biografia"><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>HISTÓRIA</div><h2>Feito para<br>mover.</h2></div><div class="mp-bio"><div class="mp-bio-media"><div class="mp-bio-fotos" data-mp-lista="perfil.capitulos"><img class="mp-bio-foto" data-mp-linha data-mp-lightbox="imagem" data-mp-mapa="foto:src,foto:attr:data-mp-lightbox-src,marca:attr:data-mp-lightbox-legenda" src="" alt="" loading="lazy"></div><span class="mp-bio-marca"></span><span class="mp-bio-contador"><b>01</b> / <span>01</span></span><span class="mp-bio-progresso"><i></i></span></div><div class="mp-bio-texto"><div class="mp-capitulos" data-mp-lista="perfil.capitulos"><article class="mp-capitulo" data-mp-linha><span class="mp-capitulo-marca"><em data-mp-campo="indice">01</em><span data-mp-campo="marca" data-mp-vazio="esconder"></span></span><p data-mp-campo="texto">KAIRO turns Cape Verdean rhythm into forward-facing club music.</p></article></div><div class="mp-numeros" data-mp-lista="numeros"><div class="mp-numero" data-mp-linha><b data-mp-campo="valor">00</b><span data-mp-campo="rotulo">medida</span></div></div></div></div></div></section>
+<section class="section" id="music" data-mp-seccao="musica"><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>MÚSICA</div><h2>Ouve agora.</h2></div><div class="player-embed reveal" data-mp-player></div><p class="player-note reveal"><a data-mp-href="musica.player.plataformaUrl" hidden>Abrir perfil completo no Spotify ↗</a></p><div class="mp-faixas reveal" data-mp-lista="discografia"><a class="mp-faixa" data-mp-linha data-mp-mapa="url:href-opcional,linha:attr:data-mp-lightbox-legenda"><span class="n"></span><span><b data-mp-campo="titulo">Tema</b> <small data-mp-campo="com" data-mp-vazio="esconder"></small></span><span class="abre">ver ↗</span></a></div></div></section>
+<section class="section" id="videos" data-mp-seccao="videos"><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>VÍDEOS</div><h2>Vê e ouve.</h2></div><div class="video-grid reveal" data-mp-lista="videos"><article class="video-card" data-mp-linha><a class="video-frame" href="#" data-mp-lightbox="video" data-mp-mapa="id:attr:data-mp-lightbox-src,titulo:attr:data-mp-lightbox-legenda,embed:href"><img data-mp-campo="miniatura" data-mp-como="src" src="" alt="" loading="lazy"><span class="video-play">▶</span></a><h3 data-mp-campo="titulo">Vídeo</h3><small data-mp-campo="canal">Canal</small></article></div></div></section>
+<section class="section" id="galeria" data-mp-seccao="galeria"><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>GALERIA</div><h2>Em palco.</h2></div><div class="mp-galeria reveal" data-mp-lista="galeria"><figure class="mp-foto" data-mp-linha data-mp-lightbox="imagem" data-mp-mapa="ficheiro:attr:data-mp-lightbox-src,legenda:attr:data-mp-lightbox-legenda" tabindex="0"><img data-mp-campo="mini" data-mp-como="src" data-mp-mapa="srcset:attr:srcset,legenda:attr:alt" sizes="(max-width:720px) 50vw, 28vw" src="" alt="" loading="lazy"><figcaption data-mp-campo="legenda"></figcaption></figure></div><p class="player-note reveal">Clica numa fotografia para a ver em grande.</p></div></section><section class="section mp-palmares" id="destaques" data-mp-seccao="destaques"><div class="mp-palmares-fundo" data-mp-img="principal" data-mp-como="fundo" data-mp-paralaxe=".16" aria-hidden="true"></div><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>PALMARÉS</div><h2>O que já<br>aconteceu.</h2></div><div class="mp-palmares-grelha" data-mp-lista="destaques"><article class="mp-conquista" data-mp-linha data-mp-lightbox="video" data-mp-mapa="imagem:attr:data-com-imagem,video:attr:data-mp-lightbox-src,titulo:attr:data-mp-lightbox-legenda"><span class="mp-conquista-img" data-mp-mapa="imagem:fundo" aria-hidden="true"></span><span class="mp-conquista-topo"><span class="mp-chip" data-mp-campo="tipo" data-mp-vazio="esconder"></span><span class="mp-chip mp-chip-ano" data-mp-campo="ano" data-mp-vazio="esconder"></span></span><b data-mp-campo="titulo">Destaque</b><span class="mp-conquista-detalhe" data-mp-campo="detalhe"></span><span class="mp-conquista-ver">Ver vídeo ▶</span></article></div></div></section><section class="section" id="dates" data-mp-seccao="eventos"><div class="shell"><div class="head reveal"><div class="label" data-mp-numero>AO VIVO</div><h2>Próximas datas.</h2></div><div class="events reveal" data-mp-lista="eventos"><article class="event" data-mp-linha><time><span data-mp-campo="data" data-mp-formato="dia">20</span> <small data-mp-campo="data" data-mp-formato="mes">SET</small></time><div><h3 data-mp-campo="titulo">Evento</h3><p data-mp-campo="descricao"></p></div><span class="venue" data-mp-campo="local"></span><a class="button event-button" data-mp-mapa="bilhetes:href" href="#">Bilhetes</a></article></div></div></section>
+<section class="section" id="press" data-mp-seccao="presskit"><div class="shell presskit reveal"><div class="press-copy"><h2>PRESS<br>KIT.</h2><div><p>Tudo o que promotores, salas e parceiros precisam, num só lugar.</p><a class="button" style="color:inherit;border-color:currentColor" data-mp-href="presskit.drive" href="#">Abrir press kit ↗</a></div></div><div class="assets"><a class="asset" data-mp-href="presskit.portfolio" download><i>↓</i><div><b>Press kit</b><small>Biografia, música, palmarés, galeria e rider, em PDF</small></div></a><a class="asset" data-mp-href="rider.pdf" download><i>↓</i><div><b>Rider</b><small>Técnico e de hospitalidade, em PDF</small></div></a><a class="asset" data-mp-pagina="booking.html" href="#"><i>→</i><div><b>Rider em página</b><small>Equipamento, esquema e condições</small></div></a><a class="asset" href="#galeria"><i>↗</i><div><b>Fotografias</b><small>Imagens de palco e de promoção</small></div></a></div></div></section>
+<section class="booking" id="booking" data-mp-seccao="booking"><div class="reveal"><div class="label" data-mp="perfil.rotuloBooking">05 / BOOKING</div><h2>VAMOS<br>MOVER.</h2><p>Disponível para clubes, festivais, eventos culturais, experiências privadas e parcerias de marca selecionadas.</p><div class="booking-actions"><a class="button hot" data-mp-booking="whatsapp" href="#">WhatsApp ↗</a><span class="booking-quem" data-mp-booking="responsavel"></span><a class="button" style="border-color:currentColor" data-mp-booking="telefone" href="#">telefone</a><a class="button" style="border-color:currentColor" data-mp-pagina="booking.html" href="#">Enviar pedido e ver rider →</a></div></div></section>
+</main>
+<footer class="footer"><div class="shell footer-row"><b><img class="mp-logo" src="" alt="" data-mp-img="logo" data-mp-vazio="esconder"><span data-mp="perfil.nomeArtistico" data-mp-se-logo="nao">KAIRO</span></b><span class="footer-links" data-mp-lista="links"><a data-mp-linha data-mp-mapa="rotulo:text,url:href" href="#">Link</a></span><a class="mp-powered" data-mp-landing href="https://SEU-DOMINIO-MY-PAGE" target="_blank" rel="noopener"><span>Powered by</span><img src="assets/muska-logo.png" alt="Muska" width="92" height="19"></a></div></footer>
+<div class="player" id="player" data-mp-demo><span class="cover"></span><div><b>Heat After Dark</b><small>KAIRO · Muska Session</small></div><button class="icon play" style="color:inherit">Ⅱ</button></div>
+<script>
+const root=document.documentElement,theme=document.getElementById('theme');function setTheme(t){root.dataset.theme=t;localStorage.setItem('dj-template-02-theme',t);theme.textContent=t==='dark'?'☀':'☾'}setTheme(localStorage.getItem('dj-template-02-theme')||'dark');theme.addEventListener('click',()=>setTheme(root.dataset.theme==='dark'?'light':'dark'));
+const player=document.getElementById('player');let playing=false;document.querySelectorAll('.play').forEach(b=>b.addEventListener('click',()=>{playing=!playing;player.classList.add('show');document.querySelectorAll('.play').forEach(x=>x.textContent=playing?'Ⅱ':'▶')}));
+const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');io.unobserve(entry.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+<script>window.MY_PAGE_ARTISTA={"_nota": "Dados da página do artista. É este ficheiro que o backoffice vai passar a produzir. Nada fica escrito à mão no HTML.", "slug": "deekay", "template": "02", "plano": "premium", "perfil": {"nomeArtistico": "DJ Deekay", "nomeReal": null, "frase": "De Cabo Verde para o mundo. Afro House com identidade.", "cidade": "Lisboa", "pais": "Portugal", "origem": "Cabo Verde", "desde": "2018", "generos": ["Afro House", "Kuduro", "Afro Tech"], "biografia": "DJ Deekay é um dos DJs e produtores mais influentes de Cabo Verde, uma referência incontornável da nova geração do Afro House. Conhecido pelas suas performances explosivas e por hits marcantes que definem a sua identidade sonora, tem vindo a conquistar pistas de dança por todo o mundo.\n\nNa cidade da Praia, capital do país, iniciou a carreira em 2018 e rapidamente se destacou na cena local, afirmando-se como um nome promissor e inovador.\n\nEm 2020, os seus mixes de Afro House tornaram-se virais nas redes sociais e catapultaram a carreira para o panorama internacional. Nesse mesmo ano deu um passo decisivo ao abraçar a produção musical, lançando temas originais que rapidamente se transformaram em grandes sucessos, tanto no circuito do Afro House como na música cabo-verdiana.\n\nCom uma energia contagiante e uma forte presença em palco, tem vindo a cativar públicos em diversos países, com atuações memoráveis no Japão, Marrocos, Estados Unidos, Bélgica, Itália, Luxemburgo, França, Holanda, Suíça, Portugal e Cabo Verde.", "biografiaMarcas": ["Hoje", "2018 · Praia", "2020 · Viral", "Em palco"]}, "biografiaFotos": ["assets/deekay-retrato.jpg", "assets/deekay-cabine.jpg", "assets/deekay-publico.jpg", "assets/deekay-palco.jpg"], "aparencia": {"fundo": "#0b0c0f", "texto": "#f6f2e9", "destaque": "#c8452a"}, "imagens": {"principal": "assets/deekay-palco.jpg", "retrato": "assets/deekay-retrato.jpg", "logo": "assets/deekay-logo.png", "logoEscuro": "assets/deekay-logo-escuro.png"}, "numeros": [{"valor": "3M+", "rotulo": "visualizações em Pidi La"}, {"valor": "11", "rotulo": "países em palco"}, {"valor": "2018", "rotulo": "desde a primeira cabine"}], "links": [{"plataforma": "instagram", "rotulo": "Instagram", "url": "https://instagram.com/djdeekay_", "destaque": true}, {"plataforma": "spotify", "rotulo": "Spotify", "url": "https://open.spotify.com/artist/74qBM24iaS5pVUCIfEvUPo", "destaque": true}, {"plataforma": "youtube", "rotulo": "YouTube", "url": "https://www.youtube.com/@djdeekay", "destaque": true}, {"plataforma": "apple", "rotulo": "Apple Music", "url": "https://music.apple.com/us/artist/dj-deekay/1714619933", "destaque": false}, {"plataforma": "facebook", "rotulo": "Facebook", "url": "https://facebook.com/djdeekaymusic", "destaque": false}], "musica": {"player": {"plataforma": "Spotify", "tipo": "artista", "id": "74qBM24iaS5pVUCIfEvUPo", "embed": "https://open.spotify.com/embed/artist/74qBM24iaS5pVUCIfEvUPo", "plataformaUrl": "https://open.spotify.com/artist/74qBM24iaS5pVUCIfEvUPo"}}, "discografia": [{"titulo": "PIDI LA", "com": "CESF", "url": "https://www.youtube.com/watch?v=sxZnH-qzqwk"}, {"titulo": "FODAS", "com": "Samba KF", "url": null}, {"titulo": "VERON", "com": "Neyna", "url": "https://www.youtube.com/watch?v=MKqJS0gwenY"}, {"titulo": "LABANTA MON", "com": "DJ Rifox", "url": null}, {"titulo": "HOJE TEM", "com": "Milo & Fabio", "url": null}, {"titulo": "SANDA", "com": null, "url": null}, {"titulo": "BORA BORA", "com": "Active Boyz", "url": null}, {"titulo": "PRAIA & LUANDA", "com": "DJ Nelasta", "url": "https://www.youtube.com/watch?v=D88Kk-wy1B4"}], "destaques": [{"titulo": "Cabo Verde Music Awards 2023", "detalhe": "Nomeado", "tipo": "Nomeação", "ano": "2023", "imagem": null, "video": null}, {"titulo": "Pidi La", "detalhe": "Passou os 3 milhões de visualizações", "tipo": "YouTube", "ano": null, "imagem": "https://i.ytimg.com/vi/sxZnH-qzqwk/hqdefault.jpg", "video": "sxZnH-qzqwk"}, {"titulo": "Sanda", "detalhe": "Adicionada por Black Coffee à playlist Track IDs, no Spotify", "tipo": "Spotify", "ano": null, "imagem": null, "video": null}, {"titulo": "Afro Nation Portimão 2025", "detalhe": "Palco principal", "tipo": "Festival", "ano": "2025", "imagem": null, "video": null}, {"titulo": "Expo 2025, Osaka", "detalhe": "Japão", "tipo": "Palco internacional", "ano": "2025", "imagem": null, "video": null}, {"titulo": "Festival Timitar 2025", "detalhe": "Marrocos", "tipo": "Festival", "ano": "2025", "imagem": null, "video": null}], "videos": [{"id": "k0fbMSUcBrY", "titulo": "DJ Deekay, Danny Boy · SHUKULU", "canal": "DJ Deekay", "embed": "https://www.youtube.com/watch?v=k0fbMSUcBrY", "miniatura": "https://i.ytimg.com/vi/k0fbMSUcBrY/hqdefault.jpg"}, {"id": "MKqJS0gwenY", "titulo": "DJ Deekay x Neyna · Veron", "canal": "DJ Deekay", "embed": "https://www.youtube.com/watch?v=MKqJS0gwenY", "miniatura": "https://i.ytimg.com/vi/MKqJS0gwenY/hqdefault.jpg"}, {"id": "D88Kk-wy1B4", "titulo": "DJ Deekay x DJ Nelasta Nel Flow · Praia & Luanda", "canal": "DJ Deekay", "embed": "https://www.youtube.com/watch?v=D88Kk-wy1B4", "miniatura": "https://i.ytimg.com/vi/D88Kk-wy1B4/hqdefault.jpg"}, {"id": "sxZnH-qzqwk", "titulo": "DJ Deekay x CESF · PIDI LA", "canal": "CESF FOUR 4", "embed": "https://www.youtube.com/watch?v=sxZnH-qzqwk", "miniatura": "https://i.ytimg.com/vi/sxZnH-qzqwk/hqdefault.jpg"}], "galeria": [{"ficheiro": "assets/deekay-palco.jpg", "mini": "assets/deekay-palco-mini.jpg", "legenda": "Palco principal, pirotecnia e o ecrã com o nome"}, {"ficheiro": "assets/deekay-cabine.jpg", "mini": "assets/deekay-cabine-mini.jpg", "legenda": "Na cabine, de costas para a pista"}, {"ficheiro": "assets/deekay-publico.jpg", "mini": "assets/deekay-publico-mini.jpg", "legenda": "Com o público, microfone na mão"}, {"ficheiro": "assets/deekay-estudio.jpg", "mini": "assets/deekay-estudio-mini.jpg", "legenda": "Retrato de estúdio"}, {"ficheiro": "assets/deekay-retrato.jpg", "mini": "assets/deekay-retrato-mini.jpg", "legenda": "Retrato de promoção"}], "eventos": [], "booking": {"responsavel": "Diego", "papel": "Manager", "telefone": "+238 586 48 30", "whatsapp": true, "email": null, "mostrarContactoPublico": true}, "rider": {"tecnico": [{"quantidade": "3x", "item": "Pioneer CDJ-3000 ou CDJ-2000NXS2"}, {"quantidade": "1x", "item": "Mixer Pioneer DJM 900NXS2 ou DJM V10"}, {"quantidade": "1x", "item": "Pioneer RMX-1000 Effector (Remix Station)"}, {"quantidade": "2x", "item": "Colunas monitoras profissionais para a cabine de DJ"}, {"quantidade": "1x", "item": "Microfone de mão sem fios profissional"}], "notas": ["Todos os CDJs devem estar ligados via RJ45 (Ethernet) para ativar a funcionalidade link completa.", "O RMX-1000 deve estar totalmente integrado e devidamente roteado para o mixer de DJ.", "As colunas monitoras da cabine devem ser colocadas à esquerda e à direita dentro da cabine de DJ, controladas diretamente pela saída de monitores do mixer."], "esquema": "assets/deekay-esquema.jpg", "esquemaLegenda": "Esquema de ligações: três leitores, mixer, remix station e switch de rede. Analógico (RCA), digital coaxial, Cat5e/Cat6 (RJ45) e jack de 1/4.", "hospitalidade": [{"quantidade": "1x", "item": "Garrafa de bebida alcoólica"}, {"quantidade": "6x", "item": "Águas"}, {"quantidade": "2x", "item": "Sumos de fruta"}, {"quantidade": "2x", "item": "Bebidas energéticas"}, {"quantidade": "1x", "item": "Passe VIP ou de bastidores para o DJ e convidados"}], "bilhetes": "Deekay, manager e 4 bilhetes para convidados.", "aviso": ["O acesso à cabine de DJ é reservado a pessoas autorizadas pelo Deekay, pelo manager do artista ou pelo road manager.", "Quaisquer alterações ao rider técnico ou de hospitalidade devem ser aprovadas antecipadamente pelo artista, pelo manager ou pelo road manager."], "pdf": "assets/deekay-rider-tecnico.pdf", "pdfOriginal": "assets/deekay-rider.pdf"}, "presskit": {"drive": "https://drive.google.com/drive/folders/1suL7NlynY99WIjLjYzgxcgj_av7UeJs7", "portfolio": "assets/deekay-presskit.pdf", "publico": true, "portfolioOriginal": "assets/deekay-portfolio.pdf"}, "porConfirmar": ["Ordem dos géneros: liderar com Afro House ou com Kuduro", "Nome real do artista, se quiser que apareça", "Se o rider fica público na página ou só por pedido do promotor", "Créditos dos fotógrafos das cinco fotografias"]};</script>
+<script>/* My Page · renderer de página de artista.
+   Enche um template a partir de um ficheiro de dados do artista.
+   É esta a peça que o backoffice vai alimentar: o editor passa a escrever o mesmo JSON.
+
+   Origem dos dados, por esta ordem:
+   1. window.MY_PAGE_ARTISTA, quando a página é gerada com os dados embutidos.
+   2. ?artista=slug, e nesse caso vai buscar artistas/<slug>.json.
+   Sem nenhuma das duas, o template fica com o conteúdo de demonstração. */
+(() => {
+  'use strict';
+
+  const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
+
+  /* ---------- utilitários ---------- */
+  const temValor = v => !(v == null || v === '' || (Array.isArray(v) && !v.length));
+
+  function ler(dados, caminho) {
+    return String(caminho || '').split('.').reduce((v, k) => (v == null ? v : v[k]), dados);
+  }
+
+  /* Regras de classe vencem o atributo hidden, por isso escondemos também em linha. */
+  function esconder(no, esconde) {
+    if (esconde) {
+      if (no.dataset.mpDisplay === undefined) no.dataset.mpDisplay = no.style.display || '';
+      no.hidden = true;
+      no.style.display = 'none';
+      return;
+    }
+    no.hidden = false;
+    if (no.dataset.mpDisplay !== undefined) { no.style.display = no.dataset.mpDisplay; delete no.dataset.mpDisplay; }
+  }
+
+  function aplicar(no, valor, modo) {
+    if (modo && modo.startsWith('attr:')) {
+      const nome = modo.slice(5);
+      if (!temValor(valor)) { no.removeAttribute(nome); return; }
+      no.setAttribute(nome, valor);
+      return;
+    }
+    if (modo === 'href-opcional') {
+      /* Sem ligação a linha continua a aparecer, apenas deixa de ser clicável. */
+      if (!temValor(valor)) { no.removeAttribute('href'); return; }
+      no.href = valor;
+      if (/^https?:/i.test(valor)) { no.target = '_blank'; no.rel = 'noopener noreferrer'; }
+      return;
+    }
+    if (modo === 'href') {
+      if (!temValor(valor)) { esconder(no, true); no.removeAttribute('href'); return; }
+      no.href = valor;
+      if (/^https?:/i.test(valor)) { no.target = '_blank'; no.rel = 'noopener noreferrer'; }
+      esconder(no, false);
+      return;
+    }
+    if (modo === 'src') {
+      if (!temValor(valor)) return;
+      no.src = valor;
+      return;
+    }
+    if (modo === 'fundo') {
+      if (!temValor(valor)) return;
+      const sobreposicao = no.dataset.mpSobreposicao;
+      no.style.backgroundImage = (sobreposicao ? sobreposicao + ', ' : '') + 'url("' + valor + '")';
+      return;
+    }
+    if (modo === 'paragrafos') {
+      if (!temValor(valor)) return;
+      no.replaceChildren(...String(valor).split(/\n{2,}|\n/).map(t => t.trim()).filter(Boolean)
+        .map(t => { const p = document.createElement('p'); p.textContent = t; return p; }));
+      return;
+    }
+    if (!temValor(valor)) { if (no.dataset.mpVazio === 'esconder') esconder(no, true); return; }
+    no.textContent = Array.isArray(valor) ? valor.join(' · ') : String(valor);
+    if (no.dataset.mpVazio === 'esconder') esconder(no, false);
+  }
+
+  /* ---------- datas ---------- */
+  function formatarData(iso, estilo) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    if (estilo === 'dia') return String(d.getDate()).padStart(2, '0');
+    if (estilo === 'mes') return d.toLocaleDateString('pt-PT', { month: 'short' }).replace('.', '').toUpperCase();
+    if (estilo === 'hora') return d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  /* ---------- listas ----------
+     O nome da lista é um caminho no ficheiro de dados: videos, galeria, rider.tecnico.
+     Assim o template ganha secções novas sem o renderer ser alterado. */
+  function itens(dados, nome) {
+    if (nome === 'generos') return (dados.perfil.generos || []).map(valor => ({ valor }));
+    const lista = ler(dados, nome);
+    if (!Array.isArray(lista)) return [];
+    return lista.map(item => (item !== null && typeof item === 'object' ? item : { valor: item }));
+  }
+
+  function mapear(no, item) {
+    for (const par of String(no.dataset.mpMapa || '').split(',')) {
+      const corte = par.indexOf(':');
+      const chave = (corte < 0 ? par : par.slice(0, corte)).trim();
+      const modo = corte < 0 ? 'text' : par.slice(corte + 1).trim();
+      if (!chave) continue;
+      const cru = chave.split('.').reduce((v, k) => (v == null ? v : v[k]), item);
+      aplicar(no, no.dataset.mpFormato && modo === 'text' ? formatarData(cru, no.dataset.mpFormato) : cru, modo || 'text');
+    }
+  }
+
+  function preencherLinha(linha, item) {
+    if (linha.dataset.mpMapa) mapear(linha, item);
+    for (const no of $$('[data-mp-mapa]', linha)) mapear(no, item);
+    /* A própria linha pode ser o campo, como nos géneros do ticker. */
+    const campos = linha.dataset.mpCampo ? [linha, ...$$('[data-mp-campo]', linha)] : $$('[data-mp-campo]', linha);
+    for (const no of campos) {
+      const cru = no.dataset.mpCampo.split('.').reduce((v, k) => (v == null ? v : v[k]), item);
+      aplicar(no, no.dataset.mpFormato ? formatarData(cru, no.dataset.mpFormato) : cru, no.dataset.mpComo || 'text');
+    }
+  }
+
+  function aplicarListas(dados) {
+    for (const container of $$('[data-mp-lista]')) {
+      const lista = itens(dados, container.dataset.mpLista);
+      const modelo = container.querySelector('[data-mp-linha]');
+      if (!modelo) continue;
+      const molde = modelo.cloneNode(true);
+      const limite = Number(container.dataset.mpLimite) || lista.length;
+      container.replaceChildren();
+      if (!lista.length) { esconder(container, true); continue; }
+      esconder(container, false);
+      for (const item of lista.slice(0, limite)) {
+        const linha = molde.cloneNode(true);
+        preencherLinha(linha, item);
+        container.append(linha);
+      }
+    }
+  }
+
+  /* ---------- secções ----------
+     Regra geral: a secção aparece se o caminho com o mesmo nome tiver conteúdo.
+     As exceções abaixo são as que dependem de mais do que um campo. */
+  const TESTES = {
+    musica: d => Boolean(d.musica && d.musica.player && d.musica.player.embed),
+    presskit: d => Boolean(d.presskit && d.presskit.publico && (d.presskit.drive || d.presskit.portfolio)),
+    rider: d => Boolean(d.rider && (d.rider.tecnico || []).length),
+    biografia: d => Boolean(d.perfil.biografia),
+    booking: () => true
+  };
+
+  function seccaoTemConteudo(dados, id) {
+    if (TESTES[id]) return TESTES[id](dados);
+    const valor = ler(dados, id);
+    return valor === undefined ? true : temValor(valor);
+  }
+
+  function aplicarSeccoes(dados) {
+    for (const no of $$('[data-mp-seccao]')) {
+      esconder(no, !seccaoTemConteudo(dados, no.dataset.mpSeccao));
+    }
+  }
+
+  /* ---------- numeração das etiquetas ----------
+     As secções escondidas não gastam número, para a sequência não ter saltos. */
+  function numerarSeccoes() {
+    let n = 0;
+    for (const no of $$('[data-mp-numero]')) {
+      if (no.dataset.mpTexto === undefined) no.dataset.mpTexto = no.textContent.trim();
+      const seccao = no.closest('section');
+      if (seccao && seccao.hidden) continue;
+      n += 1;
+      no.textContent = String(n).padStart(2, '0') + ' / ' + no.dataset.mpTexto;
+    }
+  }
+
+  /* ---------- aparência ---------- */
+  function corTexto(fundo) {
+    const n = parseInt(String(fundo).slice(1), 16);
+    const canal = c => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+    const lum = 0.2126 * canal((n >> 16) & 255) + 0.7152 * canal((n >> 8) & 255) + 0.0722 * canal(n & 255);
+    return lum > 0.35 ? '#101010' : '#ffffff';
+  }
+
+  function aplicarAparencia(dados) {
+    const raiz = document.documentElement;
+    const a = dados.aparencia || {};
+    if (a.fundo) raiz.style.setProperty('--mp-fundo', a.fundo);
+    if (a.texto) raiz.style.setProperty('--mp-texto', a.texto);
+    if (a.destaque) {
+      raiz.style.setProperty('--mp-destaque', a.destaque);
+      raiz.style.setProperty('--mp-destaque-texto', corTexto(a.destaque));
+    }
+    raiz.dataset.mypage = 'on';
+    /* Páginas publicadas trazem o título já escrito no HTML, para quem não corre JavaScript. */
+    const nome = dados.perfil.nomeArtistico;
+    const sufixo = document.documentElement.dataset.mpTitulo;
+    if (nome && !raiz.hasAttribute('data-mp-titulo-fixo')) {
+      document.title = nome + (sufixo ? ' · ' + sufixo : '') + ' · My Page';
+    }
+  }
+
+  /* ---------- imagens ---------- */
+  function aplicarImagens(dados) {
+    const mapa = dados.imagens || {};
+    for (const no of $$('[data-mp-img]')) {
+      const valor = mapa[no.dataset.mpImg];
+      if (!temValor(valor)) { if (no.dataset.mpVazio === 'esconder') esconder(no, true); continue; }
+      aplicar(no, valor, no.dataset.mpComo === 'fundo' ? 'fundo' : 'src');
+      if (no.tagName === 'IMG' && dados.perfil.nomeArtistico && !no.hasAttribute('data-mp-alt-fixo')) no.alt = dados.perfil.nomeArtistico;
+      esconder(no, false);
+    }
+    /* Onde existe logótipo, o nome em texto sai; onde não existe, fica o nome. */
+    const temLogo = temValor(mapa.logo);
+    for (const no of $$('[data-mp-se-logo]')) {
+      /* 'sr' mantém o nome para leitores de ecrã e motores de busca, só o tira da vista. */
+      if (no.dataset.mpSeLogo === 'sr') { no.classList.toggle('mp-oculto', temLogo); continue; }
+      esconder(no, no.dataset.mpSeLogo === 'sim' ? !temLogo : temLogo);
+    }
+  }
+
+  /* ---------- música e vídeo ---------- */
+  function aplicarPlayer(dados) {
+    const alvo = document.querySelector('[data-mp-player]');
+    if (!alvo) return;
+    const player = dados.musica && dados.musica.player;
+    if (!player || !player.embed) { esconder(alvo, true); return; }
+    const frame = document.createElement('iframe');
+    frame.src = player.embed;
+    frame.loading = 'lazy';
+    frame.title = (dados.perfil.nomeArtistico || 'Artista') + ' no ' + (player.plataforma || 'player');
+    frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    frame.setAttribute('frameborder', '0');
+    alvo.replaceChildren(frame);
+  }
+
+  /* ---------- booking ---------- */
+  const soDigitos = t => String(t || '').replace(/[^\d]/g, '');
+
+  function aplicarBooking(dados) {
+    const b = dados.booking || {};
+    const publico = b.mostrarContactoPublico && (b.telefone || b.email);
+    for (const no of $$('[data-mp-booking]')) {
+      const tipo = no.dataset.mpBooking;
+      if (tipo === 'whatsapp') {
+        if (!publico || !b.whatsapp || !b.telefone) { esconder(no, true); continue; }
+        aplicar(no, 'https://wa.me/' + soDigitos(b.telefone), 'href');
+      } else if (tipo === 'telefone') {
+        if (!publico || !b.telefone) { esconder(no, true); continue; }
+        no.href = 'tel:+' + soDigitos(b.telefone);
+        aplicar(no, b.telefone, 'text');
+        esconder(no, false);
+      } else if (tipo === 'email') {
+        if (!publico || !b.email) { esconder(no, true); continue; }
+        no.href = 'mailto:' + b.email;
+        aplicar(no, b.email, 'text');
+        esconder(no, false);
+      } else if (tipo === 'responsavel') {
+        if (!publico || !b.responsavel) { esconder(no, true); continue; }
+        aplicar(no, b.responsavel + (b.papel ? ' · ' + b.papel : ''), 'text');
+        esconder(no, false);
+      }
+    }
+  }
+
+  /* ---------- texto simples ---------- */
+  function aplicarTexto(dados) {
+    for (const no of $$('[data-mp]')) aplicar(no, ler(dados, no.dataset.mp), no.dataset.mpComo || 'text');
+    for (const no of $$('[data-mp-href]')) aplicar(no, ler(dados, no.dataset.mpHref), 'href');
+    for (const no of $$('[data-mp-quando]')) esconder(no, !temValor(ler(dados, no.dataset.mpQuando)));
+  }
+
+  /* ---------- ligação entre as duas páginas ----------
+     Com os dados embutidos na página não é preciso arrastar ?artista= no endereço. */
+  let dadosEmbutidos = false;
+
+  function aplicarNavegacao(dados) {
+    for (const no of $$('[data-mp-pagina]')) {
+      const destino = no.dataset.mpPagina;
+      if (dadosEmbutidos || !dados.slug) { no.href = destino; continue; }
+      const url = new URL(destino, location.href);
+      url.searchParams.set('artista', dados.slug);
+      no.href = url.pathname.split('/').pop() + url.search + url.hash;
+    }
+  }
+
+  /* ---------- marca ---------- */
+  function aplicarMarca(dados) {
+    const mostrar = dados.plano !== 'pro' && dados.plano !== 'premium';
+    for (const no of $$('[data-mp-marca]')) esconder(no, !mostrar);
+  }
+
+  /* ---------- pop up de fotografias e vídeos ----------
+     Qualquer elemento com data-mp-lightbox abre aqui. O conjunto para as setas
+     é o dos elementos irmãos com o mesmo tipo dentro do mesmo contentor. */
+  let caixa, palco, conjunto = [], indice = 0;
+
+  function construirCaixa() {
+    caixa = document.createElement('div');
+    caixa.className = 'mp-lightbox';
+    caixa.hidden = true;
+    caixa.innerHTML =
+      '<button class="mp-lb-fechar" type="button" aria-label="Fechar">&#10005;</button>' +
+      '<button class="mp-lb-passo mp-lb-anterior" type="button" aria-label="Anterior">&#8249;</button>' +
+      '<button class="mp-lb-passo mp-lb-seguinte" type="button" aria-label="Seguinte">&#8250;</button>' +
+      '<figure class="mp-lb-palco"><div class="mp-lb-media"></div><figcaption class="mp-lb-legenda"></figcaption>' +
+      '<div class="mp-lb-acoes">' +
+        '<a class="mp-lb-acao" data-acao="descarregar" href="#" download>' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Descarregar</span></a>' +
+        '<button class="mp-lb-acao" data-acao="partilhar" type="button" aria-expanded="false">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.3 10.8l7.4-4M8.3 13.2l7.4 4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Partilhar</span></button>' +
+        '<div class="mp-lb-redes" hidden>' +
+          '<a data-rede="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
+          '<a data-rede="facebook" target="_blank" rel="noopener noreferrer">Facebook</a>' +
+          '<a data-rede="x" target="_blank" rel="noopener noreferrer">X</a>' +
+          '<button type="button" data-rede="copiar">Copiar link</button>' +
+        '</div>' +
+      '</div></figure>';
+    document.body.append(caixa);
+    palco = caixa.querySelector('.mp-lb-media');
+    caixa.querySelector('.mp-lb-fechar').addEventListener('click', fechar);
+    caixa.querySelector('.mp-lb-anterior').addEventListener('click', e => { e.stopPropagation(); passo(-1); });
+    caixa.querySelector('.mp-lb-seguinte').addEventListener('click', e => { e.stopPropagation(); passo(1); });
+    const acoes = caixa.querySelector('.mp-lb-acoes');
+    acoes.addEventListener('click', e => e.stopPropagation());
+    acoes.querySelector('[data-acao="partilhar"]').addEventListener('click', partilhar);
+    acoes.querySelector('[data-rede="copiar"]').addEventListener('click', copiarLigacao);
+    caixa.addEventListener('click', e => { if (e.target === caixa || e.target.closest('.mp-lb-palco') === caixa.querySelector('.mp-lb-palco') && e.target.tagName !== 'IMG' && e.target.tagName !== 'IFRAME') fechar(); });
+    document.addEventListener('keydown', e => {
+      if (caixa.hidden) return;
+      if (e.key === 'Escape') fechar();
+      if (e.key === 'ArrowLeft') passo(-1);
+      if (e.key === 'ArrowRight') passo(1);
+    });
+  }
+
+  /* Sem data-mp-lightbox-src usamos a imagem que o elemento já mostra. */
+  const fonteDe = no => no.dataset.mpLightboxSrc
+    || (no.querySelector('img') && no.querySelector('img').getAttribute('src')) || '';
+
+  function mostrar(i) {
+    const no = conjunto[i];
+    if (!no) return;
+    indice = i;
+    const tipo = no.dataset.mpLightbox;
+    const fonte = fonteDe(no);
+    const legenda = no.dataset.mpLightboxLegenda || '';
+    if (tipo === 'video') {
+      const frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + fonte + '?autoplay=1&rel=0';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      frame.setAttribute('frameborder', '0');
+      frame.title = legenda || 'Vídeo';
+      palco.replaceChildren(frame);
+      palco.dataset.tipo = 'video';
+    } else {
+      const img = document.createElement('img');
+      img.src = fonte;
+      img.alt = legenda;
+      palco.replaceChildren(img);
+      palco.dataset.tipo = 'imagem';
+    }
+    caixa.querySelector('.mp-lb-legenda').textContent = legenda;
+    prepararAcoes(tipo === 'video' ? '' : fonte, legenda);
+    const varios = conjunto.length > 1;
+    caixa.querySelector('.mp-lb-anterior').hidden = !varios;
+    caixa.querySelector('.mp-lb-seguinte').hidden = !varios;
+  }
+
+  function passo(d) { mostrar((indice + d + conjunto.length) % conjunto.length); }
+
+  /* ---------- descarregar e partilhar ----------
+     No telemóvel, "Partilhar" abre o menu do próprio sistema, com o ficheiro da fotografia:
+     é por aí que se chega ao Instagram, que não aceita partilhas vindas de páginas web.
+     No computador aparecem WhatsApp, Facebook, X e copiar link. */
+  let fotoAtual = '', legendaAtual = '';
+
+  const nomeArtista = () => (window.__mpDados && window.__mpDados.perfil && window.__mpDados.perfil.nomeArtistico) || document.title;
+  const slugArtista = () => (window.__mpDados && window.__mpDados.slug) || 'foto';
+  const ligacaoPartilha = () => {
+    /* Uma fotografia embutida (data:) não tem endereço próprio: partilha-se a página. */
+    if (!fotoAtual || fotoAtual.startsWith('data:') || location.protocol === 'file:') return location.href.split('#')[0] + '#galeria';
+    return new URL(fotoAtual, location.href).href;
+  };
+
+  function prepararAcoes(fonte, legenda) {
+    fotoAtual = fonte; legendaAtual = legenda;
+    const acoes = caixa.querySelector('.mp-lb-acoes');
+    acoes.hidden = !fonte;
+    caixa.querySelector('.mp-lb-redes').hidden = true;
+    caixa.querySelector('[data-acao="partilhar"]').setAttribute('aria-expanded', 'false');
+    if (!fonte) return;
+    const baixar = acoes.querySelector('[data-acao="descarregar"]');
+    const extensao = (fonte.match(/\.(jpe?g|png|webp)(\?|$)/i) || [, 'jpg'])[1].replace('jpeg', 'jpg');
+    baixar.href = fonte;
+    baixar.setAttribute('download', slugArtista() + '-' + String(indice + 1).padStart(2, '0') + '.' + extensao);
+    const texto = nomeArtista() + (legenda ? ' · ' + legenda : '');
+    const url = ligacaoPartilha();
+    const redes = caixa.querySelector('.mp-lb-redes');
+    redes.querySelector('[data-rede="whatsapp"]').href = 'https://wa.me/?text=' + encodeURIComponent(texto + ' ' + url);
+    redes.querySelector('[data-rede="facebook"]').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    redes.querySelector('[data-rede="x"]').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(texto) + '&url=' + encodeURIComponent(url);
+  }
+
+  async function partilhar() {
+    const texto = nomeArtista() + (legendaAtual ? ' · ' + legendaAtual : '');
+    const url = ligacaoPartilha();
+    if (navigator.share) {
+      try {
+        const resposta = await fetch(fotoAtual);
+        const bolha = await resposta.blob();
+        const ficheiro = new File([bolha], slugArtista() + '.jpg', { type: bolha.type || 'image/jpeg' });
+        if (navigator.canShare && navigator.canShare({ files: [ficheiro] })) {
+          await navigator.share({ files: [ficheiro], title: nomeArtista(), text: texto });
+          return;
+        }
+        await navigator.share({ title: nomeArtista(), text: texto, url });
+        return;
+      } catch (erro) {
+        if (erro && erro.name === 'AbortError') return;
+      }
+    }
+    const redes = caixa.querySelector('.mp-lb-redes');
+    redes.hidden = !redes.hidden;
+    caixa.querySelector('[data-acao="partilhar"]').setAttribute('aria-expanded', String(!redes.hidden));
+  }
+
+  async function copiarLigacao(e) {
+    const botao = e.currentTarget;
+    try { await navigator.clipboard.writeText(ligacaoPartilha()); botao.textContent = 'Link copiado'; }
+    catch (_) { botao.textContent = ligacaoPartilha(); }
+    setTimeout(() => { botao.textContent = 'Copiar link'; }, 2200);
+  }
+
+  function fechar() {
+    caixa.hidden = true;
+    palco.replaceChildren();
+    document.body.style.overflow = '';
+  }
+
+  function abrir(no) {
+    const grupo = no.closest('[data-mp-lista]') || document;
+    /* Só entram nas setas os elementos que têm mesmo o que mostrar. */
+    conjunto = $$('[data-mp-lightbox="' + no.dataset.mpLightbox + '"]', grupo).filter(n => fonteDe(n));
+    if (!conjunto.length) conjunto = [no];
+    caixa.hidden = false;
+    document.body.style.overflow = 'hidden';
+    mostrar(conjunto.indexOf(no));
+  }
+
+  function ligarLightbox() {
+    if (!caixa) construirCaixa();
+    document.addEventListener('click', e => {
+      const no = e.target.closest('[data-mp-lightbox]');
+      if (!no || !fonteDe(no)) return;
+      e.preventDefault();
+      abrir(no);
+    });
+  }
+
+  /* ---------- ligações ----------
+     Um vídeo do YouTube abre sempre no pop up, venha de onde vier (discografia, palmarés).
+     Qualquer outra ligação para fora, ou para um PDF, abre numa aba nova e a página fica. */
+  function idYoutube(url) {
+    const m = String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    return m ? m[1] : '';
+  }
+
+  function tratarLigacoes() {
+    for (const a of $$('a[href]')) {
+      if (a.closest('.mp-lightbox')) continue;
+      const href = a.getAttribute('href');
+      const id = idYoutube(href);
+      if (id && !a.hasAttribute('data-mp-lightbox')) {
+        a.dataset.mpLightbox = 'video';
+        a.dataset.mpLightboxSrc = id;
+        if (!a.dataset.mpLightboxLegenda) a.dataset.mpLightboxLegenda = a.textContent.replace(/\s+/g, ' ').replace(/ver ↗/i, '').trim();
+        continue;
+      }
+      let externo = false;
+      try { const u = new URL(href, location.href); externo = /^https?:$/.test(u.protocol) && u.origin !== location.origin; } catch (_) {}
+      if (externo || /\.pdf(\?|#|$)/i.test(href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    }
+  }
+
+  /* ---------- campos derivados ----------
+     Calculados aqui para o ficheiro do artista só guardar o que uma pessoa escreveu. */
+  function derivar(dados) {
+    const p = dados.perfil || (dados.perfil = {});
+    p.local = [p.cidade, p.pais].filter(Boolean).join(' · ');
+    p.localCompleto = [p.cidade, p.pais].filter(Boolean).join(', ');
+    p.origemLinha = p.origem && p.origem !== p.pais ? p.origem : '';
+    p.generosLinha = (p.generos || []).join(' · ');
+    p.generoPrincipal = (p.generos || [])[0] || '';
+    p.rotuloBooking = 'Booking' + (dados.booking && dados.booking.responsavel ? ' · ' + dados.booking.responsavel : '');
+    for (const faixa of dados.discografia || []) faixa.linha = faixa.titulo + (faixa.com ? ' feat. ' + faixa.com : '');
+    for (const ligacao of dados.links || []) ligacao.icone = '#i-' + (ligacao.plataforma || 'link');
+    for (const foto of dados.galeria || []) {
+      if (foto.mini && foto.ficheiro) foto.srcset = foto.mini + ' 640w, ' + foto.ficheiro + ' 1400w';
+    }
+    /* A biografia continua a ser um texto só. Os capítulos são derivados: um por parágrafo,
+       com a marca e a fotografia na mesma posição, para a secção fixa poder acompanhar a leitura. */
+    const marcas = p.biografiaMarcas || [];
+    const fotos = (dados.biografiaFotos && dados.biografiaFotos.length ? dados.biografiaFotos
+      : (dados.galeria || []).map(f => f.ficheiro)).filter(Boolean);
+    p.capitulos = String(p.biografia || '').split(/\n{2,}/).map(t => t.trim()).filter(Boolean)
+      .map((texto, i) => ({ texto, marca: marcas[i] || '', foto: fotos.length ? fotos[i % fotos.length] : '',
+        indice: String(i + 1).padStart(2, '0') }));
+    return dados;
+  }
+
+  /* ---------- render ---------- */
+  function render(dados) {
+    derivar(dados);
+    aplicarAparencia(dados);
+    aplicarTexto(dados);
+    aplicarListas(dados);
+    aplicarPlayer(dados);
+    aplicarBooking(dados);
+    aplicarImagens(dados);
+    aplicarNavegacao(dados);
+    aplicarSeccoes(dados);
+    numerarSeccoes();
+    aplicarMarca(dados);
+    $$('[data-mp-demo]').forEach(no => esconder(no, true));
+    window.__mpDados = dados;
+    tratarLigacoes();
+    ligarLightbox();
+    document.dispatchEvent(new CustomEvent('mypage:artista', { detail: dados }));
+  }
+
+  async function arrancar() {
+    if (window.MY_PAGE_ARTISTA) { dadosEmbutidos = true; render(window.MY_PAGE_ARTISTA); return; }
+    const slug = new URLSearchParams(location.search).get('artista');
+    if (!slug || !/^[a-z0-9-]+$/.test(slug)) return;
+    try {
+      const resposta = await fetch('artistas/' + slug + '.json');
+      if (!resposta.ok) throw Error('HTTP ' + resposta.status);
+      render(await resposta.json());
+    } catch (erro) {
+      console.error('My Page · não foi possível carregar os dados do artista', erro);
+    }
+  }
+
+  window.MyPageArtista = { render, formatarData };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
+})();
+</script>
+<script>/* My Page · movimento da página de artista.
+   Separado do renderer: o renderer põe os dados, este ficheiro dá-lhes entrada em cena.
+   Sem JavaScript, ou com "reduzir movimento" ligado no sistema, a página aparece toda
+   parada e completa. Nada aqui esconde conteúdo de forma permanente. */
+(() => {
+  'use strict';
+
+  const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
+  const raiz = document.documentElement;
+  const reduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tactil = window.matchMedia('(hover: none)').matches;
+
+  /* O que anima e como. Os templates não precisam de marcar nada: basta ter estas classes. */
+  const GRUPOS = '.mp-galeria, .video-grid, .mp-faixas, .mp-palmares-grelha, .mp-numeros, .mp-grelha, .mp-rider-lista, .mp-notas, .mp-descargas, .assets, .mp-sociais, .footer-links';
+  const MASCARAS = '.mp-foto, .video-frame, .mp-esquema';
+  const TITULOS = '.head h2, .booking h2, .press-copy h2';
+
+  let iniciado = false;
+  let observador;
+  /* O clip-path de uma máscara fechada deixa o elemento com área visível zero, e o
+     IntersectionObserver nunca o daria como visível. Por isso observa-se o contentor. */
+  const mascarasPorPai = new Map();
+
+  /* ---------- títulos palavra a palavra ---------- */
+  function partirPalavras(titulo) {
+    if (titulo.dataset.mpPartido) return;
+    titulo.dataset.mpPartido = '1';
+    let n = 0;
+    const embrulhar = conteudo => {
+      const caixa = document.createElement('span');
+      caixa.className = 'mp-palavra';
+      const dentro = document.createElement('span');
+      dentro.style.transitionDelay = (n++ * 70) + 'ms';
+      if (typeof conteudo === 'string') dentro.textContent = conteudo; else dentro.append(conteudo);
+      caixa.append(dentro);
+      return caixa;
+    };
+    for (const filho of [...titulo.childNodes]) {
+      if (filho.nodeType === Node.TEXT_NODE) {
+        const pedacos = filho.textContent.split(/(\s+)/).filter(Boolean);
+        const frag = document.createDocumentFragment();
+        for (const p of pedacos) frag.append(/^\s+$/.test(p) ? document.createTextNode(p) : embrulhar(p));
+        filho.replaceWith(frag);
+      } else if (filho.nodeType === Node.ELEMENT_NODE && filho.tagName !== 'BR') {
+        /* Um nome vindo dos dados dentro do título entra como uma palavra só. */
+        const marcador = document.createComment('');
+        filho.replaceWith(marcador);
+        marcador.replaceWith(embrulhar(filho));
+      }
+    }
+  }
+
+  /* ---------- contadores ---------- */
+  function contar(no) {
+    if (no.dataset.mpContado) return;
+    no.dataset.mpContado = '1';
+    const final = no.textContent.trim();
+    const m = final.match(/^(\D*)(\d+(?:[.,]\d+)?)(.*)$/);
+    if (!m) return;
+    const alvo = parseFloat(m[2].replace(',', '.'));
+    const ano = /^(19|20)\d{2}$/.test(m[2]);
+    const inicio = ano ? alvo - 24 : 0;
+    const decimais = (m[2].split(/[.,]/)[1] || '').length;
+    const duracao = 1500;
+    const t0 = performance.now();
+    const passo = agora => {
+      const k = Math.min(1, (agora - t0) / duracao);
+      const suave = 1 - Math.pow(1 - k, 3);
+      const v = inicio + (alvo - inicio) * suave;
+      no.textContent = m[1] + (decimais ? v.toFixed(decimais) : Math.round(v)) + m[3];
+      if (k < 1) requestAnimationFrame(passo); else no.textContent = final;
+    };
+    requestAnimationFrame(passo);
+  }
+
+  /* ---------- observador único ---------- */
+  function observar(no) { if (no) observador.observe(no); }
+
+  function aoEntrar(entradas) {
+    for (const e of entradas) {
+      if (!e.isIntersecting) continue;
+      const alvo = e.target;
+      alvo.classList.add('mp-visivel');
+      observador.unobserve(alvo);
+      /* Terminada a entrada, o elemento volta às suas próprias regras de hover e transição. */
+      if (alvo.hasAttribute('data-mp-grupo')) {
+        const n = Math.min(alvo.children.length, 13);
+        setTimeout(() => alvo.removeAttribute('data-mp-grupo'), 1300 + n * 90);
+      }
+      for (const m of mascarasPorPai.get(alvo) || []) {
+        m.classList.add('mp-visivel');
+        const i = parseFloat(getComputedStyle(m).getPropertyValue('--i')) || 0;
+        setTimeout(() => m.classList.remove('mp-mascara'), 1900 + i * 90);
+      }
+      if (e.target.matches('.mp-numeros')) $$('.mp-numero b', e.target).forEach(contar);
+    }
+  }
+
+  function prepararEntradas() {
+    for (const t of $$(TITULOS)) { partirPalavras(t); observar(t); }
+    for (const g of $$(GRUPOS)) {
+      g.dataset.mpGrupo = '';
+      [...g.children].forEach((filho, i) => filho.style.setProperty('--i', Math.min(i, 12)));
+      observar(g);
+    }
+    for (const m of $$(MASCARAS)) {
+      m.classList.add('mp-mascara');
+      const pai = m.parentElement;
+      if (!mascarasPorPai.has(pai)) mascarasPorPai.set(pai, []);
+      mascarasPorPai.get(pai).push(m);
+      observar(pai);
+    }
+    for (const l of $$('.label')) observar(l);
+    for (const c of $$('.mp-capitulo')) observar(c);
+    for (const f of $$('.mp-bio-media, .mp-palmares-fundo')) observar(f);
+  }
+
+  /* ---------- biografia: a fotografia acompanha o capítulo que se está a ler ---------- */
+  function ligarBiografia() {
+    const capitulos = $$('.mp-capitulo');
+    const fotos = $$('.mp-bio-foto');
+    const numero = document.querySelector('.mp-bio-contador b');
+    const total = document.querySelector('.mp-bio-contador span');
+    const marca = document.querySelector('.mp-bio-marca');
+    const barra = document.querySelector('.mp-bio-progresso i');
+    if (!capitulos.length) return;
+    const bio = document.querySelector('.mp-bio');
+    if (bio) bio.classList.add('mp-bio-vivo');
+    if (total) total.textContent = String(capitulos.length).padStart(2, '0');
+
+    const ativar = i => {
+      capitulos.forEach((c, j) => c.classList.toggle('mp-ativo', j === i));
+      fotos.forEach((f, j) => f.classList.toggle('mp-ativo', j === i % fotos.length));
+      if (numero) numero.textContent = String(i + 1).padStart(2, '0');
+      if (marca) {
+        const texto = (capitulos[i].querySelector('[data-mp-campo="marca"]') || {}).textContent || '';
+        marca.textContent = texto;
+        marca.classList.remove('mp-troca'); void marca.offsetWidth; marca.classList.add('mp-troca');
+      }
+      if (barra) barra.style.transform = 'scaleX(' + ((i + 1) / capitulos.length) + ')';
+    };
+
+    const leitura = new IntersectionObserver(es => {
+      for (const e of es) if (e.isIntersecting) ativar(capitulos.indexOf(e.target));
+    }, {
+      /* No telemóvel a fotografia ocupa a metade de cima, por isso a faixa de leitura desce. */
+      rootMargin: window.innerWidth < 850 ? '-62% 0px -24% 0px' : '-42% 0px -42% 0px'
+    });
+    capitulos.forEach(c => leitura.observe(c));
+    ativar(0);
+  }
+
+  /* ---------- paralaxe ---------- */
+  let alvosParalaxe = [];
+  let pedido = 0;
+
+  function rolar() {
+    pedido = 0;
+    const vh = window.innerHeight;
+    for (const alvo of alvosParalaxe) {
+      const caixa = (alvo.closest('section, .hero') || alvo.parentElement).getBoundingClientRect();
+      if (caixa.bottom < -200 || caixa.top > vh + 200) continue;
+      const fator = parseFloat(alvo.dataset.mpParalaxe) || 0.12;
+      const centro = caixa.top + caixa.height / 2 - vh / 2;
+      alvo.style.transform = 'translate3d(0,' + (-centro * fator).toFixed(1) + 'px,0)';
+    }
+    const topo = window.scrollY > 40;
+    raiz.classList.toggle('mp-rolou', topo);
+  }
+
+  function pedirRolar() { if (!pedido) pedido = requestAnimationFrame(rolar); }
+
+  /* ---------- luz na grelha a seguir o cursor ---------- */
+  function ligarLuz() {
+    if (tactil) return;
+    let px = 0, py = 0, agendado = 0;
+    window.addEventListener('pointermove', e => {
+      px = e.clientX; py = e.clientY;
+      if (agendado) return;
+      agendado = requestAnimationFrame(() => {
+        agendado = 0;
+        raiz.style.setProperty('--mp-mx', px + 'px');
+        raiz.style.setProperty('--mp-my', py + 'px');
+        raiz.classList.add('mp-luz');
+      });
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => raiz.classList.remove('mp-luz'));
+  }
+
+  /* ---------- botões com íman ---------- */
+  function ligarIman() {
+    if (tactil) return;
+    for (const b of $$('.mp-vinil, .mp-social')) {
+      b.addEventListener('pointermove', e => {
+        const r = b.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width / 2) / r.width;
+        const dy = (e.clientY - r.top - r.height / 2) / r.height;
+        b.style.setProperty('--mp-ix', (dx * 10).toFixed(1) + 'px');
+        b.style.setProperty('--mp-iy', (dy * 10).toFixed(1) + 'px');
+      });
+      b.addEventListener('pointerleave', () => { b.style.removeProperty('--mp-ix'); b.style.removeProperty('--mp-iy'); });
+    }
+  }
+
+  /* ---------- faixa dos géneros ----------
+     Cada metade tem de ser pelo menos tão larga como o ecrã, senão o fim aparece antes
+     do recomeço e fica um vazio. Repete-se a lista até chegar, e a duração acompanha a
+     largura para a velocidade ser sempre a mesma. */
+  function encherFaixa() {
+    for (const faixa of $$('.ticker .track')) {
+      const grupos = [...faixa.children];
+      if (!grupos.length) continue;
+      for (const g of grupos) {
+        if (!g.dataset.mpOriginal) g.dataset.mpOriginal = g.innerHTML;
+        g.innerHTML = g.dataset.mpOriginal;
+      }
+      const alvo = Math.max(window.innerWidth, 320) * 1.15;
+      const base = grupos[0].dataset.mpOriginal;
+      let voltas = 0;
+      while (grupos[0].scrollWidth < alvo && voltas++ < 40) for (const g of grupos) g.insertAdjacentHTML('beforeend', base);
+      grupos.slice(1).forEach(g => g.setAttribute('aria-hidden', 'true'));
+      const largura = grupos[0].scrollWidth;
+      faixa.style.setProperty('--mp-faixa-duracao', Math.max(18, largura / 70).toFixed(1) + 's');
+    }
+  }
+
+  /* ---------- menu do telemóvel ---------- */
+  function ligarMenu() {
+    const botao = document.querySelector('.mobile-menu');
+    const links = document.querySelector('.nav-links');
+    if (!botao || !links || botao.dataset.mpLigado) return;
+    botao.dataset.mpLigado = '1';
+    links.id = links.id || 'mp-menu';
+    botao.setAttribute('aria-controls', links.id);
+    botao.setAttribute('aria-expanded', 'false');
+    botao.setAttribute('aria-label', 'Abrir menu');
+    const definir = aberto => {
+      raiz.classList.toggle('mp-menu-aberto', aberto);
+      botao.setAttribute('aria-expanded', String(aberto));
+      botao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      botao.textContent = aberto ? '✕' : '☰';
+      document.body.style.overflow = aberto ? 'hidden' : '';
+    };
+    botao.addEventListener('click', () => definir(!raiz.classList.contains('mp-menu-aberto')));
+    links.addEventListener('click', e => { if (e.target.closest('a')) definir(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && raiz.classList.contains('mp-menu-aberto')) definir(false); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 850 && raiz.classList.contains('mp-menu-aberto')) definir(false); });
+  }
+
+  /* ---------- arranque ---------- */
+  function iniciar() {
+    if (iniciado) return;
+    iniciado = true;
+    ligarBiografia();
+    ligarMenu();
+    encherFaixa();
+    let espera = 0;
+    window.addEventListener('resize', () => { clearTimeout(espera); espera = setTimeout(encherFaixa, 180); });
+    if (reduzido || !('IntersectionObserver' in window)) { raiz.classList.add('mp-parado'); return; }
+
+    raiz.classList.add('mp-mov');
+    observador = new IntersectionObserver(aoEntrar, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+    prepararEntradas();
+
+    alvosParalaxe = $$('[data-mp-paralaxe]');
+    window.addEventListener('scroll', pedirRolar, { passive: true });
+    window.addEventListener('resize', pedirRolar);
+    rolar();
+    ligarLuz();
+    ligarIman();
+
+    /* Entrada do hero: dois frames depois, para o navegador pintar o estado inicial primeiro. */
+    requestAnimationFrame(() => requestAnimationFrame(() => raiz.classList.add('mp-entrou')));
+  }
+
+  window.MyPageMovimento = { iniciar, contar };
+
+  document.addEventListener('mypage:artista', () => iniciar());
+  /* Se o renderer já tiver corrido antes deste ficheiro carregar. */
+  if (raiz.dataset.mypage === 'on') iniciar();
+  /* Página de demonstração, sem dados de artista: arranca quando carregar. */
+  const semArtista = !window.MY_PAGE_ARTISTA && !new URLSearchParams(location.search).get('artista');
+  if (semArtista) {
+    if (document.readyState === 'complete') iniciar();
+    else window.addEventListener('load', iniciar);
+  }
+})();
+</script></body>
+</html>

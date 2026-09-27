@@ -1,0 +1,13 @@
+import { chromium } from "file:///E:/Projects/MyPage/mypage/node_modules/playwright/index.mjs";
+const B = "http://localhost:3100";
+const browser = await chromium.launch();
+const page = await browser.newPage();
+page.on("console", m => /hydrat|Warning|Error/i.test(m.text()) && !/Blocked|403/.test(m.text()) && console.log("CONSOLE", m.text().slice(0,600)));
+await page.request.post(B + "/api/auth/login", { data: { email: "deekay@exemplo.cv", password: "mypage123" } });
+await page.goto(B + "/studio/page", { waitUntil: "networkidle" });
+const html = await page.evaluate(() => document.querySelector("details.accordion").outerHTML.slice(0, 120));
+console.log(html);
+await page.locator("summary", { hasText: "Galeria" }).click();
+await page.waitForTimeout(800);
+console.log(await page.evaluate(() => [...document.querySelectorAll("details.accordion")].filter(d => d.open).map(d => d.querySelector("summary b")?.textContent)));
+await browser.close();

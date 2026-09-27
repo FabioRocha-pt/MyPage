@@ -1,0 +1,546 @@
+<script>/* My Page · renderer de página de artista.
+   Enche um template a partir de um ficheiro de dados do artista.
+   É esta a peça que o backoffice vai alimentar: o editor passa a escrever o mesmo JSON.
+
+   Origem dos dados, por esta ordem:
+   1. window.MY_PAGE_ARTISTA, quando a página é gerada com os dados embutidos.
+   2. ?artista=slug, e nesse caso vai buscar artistas/<slug>.json.
+   Sem nenhuma das duas, o template fica com o conteúdo de demonstração. */
+(() => {
+  'use strict';
+
+  const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
+
+  /* ---------- utilitários ---------- */
+  const temValor = v => !(v == null || v === '' || (Array.isArray(v) && !v.length));
+
+  function ler(dados, caminho) {
+    return String(caminho || '').split('.').reduce((v, k) => (v == null ? v : v[k]), dados);
+  }
+
+  /* Regras de classe vencem o atributo hidden, por isso escondemos também em linha. */
+  function esconder(no, esconde) {
+    if (esconde) {
+      if (no.dataset.mpDisplay === undefined) no.dataset.mpDisplay = no.style.display || '';
+      no.hidden = true;
+      no.style.display = 'none';
+      return;
+    }
+    no.hidden = false;
+    if (no.dataset.mpDisplay !== undefined) { no.style.display = no.dataset.mpDisplay; delete no.dataset.mpDisplay; }
+  }
+
+  function aplicar(no, valor, modo) {
+    if (modo && modo.startsWith('attr:')) {
+      const nome = modo.slice(5);
+      if (!temValor(valor)) { no.removeAttribute(nome); return; }
+      no.setAttribute(nome, valor);
+      return;
+    }
+    if (modo === 'href-opcional') {
+      /* Sem ligação a linha continua a aparecer, apenas deixa de ser clicável. */
+      if (!temValor(valor)) { no.removeAttribute('href'); return; }
+      no.href = valor;
+      if (/^https?:/i.test(valor)) { no.target = '_blank'; no.rel = 'noopener noreferrer'; }
+      return;
+    }
+    if (modo === 'href') {
+      if (!temValor(valor)) { esconder(no, true); no.removeAttribute('href'); return; }
+      no.href = valor;
+      if (/^https?:/i.test(valor)) { no.target = '_blank'; no.rel = 'noopener noreferrer'; }
+      esconder(no, false);
+      return;
+    }
+    if (modo === 'src') {
+      if (!temValor(valor)) return;
+      no.src = valor;
+      return;
+    }
+    if (modo === 'fundo') {
+      if (!temValor(valor)) return;
+      const sobreposicao = no.dataset.mpSobreposicao;
+      no.style.backgroundImage = (sobreposicao ? sobreposicao + ', ' : '') + 'url("' + valor + '")';
+      return;
+    }
+    if (modo === 'paragrafos') {
+      if (!temValor(valor)) return;
+      no.replaceChildren(...String(valor).split(/\n{2,}|\n/).map(t => t.trim()).filter(Boolean)
+        .map(t => { const p = document.createElement('p'); p.textContent = t; return p; }));
+      return;
+    }
+    if (!temValor(valor)) { if (no.dataset.mpVazio === 'esconder') esconder(no, true); return; }
+    no.textContent = Array.isArray(valor) ? valor.join(' · ') : String(valor);
+    if (no.dataset.mpVazio === 'esconder') esconder(no, false);
+  }
+
+  /* ---------- datas ---------- */
+  function formatarData(iso, estilo) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    if (estilo === 'dia') return String(d.getDate()).padStart(2, '0');
+    if (estilo === 'mes') return d.toLocaleDateString('pt-PT', { month: 'short' }).replace('.', '').toUpperCase();
+    if (estilo === 'hora') return d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  /* ---------- listas ----------
+     O nome da lista é um caminho no ficheiro de dados: videos, galeria, rider.tecnico.
+     Assim o template ganha secções novas sem o renderer ser alterado. */
+  function itens(dados, nome) {
+    if (nome === 'generos') return (dados.perfil.generos || []).map(valor => ({ valor }));
+    const lista = ler(dados, nome);
+    if (!Array.isArray(lista)) return [];
+    return lista.map(item => (item !== null && typeof item === 'object' ? item : { valor: item }));
+  }
+
+  function mapear(no, item) {
+    for (const par of String(no.dataset.mpMapa || '').split(',')) {
+      const corte = par.indexOf(':');
+      const chave = (corte < 0 ? par : par.slice(0, corte)).trim();
+      const modo = corte < 0 ? 'text' : par.slice(corte + 1).trim();
+      if (!chave) continue;
+      const cru = chave.split('.').reduce((v, k) => (v == null ? v : v[k]), item);
+      aplicar(no, no.dataset.mpFormato && modo === 'text' ? formatarData(cru, no.dataset.mpFormato) : cru, modo || 'text');
+    }
+  }
+
+  function preencherLinha(linha, item) {
+    if (linha.dataset.mpMapa) mapear(linha, item);
+    for (const no of $$('[data-mp-mapa]', linha)) mapear(no, item);
+    /* A própria linha pode ser o campo, como nos géneros do ticker. */
+    const campos = linha.dataset.mpCampo ? [linha, ...$$('[data-mp-campo]', linha)] : $$('[data-mp-campo]', linha);
+    for (const no of campos) {
+      const cru = no.dataset.mpCampo.split('.').reduce((v, k) => (v == null ? v : v[k]), item);
+      aplicar(no, no.dataset.mpFormato ? formatarData(cru, no.dataset.mpFormato) : cru, no.dataset.mpComo || 'text');
+    }
+  }
+
+  function aplicarListas(dados) {
+    for (const container of $$('[data-mp-lista]')) {
+      const lista = itens(dados, container.dataset.mpLista);
+      const modelo = container.querySelector('[data-mp-linha]');
+      if (!modelo) continue;
+      const molde = modelo.cloneNode(true);
+      const limite = Number(container.dataset.mpLimite) || lista.length;
+      container.replaceChildren();
+      if (!lista.length) { esconder(container, true); continue; }
+      esconder(container, false);
+      for (const item of lista.slice(0, limite)) {
+        const linha = molde.cloneNode(true);
+        preencherLinha(linha, item);
+        container.append(linha);
+      }
+    }
+  }
+
+  /* ---------- secções ----------
+     Regra geral: a secção aparece se o caminho com o mesmo nome tiver conteúdo.
+     As exceções abaixo são as que dependem de mais do que um campo. */
+  const TESTES = {
+    musica: d => Boolean(d.musica && d.musica.player && d.musica.player.embed),
+    presskit: d => Boolean(d.presskit && d.presskit.publico && (d.presskit.drive || d.presskit.portfolio)),
+    rider: d => Boolean(d.rider && (d.rider.tecnico || []).length),
+    biografia: d => Boolean(d.perfil.biografia),
+    booking: () => true
+  };
+
+  function seccaoTemConteudo(dados, id) {
+    if (TESTES[id]) return TESTES[id](dados);
+    const valor = ler(dados, id);
+    return valor === undefined ? true : temValor(valor);
+  }
+
+  function aplicarSeccoes(dados) {
+    for (const no of $$('[data-mp-seccao]')) {
+      esconder(no, !seccaoTemConteudo(dados, no.dataset.mpSeccao));
+    }
+  }
+
+  /* ---------- numeração das etiquetas ----------
+     As secções escondidas não gastam número, para a sequência não ter saltos. */
+  function numerarSeccoes() {
+    let n = 0;
+    for (const no of $$('[data-mp-numero]')) {
+      if (no.dataset.mpTexto === undefined) no.dataset.mpTexto = no.textContent.trim();
+      const seccao = no.closest('section');
+      if (seccao && seccao.hidden) continue;
+      n += 1;
+      no.textContent = String(n).padStart(2, '0') + ' / ' + no.dataset.mpTexto;
+    }
+  }
+
+  /* ---------- aparência ---------- */
+  function corTexto(fundo) {
+    const n = parseInt(String(fundo).slice(1), 16);
+    const canal = c => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+    const lum = 0.2126 * canal((n >> 16) & 255) + 0.7152 * canal((n >> 8) & 255) + 0.0722 * canal(n & 255);
+    return lum > 0.35 ? '#101010' : '#ffffff';
+  }
+
+  function aplicarAparencia(dados) {
+    const raiz = document.documentElement;
+    const a = dados.aparencia || {};
+    if (a.fundo) raiz.style.setProperty('--mp-fundo', a.fundo);
+    if (a.texto) raiz.style.setProperty('--mp-texto', a.texto);
+    if (a.destaque) {
+      raiz.style.setProperty('--mp-destaque', a.destaque);
+      raiz.style.setProperty('--mp-destaque-texto', corTexto(a.destaque));
+    }
+    raiz.dataset.mypage = 'on';
+    /* Páginas publicadas trazem o título já escrito no HTML, para quem não corre JavaScript. */
+    const nome = dados.perfil.nomeArtistico;
+    const sufixo = document.documentElement.dataset.mpTitulo;
+    if (nome && !raiz.hasAttribute('data-mp-titulo-fixo')) {
+      document.title = nome + (sufixo ? ' · ' + sufixo : '') + ' · My Page';
+    }
+  }
+
+  /* ---------- imagens ---------- */
+  function aplicarImagens(dados) {
+    const mapa = dados.imagens || {};
+    for (const no of $$('[data-mp-img]')) {
+      const valor = mapa[no.dataset.mpImg];
+      if (!temValor(valor)) { if (no.dataset.mpVazio === 'esconder') esconder(no, true); continue; }
+      aplicar(no, valor, no.dataset.mpComo === 'fundo' ? 'fundo' : 'src');
+      if (no.tagName === 'IMG' && dados.perfil.nomeArtistico && !no.hasAttribute('data-mp-alt-fixo')) no.alt = dados.perfil.nomeArtistico;
+      esconder(no, false);
+    }
+    /* Onde existe logótipo, o nome em texto sai; onde não existe, fica o nome. */
+    const temLogo = temValor(mapa.logo);
+    for (const no of $$('[data-mp-se-logo]')) {
+      /* 'sr' mantém o nome para leitores de ecrã e motores de busca, só o tira da vista. */
+      if (no.dataset.mpSeLogo === 'sr') { no.classList.toggle('mp-oculto', temLogo); continue; }
+      esconder(no, no.dataset.mpSeLogo === 'sim' ? !temLogo : temLogo);
+    }
+  }
+
+  /* ---------- música e vídeo ---------- */
+  function aplicarPlayer(dados) {
+    const alvo = document.querySelector('[data-mp-player]');
+    if (!alvo) return;
+    const player = dados.musica && dados.musica.player;
+    if (!player || !player.embed) { esconder(alvo, true); return; }
+    const frame = document.createElement('iframe');
+    frame.src = player.embed;
+    frame.loading = 'lazy';
+    frame.title = (dados.perfil.nomeArtistico || 'Artista') + ' no ' + (player.plataforma || 'player');
+    frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    frame.setAttribute('frameborder', '0');
+    alvo.replaceChildren(frame);
+  }
+
+  /* ---------- booking ---------- */
+  const soDigitos = t => String(t || '').replace(/[^\d]/g, '');
+
+  function aplicarBooking(dados) {
+    const b = dados.booking || {};
+    const publico = b.mostrarContactoPublico && (b.telefone || b.email);
+    for (const no of $$('[data-mp-booking]')) {
+      const tipo = no.dataset.mpBooking;
+      if (tipo === 'whatsapp') {
+        if (!publico || !b.whatsapp || !b.telefone) { esconder(no, true); continue; }
+        aplicar(no, 'https://wa.me/' + soDigitos(b.telefone), 'href');
+      } else if (tipo === 'telefone') {
+        if (!publico || !b.telefone) { esconder(no, true); continue; }
+        no.href = 'tel:+' + soDigitos(b.telefone);
+        aplicar(no, b.telefone, 'text');
+        esconder(no, false);
+      } else if (tipo === 'email') {
+        if (!publico || !b.email) { esconder(no, true); continue; }
+        no.href = 'mailto:' + b.email;
+        aplicar(no, b.email, 'text');
+        esconder(no, false);
+      } else if (tipo === 'responsavel') {
+        if (!publico || !b.responsavel) { esconder(no, true); continue; }
+        aplicar(no, b.responsavel + (b.papel ? ' · ' + b.papel : ''), 'text');
+        esconder(no, false);
+      }
+    }
+  }
+
+  /* ---------- texto simples ---------- */
+  function aplicarTexto(dados) {
+    for (const no of $$('[data-mp]')) aplicar(no, ler(dados, no.dataset.mp), no.dataset.mpComo || 'text');
+    for (const no of $$('[data-mp-href]')) aplicar(no, ler(dados, no.dataset.mpHref), 'href');
+    for (const no of $$('[data-mp-quando]')) esconder(no, !temValor(ler(dados, no.dataset.mpQuando)));
+  }
+
+  /* ---------- ligação entre as duas páginas ----------
+     Com os dados embutidos na página não é preciso arrastar ?artista= no endereço. */
+  let dadosEmbutidos = false;
+
+  function aplicarNavegacao(dados) {
+    for (const no of $$('[data-mp-pagina]')) {
+      const destino = no.dataset.mpPagina;
+      if (dadosEmbutidos || !dados.slug) { no.href = destino; continue; }
+      const url = new URL(destino, location.href);
+      url.searchParams.set('artista', dados.slug);
+      no.href = url.pathname.split('/').pop() + url.search + url.hash;
+    }
+  }
+
+  /* ---------- marca ---------- */
+  function aplicarMarca(dados) {
+    const mostrar = dados.plano !== 'pro' && dados.plano !== 'premium';
+    for (const no of $$('[data-mp-marca]')) esconder(no, !mostrar);
+  }
+
+  /* ---------- pop up de fotografias e vídeos ----------
+     Qualquer elemento com data-mp-lightbox abre aqui. O conjunto para as setas
+     é o dos elementos irmãos com o mesmo tipo dentro do mesmo contentor. */
+  let caixa, palco, conjunto = [], indice = 0;
+
+  function construirCaixa() {
+    caixa = document.createElement('div');
+    caixa.className = 'mp-lightbox';
+    caixa.hidden = true;
+    caixa.innerHTML =
+      '<button class="mp-lb-fechar" type="button" aria-label="Fechar">&#10005;</button>' +
+      '<button class="mp-lb-passo mp-lb-anterior" type="button" aria-label="Anterior">&#8249;</button>' +
+      '<button class="mp-lb-passo mp-lb-seguinte" type="button" aria-label="Seguinte">&#8250;</button>' +
+      '<figure class="mp-lb-palco"><div class="mp-lb-media"></div><figcaption class="mp-lb-legenda"></figcaption>' +
+      '<div class="mp-lb-acoes">' +
+        '<a class="mp-lb-acao" data-acao="descarregar" href="#" download>' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Descarregar</span></a>' +
+        '<button class="mp-lb-acao" data-acao="partilhar" type="button" aria-expanded="false">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.3 10.8l7.4-4M8.3 13.2l7.4 4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Partilhar</span></button>' +
+        '<div class="mp-lb-redes" hidden>' +
+          '<a data-rede="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
+          '<a data-rede="facebook" target="_blank" rel="noopener noreferrer">Facebook</a>' +
+          '<a data-rede="x" target="_blank" rel="noopener noreferrer">X</a>' +
+          '<button type="button" data-rede="copiar">Copiar link</button>' +
+        '</div>' +
+      '</div></figure>';
+    document.body.append(caixa);
+    palco = caixa.querySelector('.mp-lb-media');
+    caixa.querySelector('.mp-lb-fechar').addEventListener('click', fechar);
+    caixa.querySelector('.mp-lb-anterior').addEventListener('click', e => { e.stopPropagation(); passo(-1); });
+    caixa.querySelector('.mp-lb-seguinte').addEventListener('click', e => { e.stopPropagation(); passo(1); });
+    const acoes = caixa.querySelector('.mp-lb-acoes');
+    acoes.addEventListener('click', e => e.stopPropagation());
+    acoes.querySelector('[data-acao="partilhar"]').addEventListener('click', partilhar);
+    acoes.querySelector('[data-rede="copiar"]').addEventListener('click', copiarLigacao);
+    caixa.addEventListener('click', e => { if (e.target === caixa || e.target.closest('.mp-lb-palco') === caixa.querySelector('.mp-lb-palco') && e.target.tagName !== 'IMG' && e.target.tagName !== 'IFRAME') fechar(); });
+    document.addEventListener('keydown', e => {
+      if (caixa.hidden) return;
+      if (e.key === 'Escape') fechar();
+      if (e.key === 'ArrowLeft') passo(-1);
+      if (e.key === 'ArrowRight') passo(1);
+    });
+  }
+
+  /* Sem data-mp-lightbox-src usamos a imagem que o elemento já mostra. */
+  const fonteDe = no => no.dataset.mpLightboxSrc
+    || (no.querySelector('img') && no.querySelector('img').getAttribute('src')) || '';
+
+  function mostrar(i) {
+    const no = conjunto[i];
+    if (!no) return;
+    indice = i;
+    const tipo = no.dataset.mpLightbox;
+    const fonte = fonteDe(no);
+    const legenda = no.dataset.mpLightboxLegenda || '';
+    if (tipo === 'video') {
+      const frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + fonte + '?autoplay=1&rel=0';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      frame.setAttribute('frameborder', '0');
+      frame.title = legenda || 'Vídeo';
+      palco.replaceChildren(frame);
+      palco.dataset.tipo = 'video';
+    } else {
+      const img = document.createElement('img');
+      img.src = fonte;
+      img.alt = legenda;
+      palco.replaceChildren(img);
+      palco.dataset.tipo = 'imagem';
+    }
+    caixa.querySelector('.mp-lb-legenda').textContent = legenda;
+    prepararAcoes(tipo === 'video' ? '' : fonte, legenda);
+    const varios = conjunto.length > 1;
+    caixa.querySelector('.mp-lb-anterior').hidden = !varios;
+    caixa.querySelector('.mp-lb-seguinte').hidden = !varios;
+  }
+
+  function passo(d) { mostrar((indice + d + conjunto.length) % conjunto.length); }
+
+  /* ---------- descarregar e partilhar ----------
+     No telemóvel, "Partilhar" abre o menu do próprio sistema, com o ficheiro da fotografia:
+     é por aí que se chega ao Instagram, que não aceita partilhas vindas de páginas web.
+     No computador aparecem WhatsApp, Facebook, X e copiar link. */
+  let fotoAtual = '', legendaAtual = '';
+
+  const nomeArtista = () => (window.__mpDados && window.__mpDados.perfil && window.__mpDados.perfil.nomeArtistico) || document.title;
+  const slugArtista = () => (window.__mpDados && window.__mpDados.slug) || 'foto';
+  const ligacaoPartilha = () => {
+    /* Uma fotografia embutida (data:) não tem endereço próprio: partilha-se a página. */
+    if (!fotoAtual || fotoAtual.startsWith('data:') || location.protocol === 'file:') return location.href.split('#')[0] + '#galeria';
+    return new URL(fotoAtual, location.href).href;
+  };
+
+  function prepararAcoes(fonte, legenda) {
+    fotoAtual = fonte; legendaAtual = legenda;
+    const acoes = caixa.querySelector('.mp-lb-acoes');
+    acoes.hidden = !fonte;
+    caixa.querySelector('.mp-lb-redes').hidden = true;
+    caixa.querySelector('[data-acao="partilhar"]').setAttribute('aria-expanded', 'false');
+    if (!fonte) return;
+    const baixar = acoes.querySelector('[data-acao="descarregar"]');
+    const extensao = (fonte.match(/\.(jpe?g|png|webp)(\?|$)/i) || [, 'jpg'])[1].replace('jpeg', 'jpg');
+    baixar.href = fonte;
+    baixar.setAttribute('download', slugArtista() + '-' + String(indice + 1).padStart(2, '0') + '.' + extensao);
+    const texto = nomeArtista() + (legenda ? ' · ' + legenda : '');
+    const url = ligacaoPartilha();
+    const redes = caixa.querySelector('.mp-lb-redes');
+    redes.querySelector('[data-rede="whatsapp"]').href = 'https://wa.me/?text=' + encodeURIComponent(texto + ' ' + url);
+    redes.querySelector('[data-rede="facebook"]').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    redes.querySelector('[data-rede="x"]').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(texto) + '&url=' + encodeURIComponent(url);
+  }
+
+  async function partilhar() {
+    const texto = nomeArtista() + (legendaAtual ? ' · ' + legendaAtual : '');
+    const url = ligacaoPartilha();
+    if (navigator.share) {
+      try {
+        const resposta = await fetch(fotoAtual);
+        const bolha = await resposta.blob();
+        const ficheiro = new File([bolha], slugArtista() + '.jpg', { type: bolha.type || 'image/jpeg' });
+        if (navigator.canShare && navigator.canShare({ files: [ficheiro] })) {
+          await navigator.share({ files: [ficheiro], title: nomeArtista(), text: texto });
+          return;
+        }
+        await navigator.share({ title: nomeArtista(), text: texto, url });
+        return;
+      } catch (erro) {
+        if (erro && erro.name === 'AbortError') return;
+      }
+    }
+    const redes = caixa.querySelector('.mp-lb-redes');
+    redes.hidden = !redes.hidden;
+    caixa.querySelector('[data-acao="partilhar"]').setAttribute('aria-expanded', String(!redes.hidden));
+  }
+
+  async function copiarLigacao(e) {
+    const botao = e.currentTarget;
+    try { await navigator.clipboard.writeText(ligacaoPartilha()); botao.textContent = 'Link copiado'; }
+    catch (_) { botao.textContent = ligacaoPartilha(); }
+    setTimeout(() => { botao.textContent = 'Copiar link'; }, 2200);
+  }
+
+  function fechar() {
+    caixa.hidden = true;
+    palco.replaceChildren();
+    document.body.style.overflow = '';
+  }
+
+  function abrir(no) {
+    const grupo = no.closest('[data-mp-lista]') || document;
+    /* Só entram nas setas os elementos que têm mesmo o que mostrar. */
+    conjunto = $$('[data-mp-lightbox="' + no.dataset.mpLightbox + '"]', grupo).filter(n => fonteDe(n));
+    if (!conjunto.length) conjunto = [no];
+    caixa.hidden = false;
+    document.body.style.overflow = 'hidden';
+    mostrar(conjunto.indexOf(no));
+  }
+
+  function ligarLightbox() {
+    if (!caixa) construirCaixa();
+    document.addEventListener('click', e => {
+      const no = e.target.closest('[data-mp-lightbox]');
+      if (!no || !fonteDe(no)) return;
+      e.preventDefault();
+      abrir(no);
+    });
+  }
+
+  /* ---------- ligações ----------
+     Um vídeo do YouTube abre sempre no pop up, venha de onde vier (discografia, palmarés).
+     Qualquer outra ligação para fora, ou para um PDF, abre numa aba nova e a página fica. */
+  function idYoutube(url) {
+    const m = String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    return m ? m[1] : '';
+  }
+
+  function tratarLigacoes() {
+    for (const a of $$('a[href]')) {
+      if (a.closest('.mp-lightbox')) continue;
+      const href = a.getAttribute('href');
+      const id = idYoutube(href);
+      if (id && !a.hasAttribute('data-mp-lightbox')) {
+        a.dataset.mpLightbox = 'video';
+        a.dataset.mpLightboxSrc = id;
+        if (!a.dataset.mpLightboxLegenda) a.dataset.mpLightboxLegenda = a.textContent.replace(/\s+/g, ' ').replace(/ver ↗/i, '').trim();
+        continue;
+      }
+      let externo = false;
+      try { const u = new URL(href, location.href); externo = /^https?:$/.test(u.protocol) && u.origin !== location.origin; } catch (_) {}
+      if (externo || /\.pdf(\?|#|$)/i.test(href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    }
+  }
+
+  /* ---------- campos derivados ----------
+     Calculados aqui para o ficheiro do artista só guardar o que uma pessoa escreveu. */
+  function derivar(dados) {
+    const p = dados.perfil || (dados.perfil = {});
+    p.local = [p.cidade, p.pais].filter(Boolean).join(' · ');
+    p.localCompleto = [p.cidade, p.pais].filter(Boolean).join(', ');
+    p.origemLinha = p.origem && p.origem !== p.pais ? p.origem : '';
+    p.generosLinha = (p.generos || []).join(' · ');
+    p.generoPrincipal = (p.generos || [])[0] || '';
+    p.rotuloBooking = 'Booking' + (dados.booking && dados.booking.responsavel ? ' · ' + dados.booking.responsavel : '');
+    for (const faixa of dados.discografia || []) faixa.linha = faixa.titulo + (faixa.com ? ' feat. ' + faixa.com : '');
+    for (const ligacao of dados.links || []) ligacao.icone = '#i-' + (ligacao.plataforma || 'link');
+    for (const foto of dados.galeria || []) {
+      if (foto.mini && foto.ficheiro) foto.srcset = foto.mini + ' 640w, ' + foto.ficheiro + ' 1400w';
+    }
+    /* A biografia continua a ser um texto só. Os capítulos são derivados: um por parágrafo,
+       com a marca e a fotografia na mesma posição, para a secção fixa poder acompanhar a leitura. */
+    const marcas = p.biografiaMarcas || [];
+    const fotos = (dados.biografiaFotos && dados.biografiaFotos.length ? dados.biografiaFotos
+      : (dados.galeria || []).map(f => f.ficheiro)).filter(Boolean);
+    p.capitulos = String(p.biografia || '').split(/\n{2,}/).map(t => t.trim()).filter(Boolean)
+      .map((texto, i) => ({ texto, marca: marcas[i] || '', foto: fotos.length ? fotos[i % fotos.length] : '',
+        indice: String(i + 1).padStart(2, '0') }));
+    return dados;
+  }
+
+  /* ---------- render ---------- */
+  function render(dados) {
+    derivar(dados);
+    aplicarAparencia(dados);
+    aplicarTexto(dados);
+    aplicarListas(dados);
+    aplicarPlayer(dados);
+    aplicarBooking(dados);
+    aplicarImagens(dados);
+    aplicarNavegacao(dados);
+    aplicarSeccoes(dados);
+    numerarSeccoes();
+    aplicarMarca(dados);
+    $$('[data-mp-demo]').forEach(no => esconder(no, true));
+    window.__mpDados = dados;
+    tratarLigacoes();
+    ligarLightbox();
+    document.dispatchEvent(new CustomEvent('mypage:artista', { detail: dados }));
+  }
+
+  async function arrancar() {
+    if (window.MY_PAGE_ARTISTA) { dadosEmbutidos = true; render(window.MY_PAGE_ARTISTA); return; }
+    const slug = new URLSearchParams(location.search).get('artista');
+    if (!slug || !/^[a-z0-9-]+$/.test(slug)) return;
+    try {
+      const resposta = await fetch('artistas/' + slug + '.json');
+      if (!resposta.ok) throw Error('HTTP ' + resposta.status);
+      render(await resposta.json());
+    } catch (erro) {
+      console.error('My Page · não foi possível carregar os dados do artista', erro);
+    }
+  }
+
+  window.MyPageArtista = { render, formatarData };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
+})();
+</script>
