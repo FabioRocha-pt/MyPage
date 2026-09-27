@@ -20,6 +20,9 @@ const ROUTES = [
   { path: "/templates/03", name: "template 03" },
   { path: "/templates/04", name: "template 04" },
   { path: "/templates/05", name: "template 05" },
+  // Template 02 · v1 with real content and its booking page. Needs `npm run db:seed:deekay`.
+  { path: "/p/deekay", name: "published page · deekay" },
+  { path: "/p/deekay/booking", name: "published booking page · deekay" },
 ];
 
 for (const route of ROUTES) {

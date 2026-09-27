@@ -1,5 +1,5 @@
 import { evaluatePalette } from "@/lib/colors";
-import { DEFAULT_SECTIONS, type PageSnapshot } from "@/lib/page-model";
+import { DEFAULT_SECTIONS, type PageSnapshot, type SnapshotImage } from "@/lib/page-model";
 import { templateOrDefault } from "./registry";
 
 /**
@@ -22,6 +22,22 @@ const DEMO_IMAGES = {
   gallery: "/landing/gallery-editorial.webp",
 };
 
+const demoImage = (url: string, alt: string, width = 1400, height = 1000): SnapshotImage => ({
+  mediaId: `demo-${url}`,
+  url,
+  width,
+  height,
+  alt,
+});
+
+const DEMO_GALLERY = [
+  demoImage("/landing/showcase-main.webp", "Palco de demonstração"),
+  demoImage("/landing/showcase-a.webp", "Retrato de demonstração", 1200, 1500),
+  demoImage("/landing/gallery-editorial.webp", "Imagem editorial de demonstração"),
+  demoImage("/landing/showcase-b.webp", "Cabine de demonstração"),
+  demoImage("/landing/gallery-experimental.webp", "Imagem experimental de demonstração"),
+];
+
 export function demoSnapshot(templateId: string): PageSnapshot {
   const template = templateOrDefault(templateId);
   const [background, text, accent] = template.colors;
@@ -36,7 +52,7 @@ export function demoSnapshot(templateId: string): PageSnapshot {
     profile: {
       displayName: "Nome do Artista",
       tagline: "Demonstração do template · conteúdo não real",
-      bio: "Este texto substitui a biografia do artista. Serve apenas para mostrar como o template trata blocos longos de texto, espaçamento e ritmo de leitura. O conteúdo real vem do editor.",
+      bio: "Este texto substitui a biografia do artista. Serve apenas para mostrar como o template trata blocos longos de texto, espaçamento e ritmo de leitura. O conteúdo real vem do editor.\n\nCada parágrafo é um capítulo. No template 02 a fotografia ao lado muda com o capítulo que está a ser lido.\n\nOs números, a discografia, o palmarés e a galeria também são de demonstração: nada disto representa um artista real.",
       city: "Praia",
       country: "Cabo Verde",
       genres: ["Afro House", "Amapiano", "Funaná"],
@@ -125,5 +141,30 @@ export function demoSnapshot(templateId: string): PageSnapshot {
     campaign: null,
     products: [],
     branding: { showMyPageBadge: true },
+    content: {
+      roleLine: "DJ · Produtor",
+      bioMarks: ["Hoje", "Capítulos", "Demonstração"],
+      bioPhotos: DEMO_GALLERY.slice(0, 3),
+      stats: [
+        { value: "12", label: "países de demonstração" },
+        { value: "2018", label: "ano de exemplo" },
+        { value: "40+", label: "datas fictícias" },
+      ],
+      discography: [
+        { title: "Tema de demonstração", with: "Convidado", url: null },
+        { title: "Outro tema", with: null, url: null },
+        { title: "Remix de exemplo", with: "Produtor", url: null },
+      ],
+      highlights: [
+        { title: "Festival de demonstração", detail: "Palco principal", type: "Festival", year: "2026", videoId: null, image: null },
+        { title: "Prémio de exemplo", detail: "Nomeação fictícia", type: "Nomeação", year: "2025", videoId: null, image: null },
+        { title: "Marco de exemplo", detail: "Conteúdo não real", type: "Destaque", year: null, videoId: null, image: null },
+      ],
+      gallery: DEMO_GALLERY.map((image) => ({ image, downloadUrl: image.url, caption: image.alt, credit: null })),
+      logoDark: null,
+      bookingContact: null,
+      rider: null,
+      documents: { presskit: null, rider: null, folder: null },
+    },
   };
 }

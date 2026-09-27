@@ -6,7 +6,9 @@ import {
   DEFAULT_SECTIONS,
   normaliseEditorOrder,
   normaliseSections,
+  sectionMeta,
   type PageSnapshot,
+  type SnapshotContent,
   type Section,
   type SnapshotAlbum,
   type SnapshotCampaign,
@@ -18,6 +20,7 @@ import {
   type SnapshotVideo,
 } from "./page-model";
 import { getEntitlement } from "./entitlements";
+import { readContent, youtubeId, youtubeThumbnail } from "./page-content";
 
 /**
  * Builds the public snapshot from the draft.
@@ -132,7 +135,7 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
   // publish. Doc 02: activation "deve depender da disponibilidade real e dos
   // direitos do plano, não apenas de uma checkbox."
   const effectiveSections = sections.map((section) => {
-    const tool = section.id === "hero" || section.id === "biography" ? null : section.id;
+    const tool = sectionMeta(section.id).tool;
     if (tool && section.enabled && !entitlement.tools.includes(tool)) {
       warnings.push(`A secção "${section.id}" está desativada: não está incluída no plano ${entitlement.label}.`);
       return { ...section, enabled: false };
@@ -437,6 +440,149 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
     }
   }
 
+  // --- Structured content ------------------------------------------------------
+
+  const content = readContent(draft.content);
+
+  const contentImageIds = [
+    ...content.bioPhotoIds,
+    ...content.gallery.map((item) => item.mediaId),
+    content.logoDarkMediaId,
+    content.rider.diagramMediaId,
+  ].filter((value): value is string => Boolean(value));
+
+  // Only public images are published: the page is read anonymously, and a
+  // private item would be a broken image for everyone but the owner.
+  const contentImages = contentImageIds.length
+    ? await db.media.findMany({
+        where: { id: { in: contentImageIds }, artistId, kind: "image", status: "ready" },
+        select: {
+          id: true,
+          title: true,
+          width: true,
+          height: true,
+          isPublic: true,
+          originalKey: true,
+          album: { select: { isPublic: true } },
+        },
+      })
+    : [];
+  const publicImage = new Map(
+    contentImages
+      .filter((row) => row.isPublic && (row.album === null || row.album.isPublic))
+      .map((row) => [row.id, row]),
+  );
+  const originalIsPublic = (mediaId: string) => {
+    const row = publicImage.get(mediaId);
+    return Boolean(row?.originalKey && row.album?.isPublic);
+  };
+  const contentImage = (mediaId: string | null) => (mediaId ? toImage(publicImage.get(mediaId)) : null);
+
+  const privateCount = new Set(contentImageIds.filter((mediaId) => !publicImage.has(mediaId))).size;
+  if (privateCount > 0) {
+    warnings.push(
+      `${privateCount} ${privateCount === 1 ? "fotografia escolhida é privada ou já não existe" : "fotografias escolhidas são privadas ou já não existem"} e não ${privateCount === 1 ? "aparece" : "aparecem"} na página. Torna-as públicas na biblioteca.`,
+    );
+  }
+
+  const gallery = enabled.has("gallery")
+    ? content.gallery.flatMap((item) => {
+        const image = contentImage(item.mediaId);
+        return image
+          ? [
+              {
+                image,
+                // The original is only downloadable from a public album (see the
+                // download route); anywhere else the display derivative is offered.
+                downloadUrl: mediaUrl(item.mediaId, originalIsPublic(item.mediaId) ? "download" : "view"),
+                caption: item.caption,
+                credit: item.credit,
+              },
+            ]
+          : [];
+      })
+    : [];
+
+  const highlights = enabled.has("highlights")
+    ? content.highlights.map((item) => {
+        const videoId = youtubeId(item.videoUrl);
+        return {
+          title: item.title,
+          detail: item.detail,
+          type: item.type,
+          year: item.year,
+          videoId,
+          image: videoId ? youtubeThumbnail(videoId) : null,
+        };
+      })
+    : [];
+
+  // Documents come from the press kit, so they follow the press tool and the
+  // album/file visibility rule instead of a second switch.
+  const documents: SnapshotContent["documents"] = { presskit: null, rider: null, folder: null };
+  if (entitlement.tools.includes("press")) {
+    const documentRows = await db.media.findMany({
+      where: {
+        artistId,
+        kind: "document",
+        status: "ready",
+        isPublic: true,
+        album: { isPublic: true, category: { in: ["epk", "tech-rider", "hospitality-rider"] } },
+      },
+      orderBy: { position: "asc" },
+      select: { id: true, album: { select: { category: true } } },
+    });
+    const firstIn = (...categories: string[]) =>
+      documentRows.find((row) => row.album && categories.includes(row.album.category));
+    const presskit = firstIn("epk");
+    const riderDoc = firstIn("tech-rider", "hospitality-rider");
+    documents.presskit = presskit ? mediaUrl(presskit.id, "download") : null;
+    documents.rider = riderDoc ? mediaUrl(riderDoc.id, "download") : null;
+
+    const folders = await db.pressLink.findMany({ where: { artistId, isPublic: true }, select: { category: true, url: true } });
+    documents.folder = (folders.find((row) => row.category === "epk") ?? folders[0])?.url ?? null;
+  }
+
+  const bookingContact =
+    content.booking.showPublic && (content.booking.phone || content.booking.email)
+      ? {
+          name: content.booking.contactName,
+          role: content.booking.contactRole,
+          phone: content.booking.phone,
+          email: content.booking.email,
+          whatsapp: content.booking.whatsapp && Boolean(content.booking.phone),
+        }
+      : null;
+
+  const rider =
+    content.rider.isPublic && (content.rider.technical.length || content.rider.hospitality.length)
+      ? {
+          technical: content.rider.technical,
+          notes: content.rider.notes,
+          diagram: contentImage(content.rider.diagramMediaId),
+          diagramCaption: content.rider.diagramCaption,
+          hospitality: content.rider.hospitality,
+          guestTickets: content.rider.guestTickets,
+          notices: content.rider.notices,
+        }
+      : null;
+
+  const snapshotContent: SnapshotContent = {
+    roleLine: content.roleLine,
+    bioMarks: content.bioMarks,
+    bioPhotos: content.bioPhotoIds
+      .map((mediaId) => contentImage(mediaId))
+      .filter((image): image is SnapshotImage => Boolean(image)),
+    stats: content.stats,
+    discography: enabled.has("music") ? content.discography : [],
+    highlights,
+    gallery,
+    logoDark: contentImage(content.logoDarkMediaId),
+    bookingContact,
+    rider,
+    documents,
+  };
+
   // --- Assemble --------------------------------------------------------------
 
   const snapshot: PageSnapshot = {
@@ -480,6 +626,7 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
     campaign,
     products,
     branding: { showMyPageBadge: !entitlement.removeBranding },
+    content: snapshotContent,
   };
 
   if (!artist.displayName.trim()) {

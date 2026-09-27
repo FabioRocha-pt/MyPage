@@ -13,7 +13,9 @@ import {
 } from "@/lib/page-model";
 import { DismissibleNotice } from "../DismissibleNotice";
 import { ToolRequestsManager, type ToolRequestRow } from "../ToolRequestsManager";
+import type { PageContent } from "@/lib/page-content";
 import { BasicCard } from "./BasicCard";
+import { DiscographyFields, GalleryCard, HighlightsCard, LogoDarkField, RiderCard, StoryFields } from "./ContentCards";
 import { PressCard } from "./PressCard";
 import { SelectionCard } from "./SelectionCard";
 import { VisualCard } from "./VisualCard";
@@ -55,6 +57,7 @@ export interface PageEditorProps {
   initialAppearance: EditorAppearance;
   initialEditorOrder: EditorCardId[];
   initialSections: Section[];
+  initialContent: PageContent;
   initialVersion: number;
   images: ImageOption[];
   links: LinkRow[];
@@ -128,6 +131,7 @@ export function PageEditor(props: PageEditorProps) {
   const [appearance, setAppearance] = useState(props.initialAppearance);
   const [editorOrder, setEditorOrder] = useState(props.initialEditorOrder);
   const [sections, setSections] = useState(alignedSections);
+  const [content, setContent] = useState(props.initialContent);
   const [links, setLinks] = useState(props.links);
   const [pressCategories, setPressCategories] = useState(props.pressCategories);
   const [albums, setAlbums] = useState(props.albums);
@@ -151,6 +155,11 @@ export function PageEditor(props: PageEditorProps) {
 
   function patchProfile(patch: Partial<EditorProfile>) {
     setProfile((current) => ({ ...current, ...patch }));
+    setDirty(true);
+  }
+
+  function patchContent(patch: Partial<PageContent>) {
+    setContent((current) => ({ ...current, ...patch }));
     setDirty(true);
   }
 
@@ -214,7 +223,7 @@ export function PageEditor(props: PageEditorProps) {
         contactEmail: profile.contactEmail || null,
         contactPhone: profile.contactPhone || null,
       },
-      draft: { ...appearance, editorOrder, sections },
+      draft: { ...appearance, editorOrder, sections, content },
     });
 
     if (!result.ok) {
@@ -290,7 +299,14 @@ export function PageEditor(props: PageEditorProps) {
               <details
                 className="accordion"
                 open={open === cardId}
-                onToggle={(event) => setOpen(event.currentTarget.open ? cardId : null)}
+                onToggle={(event) => {
+                  // Opening one card makes React close the previous one, whose
+                  // "toggle" event arrives afterwards. Only the card that is
+                  // still the open one may clear the state, or that late event
+                  // closes the card the artist just opened (and the #hash one).
+                  const isOpen = event.currentTarget.open;
+                  setOpen((current) => (isOpen ? cardId : current === cardId ? null : current));
+                }}
               >
                 <summary>
                   <span className="section-icon">{String(index + 1).padStart(2, "0")}</span>
@@ -322,6 +338,9 @@ export function PageEditor(props: PageEditorProps) {
                       onLinksChanged={setLinks}
                     />
                   )}
+                  {cardId === "basic" && (
+                    <StoryFields bio={profile.bio} content={content} images={props.images} onChange={patchContent} />
+                  )}
 
                   {cardId === "visual" && (
                     <VisualCard
@@ -333,6 +352,7 @@ export function PageEditor(props: PageEditorProps) {
                       onChange={patchAppearance}
                     />
                   )}
+                  {cardId === "visual" && <LogoDarkField content={content} images={props.images} onChange={patchContent} />}
 
                   {cardId === "press" && (
                     <PressCard
@@ -354,6 +374,11 @@ export function PageEditor(props: PageEditorProps) {
                       onToggle={(id) => toggleContent("music", id)}
                     />
                   )}
+                  {cardId === "music" && <DiscographyFields content={content} onChange={patchContent} />}
+
+                  {cardId === "gallery" && <GalleryCard content={content} images={props.images} onChange={patchContent} />}
+                  {cardId === "highlights" && <HighlightsCard content={content} onChange={patchContent} />}
+                  {cardId === "rider" && <RiderCard content={content} images={props.images} onChange={patchContent} />}
 
                   {cardId === "video" && (
                     <SelectionCard
@@ -401,7 +426,11 @@ export function PageEditor(props: PageEditorProps) {
                     {section.enabled ? "Visível" : "Oculta"}
                   </label>
                 ) : (
-                  <small title="Configuração visual, não é uma secção pública">Aparência</small>
+                  card.configuration ? (
+                    <small title="Configuração visual, não é uma secção pública">Aparência</small>
+                  ) : (
+                    <small title="Alimenta a página de booking do template 02">Página de booking</small>
+                  )
                 )}
                 <button
                   type="button"

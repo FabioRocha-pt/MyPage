@@ -12,6 +12,7 @@ import {
 } from "@/lib/api";
 import { evaluatePalette, normaliseHex } from "@/lib/colors";
 import { getArtistEntitlement } from "@/lib/entitlements";
+import { contentMediaIds, normaliseContent, readContent } from "@/lib/page-content";
 import { normaliseEditorOrder, normaliseSections } from "@/lib/page-model";
 import { readEditorOrder, readSections } from "@/lib/snapshot";
 
@@ -80,6 +81,7 @@ export const GET = handle(async (_request: Request, { params }: Params) => {
       logoMediaId: draft.logoMediaId,
       editorOrder: readEditorOrder(draft.editorOrder),
       sections: readSections(draft.sections),
+      content: readContent(draft.content),
       version: draft.version,
       updatedAt: draft.updatedAt.toISOString(),
     },
@@ -237,6 +239,26 @@ export const PUT = handle(async (request: Request, { params }: Params) => {
       }
     }
     draftData.sections = JSON.stringify(sections);
+  }
+
+  // --- Structured content ------------------------------------------------------
+
+  if (draftInput.content !== undefined) {
+    const content = normaliseContent(draftInput.content);
+    // Same cross-artist guard as the image references above: every id in the
+    // document must be an image in this artist's own library.
+    const ids = [...new Set(contentMediaIds(content))];
+    if (ids.length) {
+      const owned = await db.media.findMany({
+        where: { id: { in: ids }, artistId: id, kind: "image" },
+        select: { id: true },
+      });
+      const ownedIds = new Set(owned.map((row) => row.id));
+      if (ids.some((mediaId) => !ownedIds.has(mediaId))) {
+        throw new ApiError("Imagem não encontrada na biblioteca deste artista.", 404, "media_not_found");
+      }
+    }
+    draftData.content = JSON.stringify(content);
   }
 
   // --- Persist ---------------------------------------------------------------

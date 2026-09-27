@@ -311,6 +311,60 @@
   gap: 12px;
 }
 
+/* --- Discography, gallery, highlights (Template 02 · v1 content) --------- */
+
+.tpl-discography {
+  display: grid;
+  gap: 2px;
+  margin: 22px 0 0;
+  padding: 0 0 0 1.6em;
+}
+
+.tpl-discography li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--p-line);
+}
+
+.tpl-discography span {
+  color: var(--p-muted);
+}
+
+.tpl-highlight-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tpl-highlight-list li {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--p-line);
+  border-radius: 18px;
+  background: var(--p-surface);
+}
+
+.tpl-highlight-list strong {
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.tpl-highlight-list p {
+  margin: 0;
+  color: var(--p-muted);
+}
+
+.tpl-highlight-meta {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--p-accent);
+}
+
 /* --- Events --------------------------------------------------------------- */
 
 .tpl-event-list {

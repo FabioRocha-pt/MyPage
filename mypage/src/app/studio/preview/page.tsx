@@ -18,17 +18,21 @@ export const metadata: Metadata = { title: "Preview do rascunho", robots: { inde
  * This route is under /studio, behind the session guard: the draft is never
  * readable from the public side.
  */
-export default async function PreviewPage() {
+export default async function PreviewPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const { artist } = await requireStudioContext();
   const { snapshot, warnings, errors } = await buildSnapshot(artist.id, { mode: "preview" });
+  const page = (await searchParams).page === "booking" && snapshot.templateId === "02" ? "booking" : "home";
+  // Template 02 has a fixed top bar of its own, so the preview notice moves to
+  // the bottom of the screen instead of covering it.
+  const fixedBar = snapshot.templateId === "02";
 
   return (
     <>
       <div
         style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
+          ...(fixedBar
+            ? { position: "fixed" as const, left: 0, right: 0, bottom: 0, zIndex: 70 }
+            : { position: "sticky" as const, top: 0, zIndex: 50 }),
           display: "flex",
           alignItems: "center",
           gap: 16,
@@ -50,7 +54,11 @@ export default async function PreviewPage() {
         </Link>
       </div>
 
-      <PageRenderer snapshot={snapshot} />
+      <PageRenderer
+        snapshot={snapshot}
+        page={page}
+        links={{ home: "/studio/preview", booking: "/studio/preview?page=booking" }}
+      />
     </>
   );
 }

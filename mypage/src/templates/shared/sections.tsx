@@ -1,4 +1,4 @@
-import type { PageSnapshot, SectionId } from "@/lib/page-model";
+import { snapshotContent, type PageSnapshot, type SectionId } from "@/lib/page-model";
 import { pressCategoryLabel } from "@/lib/press";
 import { Embed } from "./Embed";
 import { BookingForm } from "./BookingForm";
@@ -92,6 +92,16 @@ export function SectionBiography({ snapshot }: { snapshot: PageSnapshot }) {
               )}
             </ul>
           )}
+          {snapshotContent(snapshot).stats.length > 0 && (
+            <ul className="tpl-facts tpl-stats">
+              {snapshotContent(snapshot).stats.map((stat, index) => (
+                <li key={index}>
+                  <span>{stat.label}</span>
+                  <strong>{stat.value}</strong>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>
@@ -100,7 +110,8 @@ export function SectionBiography({ snapshot }: { snapshot: PageSnapshot }) {
 
 export function SectionMusic({ snapshot }: { snapshot: PageSnapshot }) {
   const tracks = snapshot.tracks.filter((track) => track.placement !== "hero");
-  if (tracks.length === 0) return null;
+  const discography = snapshotContent(snapshot).discography;
+  if (tracks.length === 0 && discography.length === 0) return null;
 
   return (
     <section className="tpl-section tpl-music" id="music" aria-labelledby="music-title">
@@ -139,6 +150,25 @@ export function SectionMusic({ snapshot }: { snapshot: PageSnapshot }) {
             </article>
           ))}
         </div>
+        {discography.length > 0 && (
+          <ol className="tpl-discography">
+            {discography.map((item, index) => (
+              <li key={index}>
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <strong>{item.title}</strong>
+                    {item.with && <span> feat. {item.with}</span>} ↗
+                  </a>
+                ) : (
+                  <>
+                    <strong>{item.title}</strong>
+                    {item.with && <span> feat. {item.with}</span>}
+                  </>
+                )}
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
     </section>
   );
@@ -292,6 +322,72 @@ export function SectionPress({ snapshot }: { snapshot: PageSnapshot }) {
   );
 }
 
+export function SectionGallery({ snapshot }: { snapshot: PageSnapshot }) {
+  const gallery = snapshotContent(snapshot).gallery;
+  if (gallery.length === 0) return null;
+
+  return (
+    <section className="tpl-section tpl-gallery" id="gallery" aria-labelledby="gallery-title">
+      <div className="tpl-inner">
+        <header className="tpl-section-head">
+          <span className="tpl-eyebrow">Galeria</span>
+          <h2 id="gallery-title">Em palco</h2>
+        </header>
+        <div className="tpl-album-grid">
+          {gallery.map((item, index) => (
+            <figure key={index} className="tpl-album-item">
+              <a href={item.image.url} target="_blank" rel="noopener">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.image.url} alt={item.caption ?? item.image.alt} loading="lazy" />
+              </a>
+              {(item.caption || item.credit) && (
+                <figcaption>
+                  <span>{[item.caption, item.credit && `Foto: ${item.credit}`].filter(Boolean).join(" · ")}</span>
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function SectionHighlights({ snapshot }: { snapshot: PageSnapshot }) {
+  const highlights = snapshotContent(snapshot).highlights;
+  if (highlights.length === 0) return null;
+
+  return (
+    <section className="tpl-section tpl-highlights" id="highlights" aria-labelledby="highlights-title">
+      <div className="tpl-inner">
+        <header className="tpl-section-head">
+          <span className="tpl-eyebrow">Destaques</span>
+          <h2 id="highlights-title">Palmarés</h2>
+        </header>
+        <ul className="tpl-highlight-list">
+          {highlights.map((item, index) => (
+            <li key={index}>
+              <span className="tpl-highlight-meta">{[item.type, item.year].filter(Boolean).join(" · ")}</span>
+              <strong>{item.title}</strong>
+              {item.detail && <p>{item.detail}</p>}
+              {item.videoId && (
+                <a
+                  className="tpl-link"
+                  href={`https://www.youtube.com/watch?v=${item.videoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver vídeo ↗
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 export function SectionBooking({ snapshot }: { snapshot: PageSnapshot }) {
   if (!snapshot.booking.enabled) return null;
 
@@ -346,6 +442,8 @@ export const SECTION_COMPONENTS: Partial<
   biography: SectionBiography,
   music: SectionMusic,
   video: SectionVideo,
+  gallery: SectionGallery,
+  highlights: SectionHighlights,
   events: SectionEvents,
   press: SectionPress,
   booking: SectionBooking,

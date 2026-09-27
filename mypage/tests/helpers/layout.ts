@@ -58,7 +58,9 @@ const PROBE_HELPERS = `
     const cs = getComputedStyle(el);
     if (cs.display === "none" || cs.visibility === "hidden" || cs.opacity === "0") return false;
     const box = el.getBoundingClientRect();
-    return box.width > 0 && box.height > 0;
+    // A 1×1 box is the visually-hidden pattern (.sr-only, .mp-oculto): text for
+    // screen readers only, invisible by design rather than clipped.
+    return box.width > 1 && box.height > 1;
   };
 
   const isDecoration = (el) => {

@@ -3,6 +3,7 @@ import type { PageSnapshot } from "@/lib/page-model";
 import { SectionStack } from "./shared/sections";
 import { HEROES } from "./heroes";
 import { templateOrDefault } from "./registry";
+import { Template02, type T02Links } from "./t02/Template02";
 
 /**
  * The single entry point that turns a snapshot into a page.
@@ -23,12 +24,24 @@ import { templateOrDefault } from "./registry";
 export function PageRenderer({
   snapshot,
   scale,
+  page = "home",
+  links,
 }: {
   snapshot: PageSnapshot;
   /** Used by catalogue thumbnails to render a shrunken live preview. */
   scale?: number;
+  /** Template 02 has a second page: booking request, rider and hospitality. */
+  page?: "home" | "booking";
+  /** Where the page and its booking page live in the current context. */
+  links?: T02Links;
 }) {
   const template = templateOrDefault(snapshot.templateId);
+
+  // Template 02 · versão 1 has its own full renderer (hero and sections), from
+  // the Deekay handoff. The other four still share Hero + SectionStack.
+  if (template.id === "02") {
+    return <Template02 snapshot={snapshot} page={page} links={links ?? { home: "#top", booking: null }} />;
+  }
   const Hero = HEROES[template.id as keyof typeof HEROES] ?? HEROES["01"];
 
   const style = {

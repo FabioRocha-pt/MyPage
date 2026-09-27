@@ -43,14 +43,16 @@ export const TEMPLATES: TemplateDefinition[] = [
     },
   },
   {
+    // Template 02 · versão 1, from the Deekay handoff (deekay-v1-publicar.zip).
+    // It has its own renderer (src/templates/t02) instead of Hero + SectionStack.
     id: "02",
     name: "Editorial",
-    description: "Retrato dividido · editorial",
-    colors: ["#f4f0e8", "#201e1b", "#b83d18"],
+    description: "Retrato dividido · hero em vidro · palmarés",
+    colors: ["#0b0c0f", "#f6f2e9", "#c8452a"],
     imageGuidance: {
-      hero: "3:4 · vertical",
+      hero: "16:9 · horizontal",
       portrait: "3:4 · vertical",
-      note: "O hero é dividido ao meio: a fotografia ocupa 47% à esquerda. Fotografias verticais funcionam melhor.",
+      note: "O retrato ocupa 47% à esquerda do hero. O banner aparece desfocado por trás da cor de destaque e como fundo do palmarés. Um logótipo claro substitui o nome; o escuro vai no rótulo do vinil.",
     },
   },
   {

@@ -21,7 +21,10 @@ export const EDITOR_CARDS = [
   { id: "press", label: "Press kit", hint: "Álbuns, links partilhados e riders", configuration: false },
   { id: "music", label: "Músicas e sets", hint: "Conteúdos Muska ou ligações de outras plataformas", configuration: false },
   { id: "video", label: "Vídeos", hint: "Vídeos da biblioteca e links permitidos", configuration: false },
+  { id: "gallery", label: "Galeria", hint: "Fotografias com legenda, crédito e pop up", configuration: false },
+  { id: "highlights", label: "Palmarés e números", hint: "Prémios, festivais, marcos e números de destaque", configuration: false },
   { id: "booking", label: "Booking", hint: "Formulário de pedidos e disponibilidade", configuration: false },
+  { id: "rider", label: "Rider e contacto de booking", hint: "Rider técnico, hospitalidade e quem responde aos pedidos", configuration: false },
   { id: "events", label: "Eventos · Muska", hint: "Escolhe os eventos que aparecem na página", configuration: false },
   { id: "donations", label: "Donativos", hint: "Campanha de apoio e progresso", configuration: false },
   { id: "store", label: "Merchandising", hint: "Produtos digitais e físicos", configuration: false },
@@ -43,6 +46,8 @@ export const SECTION_TYPES = [
   { id: "press", label: "Press kit", pinned: false, tool: "press" },
   { id: "music", label: "Músicas e sets", pinned: false, tool: "music" },
   { id: "video", label: "Vídeos", pinned: false, tool: "video" },
+  { id: "gallery", label: "Galeria", pinned: false, tool: null },
+  { id: "highlights", label: "Palmarés", pinned: false, tool: null },
   { id: "booking", label: "Booking", pinned: false, tool: "booking" },
   { id: "events", label: "Eventos", pinned: false, tool: "events" },
   { id: "donations", label: "Donativos", pinned: false, tool: "donations" },
@@ -242,6 +247,47 @@ export interface SnapshotCampaign {
   donors: Array<{ name: string; amountMinor: number; message: string | null }>;
 }
 
+/**
+ * Resolved `PageContent` (src/lib/page-content.ts): media ids become public
+ * URLs, private items are dropped, and the two opt-in blocks — rider and
+ * booking contact — are null unless the artist made them public.
+ */
+export interface SnapshotContent {
+  roleLine: string | null;
+  bioMarks: string[];
+  bioPhotos: SnapshotImage[];
+  stats: Array<{ value: string; label: string }>;
+  discography: Array<{ title: string; with: string | null; url: string | null }>;
+  highlights: Array<{
+    title: string;
+    detail: string | null;
+    type: string | null;
+    year: string | null;
+    videoId: string | null;
+    image: string | null;
+  }>;
+  gallery: Array<{ image: SnapshotImage; downloadUrl: string; caption: string | null; credit: string | null }>;
+  logoDark: SnapshotImage | null;
+  bookingContact: {
+    name: string | null;
+    role: string | null;
+    phone: string | null;
+    email: string | null;
+    whatsapp: boolean;
+  } | null;
+  rider: {
+    technical: Array<{ qty: string; item: string }>;
+    notes: string[];
+    diagram: SnapshotImage | null;
+    diagramCaption: string | null;
+    hospitality: Array<{ qty: string; item: string }>;
+    guestTickets: string | null;
+    notices: string[];
+  } | null;
+  /** Public documents found in the press kit, by category. */
+  documents: { presskit: string | null; rider: string | null; folder: string | null };
+}
+
 export interface PageSnapshot {
   version: number;
   publishedAt: string;
@@ -284,4 +330,24 @@ export interface PageSnapshot {
   campaign: SnapshotCampaign | null;
   products: SnapshotProduct[];
   branding: { showMyPageBadge: boolean };
+  /** Absent on snapshots published before Template 02 · v1. Read with `snapshotContent`. */
+  content?: SnapshotContent;
+}
+
+export const EMPTY_SNAPSHOT_CONTENT: SnapshotContent = {
+  roleLine: null,
+  bioMarks: [],
+  bioPhotos: [],
+  stats: [],
+  discography: [],
+  highlights: [],
+  gallery: [],
+  logoDark: null,
+  bookingContact: null,
+  rider: null,
+  documents: { presskit: null, rider: null, folder: null },
+};
+
+export function snapshotContent(snapshot: PageSnapshot): SnapshotContent {
+  return { ...EMPTY_SNAPSHOT_CONTENT, ...snapshot.content };
 }

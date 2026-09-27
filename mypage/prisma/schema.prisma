@@ -142,6 +142,10 @@ model PageDraft {
   editorOrder String @default("[]")
   /// JSON Section[] · public page sections with enabled/position/contentIds.
   sections    String @default("[]")
+  /// JSON PageContent (src/lib/page-content.ts) · structured content that has no
+  /// table of its own: biography chapters, numbers, discography, highlights,
+  /// gallery, rider and the public booking contact. Normalised on every write.
+  content     String @default("{}")
 
   /// Bumped on every save. Sent back by the client for optimistic-concurrency checks.
   version   Int      @default(1)

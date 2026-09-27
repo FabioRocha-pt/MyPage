@@ -7,6 +7,7 @@ import type {
   SelectableItem,
 } from "@/components/studio/editor/types";
 import { db } from "@/lib/db";
+import { readContent } from "@/lib/page-content";
 import { normaliseEditorOrder, normaliseSections } from "@/lib/page-model";
 import { PLATFORMS, getPlatform, resolveEmbed } from "@/lib/platforms";
 import { PRESS_CATEGORIES } from "@/lib/press";
@@ -136,6 +137,7 @@ export default async function EditorPage() {
       initialAppearance={appearance}
       initialEditorOrder={normaliseEditorOrder(safeParse(record.editorOrder))}
       initialSections={normaliseSections(safeParse(record.sections))}
+      initialContent={readContent(record.content)}
       initialVersion={record.version}
       images={images.map((image) => ({
         id: image.id,

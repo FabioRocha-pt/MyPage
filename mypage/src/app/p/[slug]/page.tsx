@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
-import type { PageSnapshot } from "@/lib/page-model";
+import { loadPublishedSnapshot } from "@/lib/published";
 import { PageRenderer } from "@/templates/PageRenderer";
 import "@/styles/templates.css";
 
@@ -21,18 +20,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-async function loadSnapshot(slug: string): Promise<PageSnapshot | null> {
-  const published = await db.publishedPage.findFirst({
-    where: { slug: slug.toLowerCase(), isLive: true },
-    select: { snapshot: true },
-  });
-  if (!published) return null;
-  try {
-    return JSON.parse(published.snapshot) as PageSnapshot;
-  } catch {
-    return null;
-  }
-}
+const loadSnapshot = loadPublishedSnapshot;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -99,7 +87,10 @@ export default async function PublicPage({ params }: Props) {
           }),
         }}
       />
-      <PageRenderer snapshot={snapshot} />
+      <PageRenderer
+        snapshot={snapshot}
+        links={{ home: `/p/${snapshot.slug}`, booking: `/p/${snapshot.slug}/booking` }}
+      />
     </>
   );
 }
