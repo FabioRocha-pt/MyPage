@@ -521,3 +521,13 @@ html:has(.t02){scroll-behavior:smooth}
 .t02 .mp-esquema {
   overflow: hidden;
 }
+
+/* Gallery videos (from the Template 01 · v1 handoff, where the gallery gained
+   them): cover with a play button, a coloured fallback when YouTube is out. */
+.t02 .mp-foto-play{display:none}
+.t02 .mp-foto[data-mp-lightbox="video"]{cursor:pointer}
+.t02 .mp-foto[data-mp-lightbox="video"] .mp-foto-play{display:grid;place-items:center;position:absolute;left:50%;top:50%;translate:-50% -50%;width:74px;height:74px;border-radius:50%;font-size:22px;padding-left:4px;color:var(--mp-fundo);background:color-mix(in srgb,var(--mp-destaque) 88%,transparent);box-shadow:0 12px 34px rgba(0,0,0,.35);backdrop-filter:blur(6px);transition:scale .3s;pointer-events:none}
+.t02 .mp-foto[data-mp-lightbox="video"]:hover .mp-foto-play{scale:1.08}
+.t02 .mp-foto[data-mp-lightbox="video"] figcaption{opacity:1}
+.t02 .mp-foto.mp-sem-miniatura{background:radial-gradient(120% 90% at 30% 20%,color-mix(in srgb,var(--mp-destaque) 38%,transparent),transparent 70%),color-mix(in srgb,var(--mp-texto) 6%,var(--mp-fundo))}
+.t02 .mp-foto.mp-sem-miniatura img{visibility:hidden}

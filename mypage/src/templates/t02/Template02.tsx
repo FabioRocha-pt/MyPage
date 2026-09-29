@@ -6,7 +6,21 @@ import { DonateBlock } from "../shared/DonateBlock";
 import { StoreBlock } from "../shared/StoreBlock";
 import { IconSprite, iconFor } from "./icons";
 import "@/styles/template-02.css";
-import { T02Bio, T02BookingForm, T02MenuButton, T02Motion, type T02Chapter } from "./T02Client";
+import { T02Bio, T02BookingForm, T02MenuButton, T02Motion } from "./T02Client";
+import {
+  ORIGIN,
+  Words,
+  chaptersOf,
+  external,
+  hasContent,
+  place,
+  playerOf,
+  splitDate,
+  youtubeEmbed,
+  type HandoffLinks,
+} from "../handoff/common";
+
+export type T02Links = HandoffLinks;
 
 /**
  * Template 02 · versão 1 — from the Deekay handoff (deekay-v1-publicar.zip).
@@ -32,48 +46,10 @@ import { T02Bio, T02BookingForm, T02MenuButton, T02Motion, type T02Chapter } fro
  *   - The footer credit follows the plan's branding entitlement.
  */
 
-export interface T02Links {
-  home: string;
-  /** The booking page. Null where it does not exist (the catalogue demo). */
-  booking: string | null;
-}
-
 interface Props {
   snapshot: PageSnapshot;
   page: "home" | "booking";
   links: T02Links;
-}
-
-const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || "/";
-
-function external(url: string | null | undefined) {
-  return url && /^https?:/i.test(url) ? { target: "_blank", rel: "noopener noreferrer" } : {};
-}
-
-/** Title split word by word on the server, as `partirPalavras` did in the browser. */
-function Words({ lines }: { lines: string[] }) {
-  let n = 0;
-  return (
-    <>
-      {lines.map((line, i) => (
-        <span key={i}>
-          {i > 0 && <br />}
-          {line
-            .split(/(\s+)/)
-            .filter(Boolean)
-            .map((word, j) =>
-              /^\s+$/.test(word) ? (
-                word
-              ) : (
-                <span className="mp-palavra" key={j}>
-                  <span style={{ transitionDelay: `${n++ * 70}ms` }}>{word}</span>
-                </span>
-              ),
-            )}
-        </span>
-      ))}
-    </>
-  );
 }
 
 function Head({ number, label, lines }: { number: string | null; label: string; lines: string[] }) {
@@ -84,54 +60,6 @@ function Head({ number, label, lines }: { number: string | null; label: string; 
         <Words lines={lines} />
       </h2>
     </div>
-  );
-}
-
-function place(parts: Array<string | null | undefined>, sep = " · ") {
-  return parts.filter(Boolean).join(sep);
-}
-
-function splitDate(iso: string, timezone: string) {
-  try {
-    const date = new Date(iso);
-    return {
-      day: new Intl.DateTimeFormat("pt-PT", { day: "2-digit", timeZone: timezone }).format(date),
-      month: new Intl.DateTimeFormat("pt-PT", { month: "short", timeZone: timezone })
-        .format(date)
-        .replace(".", "")
-        .toUpperCase(),
-    };
-  } catch {
-    return { day: "--", month: "---" };
-  }
-}
-
-// --- Data derived for the template ---------------------------------------------
-
-function chaptersOf(snapshot: PageSnapshot, content: SnapshotContent): T02Chapter[] {
-  const photos = content.bioPhotos.length
-    ? content.bioPhotos
-    : [...content.gallery.map((item) => item.image), snapshot.images.portrait].filter((image) => image !== null);
-  return (snapshot.profile.bio ?? "")
-    .split(/\n{2,}/)
-    .map((text) => text.trim())
-    .filter(Boolean)
-    .map((text, i) => {
-      const photo = photos.length ? photos[i % photos.length] : null;
-      return {
-        text,
-        mark: content.bioMarks[i] ?? "",
-        photo: photo ? { url: photo.url, alt: photo.alt } : null,
-      };
-    });
-}
-
-function playerOf(snapshot: PageSnapshot) {
-  // The artist player first (Spotify "artista"), then any embeddable track.
-  return (
-    snapshot.tracks.find((track) => track.embed && track.embed.src.includes("/embed/artist/")) ??
-    snapshot.tracks.find((track) => track.embed && track.platform !== "youtube") ??
-    null
   );
 }
 
@@ -169,36 +97,6 @@ const ANCHOR: Partial<Record<SectionId, string>> = {
   donations: "apoiar",
   store: "loja",
 };
-
-/** Whether a section has anything to show; the numbering skips the ones that do not. */
-function hasContent(id: SectionId, { snapshot, content }: Omit<Ctx, "number">): boolean {
-  switch (id) {
-    case "biography":
-      return Boolean(snapshot.profile.bio?.trim());
-    case "music":
-      return snapshot.tracks.length > 0 || content.discography.length > 0;
-    case "video":
-      return snapshot.videos.length > 0;
-    case "gallery":
-      return content.gallery.length > 0;
-    case "highlights":
-      return content.highlights.length > 0;
-    case "events":
-      return snapshot.events.length > 0;
-    case "press":
-      return Boolean(
-        content.documents.presskit || content.documents.rider || content.documents.folder || snapshot.press.links.length,
-      );
-    case "booking":
-      return snapshot.booking.enabled || Boolean(content.bookingContact);
-    case "donations":
-      return Boolean(snapshot.campaign);
-    case "store":
-      return snapshot.products.length > 0;
-    default:
-      return false;
-  }
-}
 
 function Story({ snapshot, content, number }: Ctx) {
   return (
@@ -330,10 +228,10 @@ function Gallery({ content, number }: Ctx) {
                 className="mp-foto"
                 key={i}
                 tabIndex={0}
-                data-mp-lightbox="imagem"
-                data-mp-lightbox-src={item.image.url}
+                data-mp-lightbox={item.videoId ? "video" : "imagem"}
+                data-mp-lightbox-src={item.videoId ? youtubeEmbed(item.videoId) : item.image.url}
                 data-mp-lightbox-legenda={caption}
-                data-mp-lightbox-download={item.downloadUrl}
+                data-mp-lightbox-download={item.downloadUrl ?? undefined}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -343,6 +241,11 @@ function Gallery({ content, number }: Ctx) {
                   height={item.image.height ?? undefined}
                   loading="lazy"
                 />
+                {item.videoId && (
+                  <span className="mp-foto-play" aria-hidden="true">
+                    ▶
+                  </span>
+                )}
                 {caption && <figcaption>{caption}</figcaption>}
               </figure>
             );

@@ -254,10 +254,11 @@ export interface SnapshotCampaign {
  */
 export interface SnapshotContent {
   roleLine: string | null;
+  nickname: string | null;
   bioMarks: string[];
   bioPhotos: SnapshotImage[];
   stats: Array<{ value: string; label: string }>;
-  discography: Array<{ title: string; with: string | null; url: string | null }>;
+  discography: Array<{ title: string; with: string | null; year: string | null; url: string | null }>;
   highlights: Array<{
     title: string;
     detail: string | null;
@@ -266,8 +267,19 @@ export interface SnapshotContent {
     videoId: string | null;
     image: string | null;
   }>;
-  gallery: Array<{ image: SnapshotImage; downloadUrl: string; caption: string | null; credit: string | null }>;
+  /**
+   * Photos and YouTube videos. A video carries `videoId`, its YouTube cover as
+   * `image` (mediaId "") and no download.
+   */
+  gallery: Array<{
+    image: SnapshotImage;
+    downloadUrl: string | null;
+    caption: string | null;
+    credit: string | null;
+    videoId: string | null;
+  }>;
   logoDark: SnapshotImage | null;
+  logoHero: SnapshotImage | null;
   bookingContact: {
     name: string | null;
     role: string | null;
@@ -336,6 +348,7 @@ export interface PageSnapshot {
 
 export const EMPTY_SNAPSHOT_CONTENT: SnapshotContent = {
   roleLine: null,
+  nickname: null,
   bioMarks: [],
   bioPhotos: [],
   stats: [],
@@ -343,6 +356,7 @@ export const EMPTY_SNAPSHOT_CONTENT: SnapshotContent = {
   highlights: [],
   gallery: [],
   logoDark: null,
+  logoHero: null,
   bookingContact: null,
   rider: null,
   documents: { presskit: null, rider: null, folder: null },

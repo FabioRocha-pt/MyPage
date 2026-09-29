@@ -10,6 +10,11 @@ import { normaliseUrl } from "./platforms";
  * item the artist uploads and reuses, so they live as one validated JSON
  * document on the draft instead of seven new tables.
  *
+ * Template 01 · versão 1 (the Kevy page, same data contract) added three
+ * optional fields: a nickname under the name, a hero logo different from the
+ * bar's, and YouTube videos inside the gallery. Discography entries gained a
+ * year for the same page.
+ *
  * Media is always referenced by id, never by URL, so the snapshot builder can
  * apply the same public/private rule it applies everywhere else.
  *
@@ -28,6 +33,7 @@ export interface StatItem {
 export interface DiscographyItem {
   title: string;
   with: string | null;
+  year: string | null;
   url: string | null;
 }
 
@@ -40,8 +46,10 @@ export interface HighlightItem {
   videoUrl: string | null;
 }
 
+/** A photo, or a YouTube video (`videoUrl`, with `mediaId` null) that opens in the pop up. */
 export interface GalleryItem {
-  mediaId: string;
+  mediaId: string | null;
+  videoUrl: string | null;
   caption: string | null;
   /** Photographer credit. The handoff lists the credits as still to confirm. */
   credit: string | null;
@@ -55,6 +63,8 @@ export interface RiderLine {
 export interface PageContent {
   /** Short line above the name in the hero, e.g. "DJ · Produtor". */
   roleLine: string | null;
+  /** Nickname shown in quotes under the name, e.g. “The Machine”. */
+  nickname: string | null;
   /** One mark per biography paragraph ("2018 · Praia"). */
   bioMarks: string[];
   /** One photo per biography paragraph, cycled when there are fewer photos. */
@@ -65,6 +75,8 @@ export interface PageContent {
   gallery: GalleryItem[];
   /** Logo for light surfaces; sits on the vinyl label in Template 02. */
   logoDarkMediaId: string | null;
+  /** Hero logo when it differs from the bar's (Template 01: a stacked mark). */
+  logoHeroMediaId: string | null;
   booking: {
     contactName: string | null;
     contactRole: string | null;
@@ -87,6 +99,7 @@ export interface PageContent {
 
 export const EMPTY_CONTENT: PageContent = {
   roleLine: null,
+  nickname: null,
   bioMarks: [],
   bioPhotoIds: [],
   stats: [],
@@ -94,6 +107,7 @@ export const EMPTY_CONTENT: PageContent = {
   highlights: [],
   gallery: [],
   logoDarkMediaId: null,
+  logoHeroMediaId: null,
   booking: { contactName: null, contactRole: null, phone: null, email: null, whatsapp: false, showPublic: false },
   rider: {
     isPublic: false,
@@ -175,6 +189,7 @@ export function normaliseContent(input: unknown): PageContent {
 
   return {
     roleLine: text(raw.roleLine, 60),
+    nickname: text(raw.nickname, 60),
     bioMarks: arr(raw.bioMarks)
       .map((entry) => text(entry, 40) ?? "")
       .slice(0, CONTENT_LIMITS.bioMarks),
@@ -194,7 +209,7 @@ export function normaliseContent(input: unknown): PageContent {
       .map((entry) => {
         const row = obj(entry);
         const title = text(row.title, 120);
-        return title ? { title, with: text(row.with, 120), url: url(row.url) } : null;
+        return title ? { title, with: text(row.with, 120), year: text(row.year, 12), url: url(row.url) } : null;
       })
       .filter((entry): entry is DiscographyItem => Boolean(entry))
       .slice(0, CONTENT_LIMITS.discography),
@@ -218,11 +233,15 @@ export function normaliseContent(input: unknown): PageContent {
       .map((entry) => {
         const row = obj(entry);
         const mediaId = id(row.mediaId);
-        return mediaId ? { mediaId, caption: text(row.caption, 200), credit: text(row.credit, 120) } : null;
+        const videoUrl = mediaId ? null : url(row.videoUrl);
+        return mediaId || youtubeId(videoUrl)
+          ? { mediaId, videoUrl, caption: text(row.caption, 200), credit: text(row.credit, 120) }
+          : null;
       })
       .filter((entry): entry is GalleryItem => Boolean(entry))
       .slice(0, CONTENT_LIMITS.gallery),
     logoDarkMediaId: id(raw.logoDarkMediaId),
+    logoHeroMediaId: id(raw.logoHeroMediaId),
     booking: {
       contactName: text(booking.contactName, 80),
       contactRole: text(booking.contactRole, 60),
@@ -258,6 +277,7 @@ export function contentMediaIds(content: PageContent): string[] {
     ...content.bioPhotoIds,
     ...content.gallery.map((item) => item.mediaId),
     content.logoDarkMediaId,
+    content.logoHeroMediaId,
     content.rider.diagramMediaId,
   ].filter((value): value is string => Boolean(value));
 }

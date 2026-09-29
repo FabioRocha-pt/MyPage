@@ -52,7 +52,7 @@ export function demoSnapshot(templateId: string): PageSnapshot {
     profile: {
       displayName: "Nome do Artista",
       tagline: "Demonstração do template · conteúdo não real",
-      bio: "Este texto substitui a biografia do artista. Serve apenas para mostrar como o template trata blocos longos de texto, espaçamento e ritmo de leitura. O conteúdo real vem do editor.\n\nCada parágrafo é um capítulo. No template 02 a fotografia ao lado muda com o capítulo que está a ser lido.\n\nOs números, a discografia, o palmarés e a galeria também são de demonstração: nada disto representa um artista real.",
+      bio: "Este texto substitui a biografia do artista. Serve apenas para mostrar como o template trata blocos longos de texto, espaçamento e ritmo de leitura. O conteúdo real vem do editor.\n\nCada parágrafo é um capítulo. Nos templates 01 e 02 a fotografia ao lado muda com o capítulo que está a ser lido.\n\nOs números, a discografia, o palmarés e a galeria também são de demonstração: nada disto representa um artista real.",
       city: "Praia",
       country: "Cabo Verde",
       genres: ["Afro House", "Amapiano", "Funaná"],
@@ -143,6 +143,7 @@ export function demoSnapshot(templateId: string): PageSnapshot {
     branding: { showMyPageBadge: true },
     content: {
       roleLine: "DJ · Produtor",
+      nickname: null,
       bioMarks: ["Hoje", "Capítulos", "Demonstração"],
       bioPhotos: DEMO_GALLERY.slice(0, 3),
       stats: [
@@ -151,17 +152,18 @@ export function demoSnapshot(templateId: string): PageSnapshot {
         { value: "40+", label: "datas fictícias" },
       ],
       discography: [
-        { title: "Tema de demonstração", with: "Convidado", url: null },
-        { title: "Outro tema", with: null, url: null },
-        { title: "Remix de exemplo", with: "Produtor", url: null },
+        { title: "Tema de demonstração", with: "Convidado", year: "2026", url: null },
+        { title: "Outro tema", with: null, year: "2025", url: null },
+        { title: "Remix de exemplo", with: "Produtor", year: "2024", url: null },
       ],
       highlights: [
         { title: "Festival de demonstração", detail: "Palco principal", type: "Festival", year: "2026", videoId: null, image: null },
         { title: "Prémio de exemplo", detail: "Nomeação fictícia", type: "Nomeação", year: "2025", videoId: null, image: null },
         { title: "Marco de exemplo", detail: "Conteúdo não real", type: "Destaque", year: null, videoId: null, image: null },
       ],
-      gallery: DEMO_GALLERY.map((image) => ({ image, downloadUrl: image.url, caption: image.alt, credit: null })),
+      gallery: DEMO_GALLERY.map((image) => ({ image, downloadUrl: image.url, caption: image.alt, credit: null, videoId: null })),
       logoDark: null,
+      logoHero: null,
       bookingContact: null,
       rider: null,
       documents: { presskit: null, rider: null, folder: null },

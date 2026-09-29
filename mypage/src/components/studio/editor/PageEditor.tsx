@@ -429,7 +429,7 @@ export function PageEditor(props: PageEditorProps) {
                   card.configuration ? (
                     <small title="Configuração visual, não é uma secção pública">Aparência</small>
                   ) : (
-                    <small title="Alimenta a página de booking do template 02">Página de booking</small>
+                    <small title="Alimenta a página de booking dos templates 01 e 02">Página de booking</small>
                   )
                 )}
                 <button

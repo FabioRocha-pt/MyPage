@@ -336,7 +336,11 @@ export function SectionGallery({ snapshot }: { snapshot: PageSnapshot }) {
         <div className="tpl-album-grid">
           {gallery.map((item, index) => (
             <figure key={index} className="tpl-album-item">
-              <a href={item.image.url} target="_blank" rel="noopener">
+              <a
+                href={item.videoId ? `https://www.youtube.com/watch?v=${item.videoId}` : item.image.url}
+                target="_blank"
+                rel="noopener"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={item.image.url} alt={item.caption ?? item.image.alt} loading="lazy" />
               </a>

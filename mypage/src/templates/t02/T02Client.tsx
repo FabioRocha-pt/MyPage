@@ -1,9 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 /**
- * Template 02 · versão 1 — the interactive half.
+ * Template 02 · versão 1 — the interactive half. Template 01 · versão 1 (the
+ * Kevy handoff) runs on the same engine, so it uses these components too, with
+ * its own selector lists (`T01_MOTION`) and the menu panel outside the bar.
  *
  * Ported from the handoff's two scripts: the renderer's pop up ("pop up de
  * fotografias e vídeos", with descarregar/partilhar) and the motion file
@@ -21,29 +24,50 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * router refresh can never find nodes React did not create.
  */
 
-const STAGGER_GROUPS =
-  ".mp-galeria, .video-grid, .mp-faixas, .mp-palmares-grelha, .mp-numeros, .mp-grelha, .mp-rider-lista, .mp-notas, .mp-descargas, .assets, .mp-sociais, .footer-links";
-const MASKS = ".mp-foto, .video-frame, .mp-esquema";
-const TITLES = ".head h2, .booking h2, .press-copy h2";
+export interface MotionSelectors {
+  groups: string;
+  masks: string;
+  titles: string;
+}
+
+const T02_MOTION: MotionSelectors = {
+  groups:
+    ".mp-galeria, .video-grid, .mp-faixas, .mp-palmares-grelha, .mp-numeros, .mp-grelha, .mp-rider-lista, .mp-notas, .mp-descargas, .assets, .mp-sociais, .footer-links",
+  masks: ".mp-foto, .video-frame, .mp-esquema",
+  titles: ".head h2, .booking h2, .press-copy h2",
+};
+
+/** From the Kevy handoff's motion file: the same engine, more of the page animates. */
+export const T01_MOTION: MotionSelectors = {
+  groups:
+    ".mp-galeria, .video-grid, .mp-videos-01, .mp-faixas, .mp-palmares-grelha, .mp-numeros, .mp-grelha, .mp-rider-lista, .mp-notas, .mp-descargas, .mp-press-01, .assets, .mp-sociais, .hero-social, .events, .footer-links",
+  masks: ".mp-foto, .video-frame, .mp-esquema, .mp-artwork",
+  titles: ".head h2, .section-head h2, .booking h2, .press-copy h2",
+};
 
 function reducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 function pageRoot(node: Element | null): HTMLElement | null {
-  return (node?.closest(".t02") as HTMLElement | null) ?? null;
+  return (node?.closest(".t01, .t02") as HTMLElement | null) ?? null;
 }
 
 // --- Motion ------------------------------------------------------------------
 
-export function T02Motion() {
+export function T02Motion({ selectors = T02_MOTION }: { selectors?: MotionSelectors }) {
+  const { groups: STAGGER_GROUPS, masks: MASKS, titles: TITLES } = selectors;
   const anchor = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const root = pageRoot(anchor.current);
     if (!root) return;
     const cleanups: Array<() => void> = [];
-    const on = <K extends keyof WindowEventMap>(type: K, fn: (e: WindowEventMap[K]) => void, opts?: AddEventListenerOptions) => {
+    const on = <K extends keyof WindowEventMap>(
+      type: K,
+      fn: (e: WindowEventMap[K]) => void,
+      opts?: AddEventListenerOptions,
+    ) => {
       window.addEventListener(type, fn, opts);
       cleanups.push(() => window.removeEventListener(type, fn));
     };
@@ -60,6 +84,17 @@ export function T02Motion() {
     on("resize", () => {
       clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(tune, 180);
+    });
+
+    // "Sem rede para o YouTube a miniatura falha: fica um fundo na cor do
+    // artista com o botão de play." Runs with or without motion.
+    root.querySelectorAll<HTMLImageElement>('.mp-foto[data-mp-lightbox="video"] img').forEach((img) => {
+      const failed = () => img.closest(".mp-foto")?.classList.add("mp-sem-miniatura");
+      if (img.complete && img.getAttribute("src") && !img.naturalWidth) failed();
+      else {
+        img.addEventListener("error", failed, { once: true });
+        cleanups.push(() => img.removeEventListener("error", failed));
+      }
     });
 
     if (reducedMotion() || !("IntersectionObserver" in window)) {
@@ -99,7 +134,9 @@ export function T02Motion() {
     root.querySelectorAll(TITLES).forEach((title) => observer.observe(title));
     root.querySelectorAll<HTMLElement>(STAGGER_GROUPS).forEach((group) => {
       group.setAttribute("data-mp-grupo", "");
-      Array.from(group.children).forEach((child, i) => (child as HTMLElement).style.setProperty("--i", String(Math.min(i, 12))));
+      Array.from(group.children).forEach((child, i) =>
+        (child as HTMLElement).style.setProperty("--i", String(Math.min(i, 12))),
+      );
       observer.observe(group);
     });
     root.querySelectorAll<HTMLElement>(MASKS).forEach((mask) => {
@@ -112,6 +149,19 @@ export function T02Motion() {
       observer.observe(parent);
     });
     root.querySelectorAll(".label, .mp-palmares-fundo").forEach((node) => observer.observe(node));
+    // Template 01's own entrance: `.reveal` blocks fade up once, then stay.
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("visible");
+          reveal.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.13 },
+    );
+    root.querySelectorAll(".reveal").forEach((node) => reveal.observe(node));
+    cleanups.push(() => reveal.disconnect());
 
     // Parallax and the shrinking bar.
     const parallax = Array.from(root.querySelectorAll<HTMLElement>("[data-mp-paralaxe]"));
@@ -189,7 +239,7 @@ export function T02Motion() {
       observer.disconnect();
       root.classList.remove("mp-mov", "mp-entrou", "mp-rolou", "mp-luz");
     };
-  }, []);
+  }, [STAGGER_GROUPS, MASKS, TITLES]);
 
   return (
     <>
@@ -201,9 +251,20 @@ export function T02Motion() {
 
 // --- Mobile menu -------------------------------------------------------------
 
-export function T02MenuButton() {
+/**
+ * Template 01 opens a panel of its own below the bar (the Kevy handoff's
+ * "painel próprio"): a fixed element inside a glass bar would be sized by the
+ * bar. Template 02 unfolds its `.nav-links` in place.
+ */
+export function T02MenuButton({ panel }: { panel?: Array<{ href: string; label: string }> }) {
   const button = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const [host, setHost] = useState<HTMLElement | null>(null);
+
+  // The panel is portalled to the page root, outside the bar.
+  useEffect(() => {
+    if (panel) setHost(pageRoot(button.current));
+  }, [panel]);
 
   useEffect(() => {
     const root = pageRoot(button.current);
@@ -212,7 +273,7 @@ export function T02MenuButton() {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
 
-    const links = root.querySelector(".nav-links");
+    const links = root.querySelector(panel ? ".mp-menu-painel" : ".nav-links");
     const close = (e: Event) => {
       if ((e.target as Element).closest("a")) setOpen(false);
     };
@@ -228,20 +289,34 @@ export function T02MenuButton() {
       root.classList.remove("mp-menu-aberto");
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, panel]);
 
   return (
-    <button
-      ref={button}
-      type="button"
-      className="icon mobile-menu"
-      aria-controls="t02-menu"
-      aria-expanded={open}
-      aria-label={open ? "Fechar menu" : "Abrir menu"}
-      onClick={() => setOpen((value) => !value)}
-    >
-      {open ? "✕" : "☰"}
-    </button>
+    <>
+      <button
+        ref={button}
+        type="button"
+        className={panel ? "icon menu" : "icon mobile-menu"}
+        aria-controls={panel ? "t01-menu" : "t02-menu"}
+        aria-expanded={open}
+        aria-label={open ? "Fechar menu" : "Abrir menu"}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {open ? "✕" : "☰"}
+      </button>
+      {panel &&
+        host &&
+        createPortal(
+          <nav className="mp-menu-painel" id="t01-menu" aria-label="Menu" hidden={!open}>
+            {panel.map((link) => (
+              <a key={link.href} href={link.href}>
+                {link.label}
+              </a>
+            ))}
+          </nav>,
+          host,
+        )}
+    </>
   );
 }
 
@@ -305,7 +380,9 @@ function T02Lightbox() {
       if (!own) return;
       e.preventDefault();
       const group = node.closest("[data-mp-lista]") ?? root;
-      const siblings = Array.from(group.querySelectorAll<HTMLElement>(`[data-mp-lightbox="${node.dataset.mpLightbox}"]`));
+      const siblings = Array.from(
+        group.querySelectorAll<HTMLElement>(`[data-mp-lightbox="${node.dataset.mpLightbox}"]`),
+      );
       const set = siblings.map((n) => ({ n, item: readItem(n) })).filter((row) => row.item);
       const at = set.findIndex((row) => row.n === node);
       setItems(at >= 0 ? set.map((row) => row.item!) : [own]);
@@ -340,8 +417,8 @@ function T02Lightbox() {
     return () => document.removeEventListener("keydown", key);
   }, [open, close, step]);
 
-  const artistName = () => document.querySelector(".t02")?.getAttribute("data-artist") ?? document.title;
-  const artistSlug = () => document.querySelector(".t02")?.getAttribute("data-slug") ?? "foto";
+  const artistName = () => pageRoot(anchor.current)?.getAttribute("data-artist") ?? document.title;
+  const artistSlug = () => pageRoot(anchor.current)?.getAttribute("data-slug") ?? "foto";
   const shareUrl = () => (open ? new URL(open.src, location.href).href : location.href);
   const shareText = () => artistName() + (open && open.caption ? ` · ${open.caption}` : "");
 
@@ -355,12 +432,22 @@ function T02Lightbox() {
     if (navigator.share) {
       try {
         const blob = await (await fetch(open.src)).blob();
-        const file = new File([blob], `${artistSlug()}.jpg`, { type: blob.type || "image/jpeg" });
+        const file = new File([blob], `${artistSlug()}.jpg`, {
+          type: blob.type || "image/jpeg",
+        });
         if (navigator.canShare?.({ files: [file] })) {
-          await navigator.share({ files: [file], title: artistName(), text: shareText() });
+          await navigator.share({
+            files: [file],
+            title: artistName(),
+            text: shareText(),
+          });
           return;
         }
-        await navigator.share({ title: artistName(), text: shareText(), url: shareUrl() });
+        await navigator.share({
+          title: artistName(),
+          text: shareText(),
+          url: shareUrl(),
+        });
         return;
       } catch (error) {
         if ((error as Error)?.name === "AbortError") return;
@@ -509,7 +596,13 @@ export interface T02Chapter {
  * paragraph; the photo, the mark and the counter follow the chapter in the
  * reading band. State lives here because every class it toggles is React's.
  */
-export function T02Bio({ chapters, stats }: { chapters: T02Chapter[]; stats: Array<{ value: string; label: string }> }) {
+export function T02Bio({
+  chapters,
+  stats,
+}: {
+  chapters: T02Chapter[];
+  stats: Array<{ value: string; label: string }>;
+}) {
   const container = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [live, setLive] = useState(false);
@@ -528,7 +621,9 @@ export function T02Bio({ chapters, stats }: { chapters: T02Chapter[]; stats: Arr
         for (const entry of entries) if (entry.isIntersecting) setActive(items.indexOf(entry.target));
       },
       // On a phone the photo takes the top half, so the reading band moves down.
-      { rootMargin: window.innerWidth < 850 ? "-62% 0px -24% 0px" : "-42% 0px -42% 0px" },
+      {
+        rootMargin: window.innerWidth < 850 ? "-62% 0px -24% 0px" : "-42% 0px -42% 0px",
+      },
     );
     const entrance = new IntersectionObserver(
       (entries) => {
@@ -584,7 +679,11 @@ export function T02Bio({ chapters, stats }: { chapters: T02Chapter[]; stats: Arr
           <b>{String(active + 1).padStart(2, "0")}</b> / <span>{String(chapters.length).padStart(2, "0")}</span>
         </span>
         <span className="mp-bio-progresso">
-          <i style={{ transform: `scaleX(${(active + 1) / Math.max(chapters.length, 1)})` }} />
+          <i
+            style={{
+              transform: `scaleX(${(active + 1) / Math.max(chapters.length, 1)})`,
+            }}
+          />
         </span>
       </div>
       <div className="mp-bio-texto">
@@ -670,12 +769,24 @@ export function T02BookingForm({
   artistName,
   whatsapp,
   enabled,
+  askChannel = false,
+  primaryClass = "button hot",
+  secondaryClass = "button",
 }: {
   slug: string;
   artistName: string;
   whatsapp: string | null;
   enabled: boolean;
+  /**
+   * Template 01 · v1: the person chooses how to be answered, WhatsApp or email
+   * ("RESPOSTA POR"). The inbox still needs an email to reply from, so the
+   * choice travels with the request and makes the phone required for WhatsApp.
+   */
+  askChannel?: boolean;
+  primaryClass?: string;
+  secondaryClass?: string;
 }) {
+  const [channel, setChannel] = useState<"whatsapp" | "email">("whatsapp");
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
   const [notice, setNotice] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -690,6 +801,7 @@ export function T02BookingForm({
       `Evento: ${v("venue")}`,
       `Data: ${v("requestedDate")}`,
       `Local: ${v("city")}`,
+      askChannel && (channel === "whatsapp" ? `Resposta por WhatsApp: ${v("promoterPhone")}` : "Resposta por email"),
       v("message") && `Nota: ${v("message")}`,
     ]
       .filter(Boolean)
@@ -720,7 +832,13 @@ export function T02BookingForm({
           venue: v("venue") || undefined,
           requestedDate: v("requestedDate"),
           city: v("city") || undefined,
-          message: v("message") || undefined,
+          message:
+            [
+              askChannel && (channel === "whatsapp" ? "Prefere resposta por WhatsApp." : "Prefere resposta por email."),
+              v("message"),
+            ]
+              .filter(Boolean)
+              .join("\n") || undefined,
         }),
       });
       const body = await response.json().catch(() => null);
@@ -752,9 +870,37 @@ export function T02BookingForm({
         <label htmlFor="t02-email">EMAIL</label>
         <input id="t02-email" name="promoterEmail" type="email" required maxLength={200} autoComplete="email" />
       </div>
+      {askChannel && (
+        <fieldset className="mp-canal">
+          <legend>RESPOSTA POR</legend>
+          {(["whatsapp", "email"] as const).map((value) => (
+            <label key={value}>
+              <input
+                type="radio"
+                name="canal"
+                value={value}
+                checked={channel === value}
+                onChange={() => setChannel(value)}
+              />
+              <span>{value === "whatsapp" ? "WhatsApp" : "Email"}</span>
+            </label>
+          ))}
+        </fieldset>
+      )}
       <div className="field">
-        <label htmlFor="t02-telefone">TELEFONE · OPCIONAL</label>
-        <input id="t02-telefone" name="promoterPhone" type="tel" maxLength={40} autoComplete="tel" />
+        <label htmlFor="t02-telefone">
+          {askChannel && channel === "whatsapp" ? "O TEU WHATSAPP" : "TELEFONE · OPCIONAL"}
+        </label>
+        <input
+          id="t02-telefone"
+          name="promoterPhone"
+          type="tel"
+          inputMode="tel"
+          maxLength={40}
+          autoComplete="tel"
+          placeholder="+238 000 00 00"
+          required={askChannel && channel === "whatsapp"}
+        />
       </div>
       <div className="field">
         <label htmlFor="t02-evento">EVENTO OU SALA</label>
@@ -770,9 +916,15 @@ export function T02BookingForm({
       </div>
       <div className="field">
         <label htmlFor="t02-nota">MENSAGEM</label>
-        <textarea id="t02-nota" name="message" rows={3} maxLength={4000} placeholder="Horário, cachê previsto, tipo de evento" />
+        <textarea
+          id="t02-nota"
+          name="message"
+          rows={3}
+          maxLength={4000}
+          placeholder="Horário, cachê previsto, tipo de evento"
+        />
       </div>
-      <button className="button hot" type="submit" disabled={state !== "idle"}>
+      <button className={primaryClass} type="submit" disabled={state !== "idle"}>
         {state === "sending" ? "A enviar…" : state === "sent" ? "Pedido enviado" : "Enviar pedido"}
       </button>
       {notice && (
@@ -781,7 +933,13 @@ export function T02BookingForm({
         </p>
       )}
       {whatsappHref && (
-        <a className="button" href={whatsappHref} target="_blank" rel="noopener noreferrer" style={{ justifySelf: "start", borderColor: "currentColor" }}>
+        <a
+          className={secondaryClass}
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ justifySelf: "start", borderColor: "currentColor" }}
+        >
           Continuar no WhatsApp ↗
         </a>
       )}

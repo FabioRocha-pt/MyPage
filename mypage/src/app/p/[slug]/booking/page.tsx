@@ -3,13 +3,15 @@ import { notFound } from "next/navigation";
 import { snapshotContent } from "@/lib/page-model";
 import { loadPublishedSnapshot } from "@/lib/published";
 import { PageRenderer } from "@/templates/PageRenderer";
+import { HANDOFF_TEMPLATES } from "@/templates/registry";
 import "@/styles/templates.css";
 
 /**
- * The booking page of Template 02 · versão 1 (the handoff's `booking.html`):
- * request form, technical rider with the connection diagram, hospitality.
+ * The booking page of Templates 01 and 02 · versão 1 (the handoffs'
+ * `booking.html`): request form, technical rider with the connection diagram,
+ * hospitality.
  *
- * Only Template 02 has it. For any other template, or when the page neither
+ * Only the handoff templates have it. For any other template, or when the page neither
  * takes requests nor shows a public rider, the address does not exist.
  */
 
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BookingPage({ params }: Props) {
   const { slug } = await params;
   const snapshot = await loadPublishedSnapshot(slug);
-  if (!snapshot || snapshot.templateId !== "02") notFound();
+  if (!snapshot || !HANDOFF_TEMPLATES.has(snapshot.templateId)) notFound();
   if (!snapshot.booking.enabled && !snapshotContent(snapshot).rider) notFound();
 
   return (

@@ -23,6 +23,9 @@ const ROUTES = [
   // Template 02 · v1 with real content and its booking page. Needs `npm run db:seed:deekay`.
   { path: "/p/deekay", name: "published page · deekay" },
   { path: "/p/deekay/booking", name: "published booking page · deekay" },
+  // Template 01 · v1 with real content and its booking page. Needs `npm run db:seed:kevy`.
+  { path: "/p/kevy", name: "published page · kevy" },
+  { path: "/p/kevy/booking", name: "published booking page · kevy" },
 ];
 
 for (const route of ROUTES) {
@@ -104,9 +107,10 @@ test("sign-in keeps the brand and the summary on a phone", async ({ page }) => {
 /**
  * `.tpl-nav ul` used to be dropped below 900px, and `.tpl-event-poster` with
  * it, so a published page lost both its section nav and its date thumbnails.
+ * Templates 01 and 02 have their own renderers now; 03 still uses the shared one.
  */
 test("template pages keep their section nav and event posters", async ({ page }) => {
-  await page.goto("/templates/01");
+  await page.goto("/templates/03");
   await page.waitForLoadState("networkidle");
 
   const sectionLinks = page.locator(".tpl-nav ul a");
@@ -122,4 +126,29 @@ test("template pages keep their section nav and event posters", async ({ page })
   if ((await posters.count()) > 0) {
     await expect(posters.first()).toBeVisible();
   }
+});
+
+/**
+ * Template 01 · v1 moves the bar's section links into a panel of its own
+ * below 850px ("painel próprio, por baixo da barra"). Every link has to be
+ * reachable from it, and following one closes the panel.
+ */
+test("template 01 menu panel lists every section and closes on a link", async ({ page }) => {
+  await page.goto("/p/kevy");
+  await page.waitForLoadState("networkidle");
+
+  const button = page.locator(".t01 .nav .menu");
+  await expect(button).toBeVisible();
+  const expected = await page.locator(".t01 .nav .links a").count();
+  expect(expected, "a barra não tem secções").toBeGreaterThan(0);
+
+  await button.click();
+  const panel = page.locator(".t01 .mp-menu-painel");
+  await expect(panel).toBeVisible();
+  await expect(button).toHaveAttribute("aria-expanded", "true");
+  await expect(panel.locator("a")).toHaveCount(expected);
+
+  await panel.locator("a").first().click();
+  await expect(panel).toBeHidden();
+  await expect(button).toHaveAttribute("aria-expanded", "false");
 });

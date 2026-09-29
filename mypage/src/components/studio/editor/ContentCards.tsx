@@ -4,7 +4,7 @@ import { CONTENT_LIMITS, type PageContent } from "@/lib/page-content";
 import type { ImageOption } from "./types";
 
 /**
- * Editors for the structured content brought by Template 02 · versão 1:
+ * Editors for the structured content brought by Templates 02 and 01 · versão 1:
  * biography chapters, numbers, discography, gallery, highlights, rider and the
  * public booking contact. Everything here edits one `PageContent` document that
  * is saved with the draft ("Atualizar página") and validated again on the
@@ -176,7 +176,7 @@ export function StoryFields({
     <>
       <h3>Capítulos da biografia</h3>
       <p className="hint">
-        Cada parágrafo da biografia é um capítulo. No template 02 a fotografia e a marca acompanham o capítulo que está
+        Cada parágrafo da biografia é um capítulo. Nos templates 01 e 02 a fotografia e a marca acompanham o capítulo que está
         a ser lido. Separa os parágrafos com uma linha vazia.
       </p>
       <div className="fields">
@@ -188,6 +188,16 @@ export function StoryFields({
             value={content.roleLine ?? ""}
             onChange={(e) => onChange({ roleLine: e.target.value || null })}
           />
+        </label>
+        <label className="field">
+          Alcunha · por baixo do nome
+          <input
+            type="text"
+            placeholder="The Machine"
+            value={content.nickname ?? ""}
+            onChange={(e) => onChange({ nickname: e.target.value || null })}
+          />
+          <small>No template 01 aparece entre aspas, na cor de destaque.</small>
         </label>
         {paragraphs.slice(0, CONTENT_LIMITS.bioMarks).map((paragraph, index) => (
           <label className="field" key={index}>
@@ -257,6 +267,18 @@ export function LogoDarkField({ content, images, onChange }: { content: PageCont
         </select>
         <small>No template 02 vai no rótulo do vinil. Sem ele, usa o logo principal.</small>
       </label>
+      <label className="field">
+        Logo do hero · opcional
+        <select value={content.logoHeroMediaId ?? ""} onChange={(e) => onChange({ logoHeroMediaId: e.target.value || null })}>
+          <option value="">O logo principal</option>
+          {images.map((image) => (
+            <option key={image.id} value={image.id}>
+              {image.title}
+            </option>
+          ))}
+        </select>
+        <small>No template 01 ocupa o lugar do nome no hero, quando é diferente do da barra (um monograma empilhado, por exemplo).</small>
+      </label>
     </div>
   );
 }
@@ -273,12 +295,13 @@ export function DiscographyFields({ content, onChange }: { content: PageContent;
         fields={[
           { key: "title", label: "Tema", placeholder: "PIDI LA" },
           { key: "with", label: "Com · opcional", placeholder: "CESF" },
+          { key: "year", label: "Ano · opcional", placeholder: "2025" },
           { key: "url", label: "Link · opcional", type: "url", placeholder: "https://", wide: true },
         ]}
-        make={() => ({ title: "", with: null, url: null })}
+        make={() => ({ title: "", with: null, year: null, url: null })}
         max={CONTENT_LIMITS.discography}
         addLabel="Adicionar tema"
-        onChange={(rows) => onChange({ discography: rows.map((r) => ({ title: r.title ?? "", with: r.with, url: r.url })) })}
+        onChange={(rows) => onChange({ discography: rows.map((r) => ({ title: r.title ?? "", with: r.with, year: r.year, url: r.url })) })}
       />
     </>
   );
@@ -291,7 +314,8 @@ export function GalleryCard({ content, images, onChange }: { content: PageConten
     <>
       <p className="hint">
         A primeira fotografia fica maior. No pop up há descarregar e partilhar; o original só é descarregável quando a
-        fotografia está num álbum público do press kit. Só aparecem imagens públicas.
+        fotografia está num álbum público do press kit. Só aparecem imagens públicas. Para pôr um vídeo do YouTube na
+        galeria, deixa a fotografia vazia e cola o link: fica com a capa do vídeo e abre no pop up.
       </p>
       {images.length === 0 ? (
         <div className="empty-library">A biblioteca ainda não tem imagens. Carrega-as no cartão Press kit.</div>
@@ -300,18 +324,25 @@ export function GalleryCard({ content, images, onChange }: { content: PageConten
           rows={content.gallery}
           fields={[
             { key: "mediaId", label: "Fotografia", type: "image", wide: true },
+            { key: "videoUrl", label: "Ou vídeo do YouTube", type: "url", placeholder: "https://www.youtube.com/watch?v=…", wide: true },
             { key: "caption", label: "Legenda", placeholder: "Palco principal, pirotecnia" },
             { key: "credit", label: "Crédito do fotógrafo", placeholder: "Nome do fotógrafo" },
           ]}
-          make={() => ({ mediaId: images[0]?.id ?? "", caption: null, credit: null })}
+          make={() => ({ mediaId: images[0]?.id ?? "", videoUrl: null, caption: null, credit: null })}
           max={CONTENT_LIMITS.gallery}
           addLabel="Adicionar fotografia"
           images={images}
           onChange={(rows) =>
             onChange({
-              gallery: rows
-                .filter((row) => row.mediaId)
-                .map((row) => ({ mediaId: row.mediaId as string, caption: row.caption, credit: row.credit })),
+              // Rows stay while they are being filled in (a video row starts with
+              // the photo cleared); the server drops the ones left empty and keeps
+              // the photo when a row has both.
+              gallery: rows.map((row) => ({
+                mediaId: row.mediaId || null,
+                videoUrl: row.videoUrl,
+                caption: row.caption,
+                credit: row.credit,
+              })),
             })
           }
         />
@@ -360,7 +391,7 @@ export function RiderCard({ content, images, onChange }: { content: PageContent;
   return (
     <>
       <p className="hint">
-        No template 02 isto forma a página de booking: pedido, rider técnico com esquema e hospitalidade. Os PDF do
+        Nos templates 01 e 02 isto forma a página de booking: pedido, rider técnico com esquema e hospitalidade. Os PDF do
         rider e do press kit vêm do Press kit (categorias Rider técnico e Biografia / EPK).
       </p>
 

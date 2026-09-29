@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireStudioContext } from "@/lib/studio";
 import { buildSnapshot } from "@/lib/snapshot";
 import { PageRenderer } from "@/templates/PageRenderer";
+import { HANDOFF_TEMPLATES } from "@/templates/registry";
 import "@/styles/templates.css";
 
 export const metadata: Metadata = { title: "Preview do rascunho", robots: { index: false } };
@@ -21,10 +22,11 @@ export const metadata: Metadata = { title: "Preview do rascunho", robots: { inde
 export default async function PreviewPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const { artist } = await requireStudioContext();
   const { snapshot, warnings, errors } = await buildSnapshot(artist.id, { mode: "preview" });
-  const page = (await searchParams).page === "booking" && snapshot.templateId === "02" ? "booking" : "home";
-  // Template 02 has a fixed top bar of its own, so the preview notice moves to
-  // the bottom of the screen instead of covering it.
-  const fixedBar = snapshot.templateId === "02";
+  const handoff = HANDOFF_TEMPLATES.has(snapshot.templateId);
+  const page = (await searchParams).page === "booking" && handoff ? "booking" : "home";
+  // Templates 01 and 02 have a fixed top bar of their own, so the preview
+  // notice moves to the bottom of the screen instead of covering it.
+  const fixedBar = handoff;
 
   return (
     <>

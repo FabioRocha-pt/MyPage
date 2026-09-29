@@ -32,14 +32,16 @@ export interface TemplateDefinition {
 
 export const TEMPLATES: TemplateDefinition[] = [
   {
+    // Template 01 · versão 1, from the Kevy handoff (kevy-v1-publicar.zip).
+    // Same engine as Template 02, its own renderer (src/templates/t01).
     id: "01",
     name: "Immersive",
-    description: "Hero panorâmico · escuro",
-    colors: ["#101724", "#f4f7fb", "#55d5ee"],
+    description: "Fotografia a ocupar o ecrã · barra em vidro · player em destaque",
+    colors: ["#07111f", "#f7f9fc", "#43c9b0"],
     imageGuidance: {
-      hero: "21:9 ou 16:9 · horizontal",
-      portrait: "4:5 · vertical",
-      note: "O banner ocupa o ecrã inteiro com um degradê à esquerda. Mantém o assunto à direita do centro.",
+      hero: "16:9 · horizontal",
+      portrait: "3:2 ou 16:9 · horizontal",
+      note: "O retrato ocupa o ecrã inteiro no hero, com um degradê à esquerda: mantém o rosto à direita do centro. Aparece também no cartão do player. O banner fica por trás do palmarés. O logo do hero pode ser diferente do da barra.",
     },
   },
   {
@@ -89,6 +91,9 @@ export const TEMPLATES: TemplateDefinition[] = [
     },
   },
 ];
+
+/** Templates rendered from a My Page handoff: own renderer and a booking page. */
+export const HANDOFF_TEMPLATES = new Set(["01", "02"]);
 
 const BY_ID = new Map(TEMPLATES.map((t) => [t.id, t]));
 

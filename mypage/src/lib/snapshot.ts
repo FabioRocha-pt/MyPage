@@ -448,6 +448,7 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
     ...content.bioPhotoIds,
     ...content.gallery.map((item) => item.mediaId),
     content.logoDarkMediaId,
+    content.logoHeroMediaId,
     content.rider.diagramMediaId,
   ].filter((value): value is string => Boolean(value));
 
@@ -486,17 +487,25 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
   }
 
   const gallery = enabled.has("gallery")
-    ? content.gallery.flatMap((item) => {
-        const image = contentImage(item.mediaId);
+    ? content.gallery.flatMap((item): SnapshotContent["gallery"] => {
+        const mediaId = item.mediaId;
+        if (!mediaId) {
+          const videoId = youtubeId(item.videoUrl);
+          if (!videoId) return [];
+          const cover = { mediaId: "", url: youtubeThumbnail(videoId), width: 480, height: 360, alt: item.caption ?? "Vídeo" };
+          return [{ image: cover, downloadUrl: null, caption: item.caption, credit: item.credit, videoId }];
+        }
+        const image = contentImage(mediaId);
         return image
           ? [
               {
                 image,
                 // The original is only downloadable from a public album (see the
                 // download route); anywhere else the display derivative is offered.
-                downloadUrl: mediaUrl(item.mediaId, originalIsPublic(item.mediaId) ? "download" : "view"),
+                downloadUrl: mediaUrl(mediaId, originalIsPublic(mediaId) ? "download" : "view"),
                 caption: item.caption,
                 credit: item.credit,
+                videoId: null,
               },
             ]
           : [];
@@ -569,6 +578,7 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
 
   const snapshotContent: SnapshotContent = {
     roleLine: content.roleLine,
+    nickname: content.nickname,
     bioMarks: content.bioMarks,
     bioPhotos: content.bioPhotoIds
       .map((mediaId) => contentImage(mediaId))
@@ -578,6 +588,7 @@ export async function buildSnapshot(artistId: string, options: BuildOptions): Pr
     highlights,
     gallery,
     logoDark: contentImage(content.logoDarkMediaId),
+    logoHero: contentImage(content.logoHeroMediaId),
     bookingContact,
     rider,
     documents,
