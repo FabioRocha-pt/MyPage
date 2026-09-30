@@ -138,3 +138,12 @@ export function hasContent(
   }
 }
 
+
+/** "↗︎" drawn as SVG so iOS never swaps it for the emoji glyph. */
+export function Ext() {
+  return (
+    <svg className="mp-ext" viewBox="0 0 12 12" width="0.75em" height="0.75em" aria-hidden="true" style={{ display: "inline-block", verticalAlign: "-0.02em", marginLeft: "0.15em" }}>
+      <path d="M3.5 2.5h6v6M9.5 2.5l-7 7" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

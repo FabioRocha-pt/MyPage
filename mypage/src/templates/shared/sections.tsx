@@ -144,7 +144,7 @@ export function SectionMusic({ snapshot }: { snapshot: PageSnapshot }) {
                 </audio>
               ) : track.url ? (
                 <a className="tpl-link" href={track.url} target="_blank" rel="noopener noreferrer">
-                  Abrir em {track.platformLabel ?? "plataforma"} ↗
+                  Abrir em {track.platformLabel ?? "plataforma"} ↗︎
                 </a>
               ) : null}
             </article>
@@ -157,7 +157,7 @@ export function SectionMusic({ snapshot }: { snapshot: PageSnapshot }) {
                 {item.url ? (
                   <a href={item.url} target="_blank" rel="noopener noreferrer">
                     <strong>{item.title}</strong>
-                    {item.with && <span> feat. {item.with}</span>} ↗
+                    {item.with && <span> feat. {item.with}</span>} ↗︎
                   </a>
                 ) : (
                   <>
@@ -198,7 +198,7 @@ export function SectionVideo({ snapshot }: { snapshot: PageSnapshot }) {
                 <video controls preload="metadata" poster={video.poster ?? undefined} src={video.fileUrl} />
               ) : video.url ? (
                 <a className="tpl-link" href={video.url} target="_blank" rel="noopener noreferrer">
-                  Abrir vídeo ↗
+                  Abrir vídeo ↗︎
                 </a>
               ) : null}
               <h3>{video.title}</h3>
@@ -250,7 +250,7 @@ export function SectionEvents({ snapshot }: { snapshot: PageSnapshot }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Bilhetes ↗
+                    Bilhetes ↗︎
                   </a>
                 )}
               </li>
@@ -283,7 +283,7 @@ export function SectionPress({ snapshot }: { snapshot: PageSnapshot }) {
               <li key={link.category}>
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
                   <span>{pressCategoryLabel(link.category)}</span>
-                  <em>Abrir pasta ↗</em>
+                  <em>Abrir pasta ↗︎</em>
                 </a>
               </li>
             ))}
@@ -381,7 +381,7 @@ export function SectionHighlights({ snapshot }: { snapshot: PageSnapshot }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Ver vídeo ↗
+                  Ver vídeo ↗︎
                 </a>
               )}
             </li>

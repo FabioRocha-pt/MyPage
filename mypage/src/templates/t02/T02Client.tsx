@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Ext } from "../handoff/common";
 
 /**
  * Template 02 · versão 1 — the interactive half. Template 01 · versão 1 (the
@@ -940,7 +941,7 @@ export function T02BookingForm({
           rel="noopener noreferrer"
           style={{ justifySelf: "start", borderColor: "currentColor" }}
         >
-          Continuar no WhatsApp ↗
+          Continuar no WhatsApp <Ext />
         </a>
       )}
     </form>

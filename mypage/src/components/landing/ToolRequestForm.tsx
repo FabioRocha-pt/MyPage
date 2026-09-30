@@ -77,7 +77,7 @@ export function ToolRequestForm() {
   return (
     <>
       <button type="button" className="lp-btn primary" onClick={() => setOpen(true)}>
-        Describe toolkit ↗
+        Describe toolkit ↗︎
       </button>
 
       {open && (
@@ -144,7 +144,7 @@ export function ToolRequestForm() {
                   {status.text}
                 </span>
                 <button className="lp-btn primary" type="submit" disabled={sending}>
-                  {sending ? "Sending…" : "Send request ↗"}
+                  {sending ? "Sending…" : "Send request ↗︎"}
                 </button>
               </div>
             </form>

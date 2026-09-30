@@ -288,7 +288,7 @@ html[data-theme="light"] .ar-page {
 }
 
 .ar-free li::before {
-  content: "↗";
+  content: "↗︎";
   color: var(--cyan);
   margin-right: 14px;
 }

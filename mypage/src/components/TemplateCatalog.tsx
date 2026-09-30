@@ -43,14 +43,14 @@ interface Props {
 const COPY = {
   pt: {
     choose: (name: string) => `Escolher ${name}`,
-    full: "Ver em tamanho real ↗",
+    full: "Ver em tamanho real ↗︎",
     blocked: (plan: string) => `Não incluído no plano ${plan}`,
     saving: "A guardar…",
     saved: "Template aplicado ao rascunho.",
   },
   en: {
     choose: (name: string) => `Choose ${name}`,
-    full: "Open full size ↗",
+    full: "Open full size ↗︎",
     blocked: (plan: string) => `Not included in the ${plan} plan`,
     saving: "Saving…",
     saved: "Template applied.",

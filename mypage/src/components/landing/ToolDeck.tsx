@@ -74,7 +74,7 @@ export const TOOLS: Tool[] = [
     category: "LEARN",
     title: "Insights",
     description: "Understand visits, clicks, booking interest and the content generating interaction.",
-    icon: "↗",
+    icon: "↗︎",
     tags: ["Page views", "Top actions", "Conversion signals"],
   },
 ];

@@ -225,7 +225,7 @@ export function MediaLibrary({
                 )}
                 {row.externalUrl && (
                   <a className="secondary" href={row.externalUrl} target="_blank" rel="noopener noreferrer">
-                    Abrir ↗
+                    Abrir ↗︎
                   </a>
                 )}
                 <button type="button" className="quiet" onClick={() => remove(row)} disabled={busy}>

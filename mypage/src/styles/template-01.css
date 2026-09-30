@@ -423,7 +423,8 @@ html:has(.t01){scroll-behavior:smooth}
 }
 @media(max-width:850px){
 .t01 .mp-bio{grid-template-columns:1fr;gap:26px}
-.t01 .mp-bio-media{top:62px;height:44svh;min-height:300px;z-index:3;box-shadow:0 -14px 0 4px var(--mp-fundo,#0b0c0f)}
+.t01 .mp-bio-media{top:62px;height:44svh;min-height:300px;z-index:3;box-shadow:0 -22px 0 6px var(--mp-fundo,#0b0c0f)}
+.t01.mp-mov .mp-bio-media,.t01.mp-mov .mp-bio-media.mp-visivel{clip-path:none}
 .t01 .mp-capitulo{min-height:44vh}
 .t01 .mp-capitulo:first-child{min-height:40vh;padding-top:3vh}
 .t01 .mp-palmares-grelha{grid-template-columns:repeat(2,minmax(0,1fr))}

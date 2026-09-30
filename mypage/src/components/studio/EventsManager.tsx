@@ -298,7 +298,7 @@ export function EventsManager({ artistId, initialEvents, images, muskaConnected 
                 )}
                 {row.ticketsUrl && (
                   <a className="secondary" href={row.ticketsUrl} target="_blank" rel="noopener noreferrer">
-                    Bilhetes ↗
+                    Bilhetes ↗︎
                   </a>
                 )}
               </div>

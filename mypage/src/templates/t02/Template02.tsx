@@ -8,6 +8,7 @@ import { IconSprite, iconFor } from "./icons";
 import "@/styles/template-02.css";
 import { T02Bio, T02BookingForm, T02MenuButton, T02Motion } from "./T02Client";
 import {
+  Ext,
   ORIGIN,
   Words,
   chaptersOf,
@@ -129,7 +130,7 @@ function Music({ snapshot, content, number }: Ctx) {
         {player?.url && (
           <p className="player-note reveal">
             <a href={player.url} {...external(player.url)}>
-              Abrir perfil completo no {player.platformLabel ?? "player"} ↗
+              Abrir perfil completo no {player.platformLabel ?? "player"} <Ext />
             </a>
           </p>
         )}
@@ -157,7 +158,7 @@ function Track({ title, note, url }: { title: string; note: string | null; url: 
       <span>
         <b>{title}</b> {note && <small>{note}</small>}
       </span>
-      <span className="abre">ver ↗</span>
+      <span className="abre">ver <Ext /></span>
     </>
   );
   if (!url) return <a className="mp-faixa">{body}</a>;
@@ -357,7 +358,7 @@ function Press({ snapshot, content, links }: Ctx) {
             <p>Tudo o que promotores, salas e parceiros precisam, num só lugar.</p>
             {documents.folder && (
               <a className="button" style={{ color: "inherit", borderColor: "currentColor" }} href={documents.folder} {...external(documents.folder)}>
-                Abrir press kit ↗
+                Abrir press kit <Ext />
               </a>
             )}
           </div>
@@ -392,7 +393,7 @@ function Press({ snapshot, content, links }: Ctx) {
           )}
           {content.gallery.length > 0 && (
             <a className="asset" href="#galeria">
-              <i>↗</i>
+              <i><Ext /></i>
               <div>
                 <b>Fotografias</b>
                 <small>Imagens de palco e de promoção</small>
@@ -401,7 +402,7 @@ function Press({ snapshot, content, links }: Ctx) {
           )}
           {documents.folder && (
             <a className="asset" href={documents.folder} {...external(documents.folder)}>
-              <i>↗</i>
+              <i><Ext /></i>
               <div>
                 <b>Pasta completa</b>
                 <small>Fotografias, logótipos e vídeos</small>
@@ -410,7 +411,7 @@ function Press({ snapshot, content, links }: Ctx) {
           )}
           {folders.map((link) => (
             <a className="asset" key={link.category} href={link.url} {...external(link.url)}>
-              <i>↗</i>
+              <i><Ext /></i>
               <div>
                 <b>{pressCategoryLabel(link.category)}</b>
                 <small>Pasta partilhada</small>
@@ -431,7 +432,7 @@ function ContactActions({ content }: { content: SnapshotContent }) {
     <>
       {contact.whatsapp && number && (
         <a className="button hot" href={`https://wa.me/${number}`} target="_blank" rel="noopener noreferrer">
-          WhatsApp ↗
+          WhatsApp <Ext />
         </a>
       )}
       {contact.name && <span className="booking-quem">{place([contact.name, contact.role])}</span>}
@@ -743,7 +744,7 @@ function BookingPage({
         <div className="nav-actions">
           {whatsapp && (
             <a className="button hot" href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
-              WhatsApp ↗
+              WhatsApp
             </a>
           )}
           <T02MenuButton />
@@ -796,7 +797,7 @@ function BookingPage({
                     </div>
                     {whatsapp && (
                       <a className="mp-descarga" href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
-                        <i>↗</i>
+                        <i><Ext /></i>
                         <div>
                           <b>WhatsApp</b>
                           <small>Resposta mais rápida</small>
@@ -827,7 +828,7 @@ function BookingPage({
                     )}
                     {documents.folder && (
                       <a className="mp-descarga" href={documents.folder} {...external(documents.folder)}>
-                        <i>↗</i>
+                        <i><Ext /></i>
                         <div>
                           <b>Pasta completa</b>
                           <small>Fotografias, logótipos e vídeos</small>

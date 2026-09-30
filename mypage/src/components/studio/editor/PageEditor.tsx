@@ -490,7 +490,7 @@ export function PageEditor(props: PageEditorProps) {
             {busy === "save" ? "A guardar…" : "Atualizar página"}
           </button>
           <Link className="secondary" href="/studio/preview" target="_blank">
-            Preview ↗
+            Preview ↗︎
           </Link>
           <button type="button" className="primary" onClick={publish} disabled={busy !== "" || dirty}>
             {busy === "publish" ? "A publicar…" : "Publicar"}

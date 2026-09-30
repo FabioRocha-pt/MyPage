@@ -7,6 +7,7 @@ import { StoreBlock } from "../shared/StoreBlock";
 import { IconSprite, iconFor } from "../t02/icons";
 import { T01_MOTION, T02Bio, T02BookingForm, T02MenuButton, T02Motion } from "../t02/T02Client";
 import {
+  Ext,
   ORIGIN,
   Words,
   chaptersOf,
@@ -124,7 +125,7 @@ function Music({ snapshot, content }: Ctx) {
               {player.url && (
                 <div className="set-controls">
                   <a href={player.url} {...external(player.url)}>
-                    Abrir perfil completo ↗
+                    Abrir perfil completo <Ext />
                   </a>
                 </div>
               )}
@@ -172,7 +173,7 @@ function Track({
         <b>{title}</b> {note && <small>{note}</small>}
       </span>
       {year && <span className="mp-faixa-ano">{year}</span>}
-      {url && <span className="abre">ver ↗</span>}
+      {url && <span className="abre">ver <Ext /></span>}
     </>
   );
   if (!url) return <div className="mp-faixa">{body}</div>;
@@ -365,7 +366,7 @@ function Dates({ snapshot }: Ctx) {
   );
 }
 
-function Download({ href, icon, title, detail, download }: { href: string; icon: string; title: string; detail: string; download?: boolean }) {
+function Download({ href, icon, title, detail, download }: { href: string; icon: ReactNode; title: string; detail: string; download?: boolean }) {
   return (
     <a className="mp-descarga" href={href} {...(download ? { download: true } : external(href))}>
       <i>{icon}</i>
@@ -392,10 +393,10 @@ function Press({ snapshot, content, links }: Ctx) {
             <Download href={documents.rider} icon="↓" title="Rider em PDF" detail="Técnico e hospitalidade" download />
           )}
           {documents.folder && (
-            <Download href={documents.folder} icon="↗" title="Pasta completa" detail="Fotografias, logótipos e vídeos" />
+            <Download href={documents.folder} icon={<Ext />} title="Pasta completa" detail="Fotografias, logótipos e vídeos" />
           )}
           {folders.map((link) => (
-            <Download key={link.category} href={link.url} icon="↗" title={pressCategoryLabel(link.category)} detail="Pasta partilhada" />
+            <Download key={link.category} href={link.url} icon={<Ext />} title={pressCategoryLabel(link.category)} detail="Pasta partilhada" />
           ))}
           {links.booking && (
             <a className="mp-descarga" href={links.booking}>
@@ -430,7 +431,7 @@ function Booking({ content, links }: Ctx) {
             <div className="booking-actions">
               {contact?.whatsapp && number && (
                 <a className="pill" href={`https://wa.me/${number}`} target="_blank" rel="noopener noreferrer">
-                  WhatsApp ↗
+                  WhatsApp <Ext />
                 </a>
               )}
               {contact?.phone && (
@@ -707,7 +708,7 @@ function BookingPage({
         <div className="nav-actions">
           {whatsapp && (
             <a className="pill primary" href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
-              WhatsApp ↗
+              WhatsApp
             </a>
           )}
           <T02MenuButton panel={navLinks} />
@@ -759,7 +760,7 @@ function BookingPage({
                       </div>
                     </div>
                     {whatsapp && (
-                      <Download href={`https://wa.me/${whatsapp}`} icon="↗" title="WhatsApp" detail="Resposta mais rápida" />
+                      <Download href={`https://wa.me/${whatsapp}`} icon={<Ext />} title="WhatsApp" detail="Resposta mais rápida" />
                     )}
                   </div>
                 )}
@@ -778,7 +779,7 @@ function BookingPage({
                       />
                     )}
                     {documents.folder && (
-                      <Download href={documents.folder} icon="↗" title="Pasta completa" detail="Fotografias, logótipos e vídeos" />
+                      <Download href={documents.folder} icon={<Ext />} title="Pasta completa" detail="Fotografias, logótipos e vídeos" />
                     )}
                   </div>
                 )}

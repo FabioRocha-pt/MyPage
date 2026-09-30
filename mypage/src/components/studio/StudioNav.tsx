@@ -119,7 +119,7 @@ export function WorkspaceTabs() {
       </Link>
       {/* Doc 01: "'Explorar artistas' deve abrir https://muskalive.com". */}
       <a className="explore" href="https://muskalive.com" target="_blank" rel="noopener noreferrer">
-        Explorar artistas ↗
+        Explorar artistas ↗︎
       </a>
     </nav>
   );

@@ -121,7 +121,7 @@ export default async function DashboardPage() {
           <p>Acompanha o que já existe e prepara o próximo passo.</p>
         </div>
         <Link className="primary" href="/studio/page">
-          Editar My Page ↗
+          Editar My Page ↗︎
         </Link>
       </div>
 
@@ -144,7 +144,7 @@ export default async function DashboardPage() {
               <Link href={step.href} key={step.number}>
                 <span className={step.done ? "done" : ""}>{step.done ? "✓" : step.number}</span>
                 {step.label}
-                <b aria-hidden="true">↗</b>
+                <b aria-hidden="true">↗︎</b>
               </Link>
             ))}
           </div>
@@ -162,17 +162,17 @@ export default async function DashboardPage() {
             <Link href={`/p/${artist.slug}`}>
               <span className={isPublished ? "done" : ""}>{isPublished ? "✓" : "—"}</span>
               {isPublished ? `Publicada em ${formatDateTime(publishedAt)}` : "Ainda não publicada"}
-              <b aria-hidden="true">↗</b>
+              <b aria-hidden="true">↗︎</b>
             </Link>
             <Link href="/studio/page">
               <span>✎</span>
               Rascunho guardado em {formatDateTime(draftUpdatedAt)}
-              <b aria-hidden="true">↗</b>
+              <b aria-hidden="true">↗︎</b>
             </Link>
             <Link href="/studio/page#visual">
               <span>◫</span>
               Template {draft?.templateId ?? "01"} · plano {entitlement.label}
-              <b aria-hidden="true">↗</b>
+              <b aria-hidden="true">↗︎</b>
             </Link>
           </div>
 

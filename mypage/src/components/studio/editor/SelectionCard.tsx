@@ -69,7 +69,7 @@ export function SelectionCard({
 
       {manager && (
         <Link className="secondary" href={manager.href}>
-          {manager.label} ↗
+          {manager.label} ↗︎
         </Link>
       )}
     </>

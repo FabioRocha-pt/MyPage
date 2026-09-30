@@ -73,7 +73,7 @@ export function Hero01({ snapshot }: HeroProps) {
             {heroLinks(snapshot).map((link) => (
               <li key={link.url}>
                 <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.label} ↗
+                  {link.label} ↗︎
                 </a>
               </li>
             ))}
@@ -119,7 +119,7 @@ export function Hero02({ snapshot }: HeroProps) {
           <div className="tpl-hero-tag">
             {profile.tagline && <p>{profile.tagline}</p>}
             <a className="tpl-round" href="#booking" aria-label="Ir para booking">
-              ↗
+              ↗︎
             </a>
           </div>
         </div>
@@ -159,7 +159,7 @@ export function Hero03({ snapshot }: HeroProps) {
               <li key={item.href}>
                 <a href={item.href}>
                   <span>{item.label}</span>
-                  <b>↗</b>
+                  <b>↗︎</b>
                 </a>
               </li>
             ))}
@@ -213,7 +213,7 @@ export function Hero04({ snapshot }: HeroProps) {
         <h1>{profile.tagline ?? profile.displayName}</h1>
         <p>{profile.genres.join(" · ")}</p>
         <a className="tpl-cta" href="#booking">
-          Book {profile.displayName} ↗
+          Book {profile.displayName} ↗︎
         </a>
       </div>
       <div className="tpl-hero-bottom">
@@ -238,7 +238,7 @@ export function Hero04({ snapshot }: HeroProps) {
               {profile.genres[0] ?? "Artist"}
             </p>
             <a className="tpl-cta" href="#press">
-              Press kit ↗
+              Press kit ↗︎
             </a>
           </aside>
         )}
@@ -281,14 +281,14 @@ export function Hero05({ snapshot }: HeroProps) {
         {actions[0] && (
           <a className="tpl-cell tpl-cell-action" href={actions[0].href}>
             {actions[0].label.toLowerCase()}
-            <span>↗</span>
+            <span>↗︎</span>
           </a>
         )}
         <div className="tpl-cell tpl-face" />
         {actions[1] && (
           <a className="tpl-cell tpl-cell-action" href={actions[1].href}>
             {actions[1].label.toLowerCase()}
-            <span>↗</span>
+            <span>↗︎</span>
           </a>
         )}
         <div className="tpl-cell tpl-desktop" />
@@ -296,7 +296,7 @@ export function Hero05({ snapshot }: HeroProps) {
         {actions[2] && (
           <a className="tpl-cell tpl-cell-action" href={actions[2].href}>
             {actions[2].label.toLowerCase()}
-            <span>↗</span>
+            <span>↗︎</span>
           </a>
         )}
         <div className="tpl-cell tpl-face" />
@@ -307,7 +307,7 @@ export function Hero05({ snapshot }: HeroProps) {
         {actions[3] && (
           <a className="tpl-cell tpl-cell-action" href={actions[3].href}>
             {actions[3].label.toLowerCase()}
-            <span>↗</span>
+            <span>↗︎</span>
           </a>
         )}
 
@@ -319,12 +319,12 @@ export function Hero05({ snapshot }: HeroProps) {
         <div className="tpl-cell tpl-cell-name">{profile.displayName}.</div>
         <div className="tpl-cell tpl-desktop" />
         <a className="tpl-cell tpl-cell-action" href="#booking">
-          booking<span>↗</span>
+          booking<span>↗︎</span>
         </a>
         <div className="tpl-cell tpl-cell-footer">
           Portrait / 05
           <br />
-          Explora a grelha ↗
+          Explora a grelha ↗︎
         </div>
       </div>
     </header>

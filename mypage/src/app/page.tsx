@@ -115,7 +115,7 @@ const PLANS = [
     period: "/ month",
     cve: "2.500 ECV / month",
     popular: true,
-    cta: "Go Pro ↗",
+    cta: "Go Pro ↗︎",
     features: [
       "No advertising",
       "Pro templates",
@@ -176,11 +176,11 @@ export default function LandingPage() {
           {/* The prototype linked to backoffice.html; the real backoffice is
               behind a session, so /studio sends a visitor to sign in first. */}
           <Link className="lp-btn demo" href="/studio">
-            Backoffice ↗
+            Backoffice ↗︎
           </Link>
           <ThemeToggle className="lp-iconbtn" />
           <Link className="lp-btn primary keep" href="/signup">
-            Start free ↗
+            Start free ↗︎
           </Link>
         </div>
       </nav>
@@ -203,7 +203,7 @@ export default function LandingPage() {
               </p>
               <div className="lp-hero-ctas">
                 <Link className="lp-btn primary" href="/signup">
-                  Create your page ↗
+                  Create your page ↗︎
                 </Link>
                 <a className="lp-btn" href="#templates">
                   See the potential ↓
@@ -413,7 +413,7 @@ export default function LandingPage() {
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   <Link className="lp-btn primary" href="/signup">
-                    Create your page ↗
+                    Create your page ↗︎
                   </Link>
                   <Link className="lp-btn" style={{ color: "white", borderColor: "rgba(255,255,255,.2)" }} href="/studio">
                     Open the backoffice

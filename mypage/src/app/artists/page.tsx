@@ -36,7 +36,7 @@ const MUSKA_SELECTION: ArtistCard[] = [
     initials: "R1",
     imageUrl: null,
     badge: "PERFIL MUSKA",
-    cta: "Abrir página no Muska ↗",
+    cta: "Abrir página no Muska ↗︎",
   },
   {
     key: "muska-cleu-sanches",
@@ -47,7 +47,7 @@ const MUSKA_SELECTION: ArtistCard[] = [
     initials: "CS",
     imageUrl: null,
     badge: "PERFIL MUSKA",
-    cta: "Abrir página no Muska ↗",
+    cta: "Abrir página no Muska ↗︎",
     variant: "second",
   },
 ];
@@ -86,7 +86,7 @@ export default async function ArtistsPage() {
         initials: initials(snapshot.profile.displayName),
         imageUrl: snapshot.images.portrait?.url ?? snapshot.images.hero?.url ?? null,
         badge: "PÁGINA MY PAGE",
-        cta: "Abrir página ↗",
+        cta: "Abrir página ↗︎",
       },
     ];
   });
@@ -107,7 +107,7 @@ export default async function ArtistsPage() {
               Artistas
             </Link>
             <Link className="ar-button" href="/studio">
-              O meu espaço ↗
+              O meu espaço ↗︎
             </Link>
           </div>
         </nav>
@@ -141,7 +141,7 @@ export default async function ArtistsPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Ver exemplo de My Page Free ↗
+              Ver exemplo de My Page Free ↗︎
             </a>
           </div>
           <ul>
@@ -156,7 +156,7 @@ export default async function ArtistsPage() {
 
       <footer className="ar-wrap">
         <span>My Page · Powered by Muska</span>
-        <Link href="/#pricing">Conhecer os planos ↗</Link>
+        <Link href="/#pricing">Conhecer os planos ↗︎</Link>
       </footer>
     </div>
   );

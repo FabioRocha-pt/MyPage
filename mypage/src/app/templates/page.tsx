@@ -36,7 +36,7 @@ export default async function TemplatesPage() {
     <main className="catalog-page">
       <nav>
         <Link href="/">My Page</Link>
-        <Link href="/studio">O meu backoffice ↗</Link>
+        <Link href="/studio">O meu backoffice ↗︎</Link>
       </nav>
       <h1>Escolhe o teu palco.</h1>
       <p>Explora as mesmas bases disponíveis no editor. Cada miniatura mostra o próprio template.</p>

@@ -94,7 +94,7 @@ export function ArtistGrid({ artists }: { artists: ArtistCard[] }) {
           </div>
           {/* Doc 01: "'Explorar artistas' deve abrir https://muskalive.com". */}
           <a className="ar-button" href="https://muskalive.com" target="_blank" rel="noopener noreferrer">
-            Ver catálogo Muska ↗
+            Ver catálogo Muska ↗︎
           </a>
         </aside>
       </section>

@@ -102,7 +102,7 @@ export default async function AdminPage() {
                 <span data-label="Endereço">
                   {live ? (
                     <a href={`/p/${artist.slug}`} target="_blank" rel="noopener noreferrer">
-                      /p/{artist.slug} ↗
+                      /p/{artist.slug} ↗︎
                     </a>
                   ) : (
                     <span className="muted">/p/{artist.slug}</span>
