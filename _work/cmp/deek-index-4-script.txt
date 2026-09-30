@@ -1,0 +1,4 @@
+
+const root=document.documentElement,theme=document.getElementById('theme');function setTheme(t){root.dataset.theme=t;localStorage.setItem('dj-template-02-theme',t);theme.textContent=t==='dark'?'☀':'☾'}setTheme(localStorage.getItem('dj-template-02-theme')||'dark');theme.addEventListener('click',()=>setTheme(root.dataset.theme==='dark'?'light':'dark'));
+const player=document.getElementById('player');let playing=false;document.querySelectorAll('.play').forEach(b=>b.addEventListener('click',()=>{playing=!playing;player.classList.add('show');document.querySelectorAll('.play').forEach(x=>x.textContent=playing?'Ⅱ':'▶')}));
+const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');io.unobserve(entry.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));

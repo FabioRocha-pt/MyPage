@@ -1,0 +1,287 @@
+/* My Page · movimento da página de artista.
+   Separado do renderer: o renderer põe os dados, este ficheiro dá-lhes entrada em cena.
+   Sem JavaScript, ou com "reduzir movimento" ligado no sistema, a página aparece toda
+   parada e completa. Nada aqui esconde conteúdo de forma permanente. */
+(() => {
+  'use strict';
+
+  const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
+  const raiz = document.documentElement;
+  const reduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tactil = window.matchMedia('(hover: none)').matches;
+
+  /* O que anima e como. Os templates não precisam de marcar nada: basta ter estas classes. */
+  const GRUPOS = '.mp-galeria, .video-grid, .mp-faixas, .mp-palmares-grelha, .mp-numeros, .mp-grelha, .mp-rider-lista, .mp-notas, .mp-descargas, .assets, .mp-sociais, .footer-links';
+  const MASCARAS = '.mp-foto, .video-frame, .mp-esquema';
+  const TITULOS = '.head h2, .booking h2, .press-copy h2';
+
+  let iniciado = false;
+  let observador;
+  /* O clip-path de uma máscara fechada deixa o elemento com área visível zero, e o
+     IntersectionObserver nunca o daria como visível. Por isso observa-se o contentor. */
+  const mascarasPorPai = new Map();
+
+  /* ---------- títulos palavra a palavra ---------- */
+  function partirPalavras(titulo) {
+    if (titulo.dataset.mpPartido) return;
+    titulo.dataset.mpPartido = '1';
+    let n = 0;
+    const embrulhar = conteudo => {
+      const caixa = document.createElement('span');
+      caixa.className = 'mp-palavra';
+      const dentro = document.createElement('span');
+      dentro.style.transitionDelay = (n++ * 70) + 'ms';
+      if (typeof conteudo === 'string') dentro.textContent = conteudo; else dentro.append(conteudo);
+      caixa.append(dentro);
+      return caixa;
+    };
+    for (const filho of [...titulo.childNodes]) {
+      if (filho.nodeType === Node.TEXT_NODE) {
+        const pedacos = filho.textContent.split(/(\s+)/).filter(Boolean);
+        const frag = document.createDocumentFragment();
+        for (const p of pedacos) frag.append(/^\s+$/.test(p) ? document.createTextNode(p) : embrulhar(p));
+        filho.replaceWith(frag);
+      } else if (filho.nodeType === Node.ELEMENT_NODE && filho.tagName !== 'BR') {
+        /* Um nome vindo dos dados dentro do título entra como uma palavra só. */
+        const marcador = document.createComment('');
+        filho.replaceWith(marcador);
+        marcador.replaceWith(embrulhar(filho));
+      }
+    }
+  }
+
+  /* ---------- contadores ---------- */
+  function contar(no) {
+    if (no.dataset.mpContado) return;
+    no.dataset.mpContado = '1';
+    const final = no.textContent.trim();
+    const m = final.match(/^(\D*)(\d+(?:[.,]\d+)?)(.*)$/);
+    if (!m) return;
+    const alvo = parseFloat(m[2].replace(',', '.'));
+    const ano = /^(19|20)\d{2}$/.test(m[2]);
+    const inicio = ano ? alvo - 24 : 0;
+    const decimais = (m[2].split(/[.,]/)[1] || '').length;
+    const duracao = 1500;
+    const t0 = performance.now();
+    const passo = agora => {
+      const k = Math.min(1, (agora - t0) / duracao);
+      const suave = 1 - Math.pow(1 - k, 3);
+      const v = inicio + (alvo - inicio) * suave;
+      no.textContent = m[1] + (decimais ? v.toFixed(decimais) : Math.round(v)) + m[3];
+      if (k < 1) requestAnimationFrame(passo); else no.textContent = final;
+    };
+    requestAnimationFrame(passo);
+  }
+
+  /* ---------- observador único ---------- */
+  function observar(no) { if (no) observador.observe(no); }
+
+  function aoEntrar(entradas) {
+    for (const e of entradas) {
+      if (!e.isIntersecting) continue;
+      const alvo = e.target;
+      alvo.classList.add('mp-visivel');
+      observador.unobserve(alvo);
+      /* Terminada a entrada, o elemento volta às suas próprias regras de hover e transição. */
+      if (alvo.hasAttribute('data-mp-grupo')) {
+        const n = Math.min(alvo.children.length, 13);
+        setTimeout(() => alvo.removeAttribute('data-mp-grupo'), 1300 + n * 90);
+      }
+      for (const m of mascarasPorPai.get(alvo) || []) {
+        m.classList.add('mp-visivel');
+        const i = parseFloat(getComputedStyle(m).getPropertyValue('--i')) || 0;
+        setTimeout(() => m.classList.remove('mp-mascara'), 1900 + i * 90);
+      }
+      if (e.target.matches('.mp-numeros')) $$('.mp-numero b', e.target).forEach(contar);
+    }
+  }
+
+  function prepararEntradas() {
+    for (const t of $$(TITULOS)) { partirPalavras(t); observar(t); }
+    for (const g of $$(GRUPOS)) {
+      g.dataset.mpGrupo = '';
+      [...g.children].forEach((filho, i) => filho.style.setProperty('--i', Math.min(i, 12)));
+      observar(g);
+    }
+    for (const m of $$(MASCARAS)) {
+      m.classList.add('mp-mascara');
+      const pai = m.parentElement;
+      if (!mascarasPorPai.has(pai)) mascarasPorPai.set(pai, []);
+      mascarasPorPai.get(pai).push(m);
+      observar(pai);
+    }
+    for (const l of $$('.label')) observar(l);
+    for (const c of $$('.mp-capitulo')) observar(c);
+    for (const f of $$('.mp-bio-media, .mp-palmares-fundo')) observar(f);
+  }
+
+  /* ---------- biografia: a fotografia acompanha o capítulo que se está a ler ---------- */
+  function ligarBiografia() {
+    const capitulos = $$('.mp-capitulo');
+    const fotos = $$('.mp-bio-foto');
+    const numero = document.querySelector('.mp-bio-contador b');
+    const total = document.querySelector('.mp-bio-contador span');
+    const marca = document.querySelector('.mp-bio-marca');
+    const barra = document.querySelector('.mp-bio-progresso i');
+    if (!capitulos.length) return;
+    const bio = document.querySelector('.mp-bio');
+    if (bio) bio.classList.add('mp-bio-vivo');
+    if (total) total.textContent = String(capitulos.length).padStart(2, '0');
+
+    const ativar = i => {
+      capitulos.forEach((c, j) => c.classList.toggle('mp-ativo', j === i));
+      fotos.forEach((f, j) => f.classList.toggle('mp-ativo', j === i % fotos.length));
+      if (numero) numero.textContent = String(i + 1).padStart(2, '0');
+      if (marca) {
+        const texto = (capitulos[i].querySelector('[data-mp-campo="marca"]') || {}).textContent || '';
+        marca.textContent = texto;
+        marca.classList.remove('mp-troca'); void marca.offsetWidth; marca.classList.add('mp-troca');
+      }
+      if (barra) barra.style.transform = 'scaleX(' + ((i + 1) / capitulos.length) + ')';
+    };
+
+    const leitura = new IntersectionObserver(es => {
+      for (const e of es) if (e.isIntersecting) ativar(capitulos.indexOf(e.target));
+    }, {
+      /* No telemóvel a fotografia ocupa a metade de cima, por isso a faixa de leitura desce. */
+      rootMargin: window.innerWidth < 850 ? '-62% 0px -24% 0px' : '-42% 0px -42% 0px'
+    });
+    capitulos.forEach(c => leitura.observe(c));
+    ativar(0);
+  }
+
+  /* ---------- paralaxe ---------- */
+  let alvosParalaxe = [];
+  let pedido = 0;
+
+  function rolar() {
+    pedido = 0;
+    const vh = window.innerHeight;
+    for (const alvo of alvosParalaxe) {
+      const caixa = (alvo.closest('section, .hero') || alvo.parentElement).getBoundingClientRect();
+      if (caixa.bottom < -200 || caixa.top > vh + 200) continue;
+      const fator = parseFloat(alvo.dataset.mpParalaxe) || 0.12;
+      const centro = caixa.top + caixa.height / 2 - vh / 2;
+      alvo.style.transform = 'translate3d(0,' + (-centro * fator).toFixed(1) + 'px,0)';
+    }
+    const topo = window.scrollY > 40;
+    raiz.classList.toggle('mp-rolou', topo);
+  }
+
+  function pedirRolar() { if (!pedido) pedido = requestAnimationFrame(rolar); }
+
+  /* ---------- luz na grelha a seguir o cursor ---------- */
+  function ligarLuz() {
+    if (tactil) return;
+    let px = 0, py = 0, agendado = 0;
+    window.addEventListener('pointermove', e => {
+      px = e.clientX; py = e.clientY;
+      if (agendado) return;
+      agendado = requestAnimationFrame(() => {
+        agendado = 0;
+        raiz.style.setProperty('--mp-mx', px + 'px');
+        raiz.style.setProperty('--mp-my', py + 'px');
+        raiz.classList.add('mp-luz');
+      });
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => raiz.classList.remove('mp-luz'));
+  }
+
+  /* ---------- botões com íman ---------- */
+  function ligarIman() {
+    if (tactil) return;
+    for (const b of $$('.mp-vinil, .mp-social')) {
+      b.addEventListener('pointermove', e => {
+        const r = b.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width / 2) / r.width;
+        const dy = (e.clientY - r.top - r.height / 2) / r.height;
+        b.style.setProperty('--mp-ix', (dx * 10).toFixed(1) + 'px');
+        b.style.setProperty('--mp-iy', (dy * 10).toFixed(1) + 'px');
+      });
+      b.addEventListener('pointerleave', () => { b.style.removeProperty('--mp-ix'); b.style.removeProperty('--mp-iy'); });
+    }
+  }
+
+  /* ---------- faixa dos géneros ----------
+     Cada metade tem de ser pelo menos tão larga como o ecrã, senão o fim aparece antes
+     do recomeço e fica um vazio. Repete-se a lista até chegar, e a duração acompanha a
+     largura para a velocidade ser sempre a mesma. */
+  function encherFaixa() {
+    for (const faixa of $$('.ticker .track')) {
+      const grupos = [...faixa.children];
+      if (!grupos.length) continue;
+      for (const g of grupos) {
+        if (!g.dataset.mpOriginal) g.dataset.mpOriginal = g.innerHTML;
+        g.innerHTML = g.dataset.mpOriginal;
+      }
+      const alvo = Math.max(window.innerWidth, 320) * 1.15;
+      const base = grupos[0].dataset.mpOriginal;
+      let voltas = 0;
+      while (grupos[0].scrollWidth < alvo && voltas++ < 40) for (const g of grupos) g.insertAdjacentHTML('beforeend', base);
+      grupos.slice(1).forEach(g => g.setAttribute('aria-hidden', 'true'));
+      const largura = grupos[0].scrollWidth;
+      faixa.style.setProperty('--mp-faixa-duracao', Math.max(18, largura / 70).toFixed(1) + 's');
+    }
+  }
+
+  /* ---------- menu do telemóvel ---------- */
+  function ligarMenu() {
+    const botao = document.querySelector('.mobile-menu');
+    const links = document.querySelector('.nav-links');
+    if (!botao || !links || botao.dataset.mpLigado) return;
+    botao.dataset.mpLigado = '1';
+    links.id = links.id || 'mp-menu';
+    botao.setAttribute('aria-controls', links.id);
+    botao.setAttribute('aria-expanded', 'false');
+    botao.setAttribute('aria-label', 'Abrir menu');
+    const definir = aberto => {
+      raiz.classList.toggle('mp-menu-aberto', aberto);
+      botao.setAttribute('aria-expanded', String(aberto));
+      botao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      botao.textContent = aberto ? '✕' : '☰';
+      document.body.style.overflow = aberto ? 'hidden' : '';
+    };
+    botao.addEventListener('click', () => definir(!raiz.classList.contains('mp-menu-aberto')));
+    links.addEventListener('click', e => { if (e.target.closest('a')) definir(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && raiz.classList.contains('mp-menu-aberto')) definir(false); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 850 && raiz.classList.contains('mp-menu-aberto')) definir(false); });
+  }
+
+  /* ---------- arranque ---------- */
+  function iniciar() {
+    if (iniciado) return;
+    iniciado = true;
+    ligarBiografia();
+    ligarMenu();
+    encherFaixa();
+    let espera = 0;
+    window.addEventListener('resize', () => { clearTimeout(espera); espera = setTimeout(encherFaixa, 180); });
+    if (reduzido || !('IntersectionObserver' in window)) { raiz.classList.add('mp-parado'); return; }
+
+    raiz.classList.add('mp-mov');
+    observador = new IntersectionObserver(aoEntrar, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+    prepararEntradas();
+
+    alvosParalaxe = $$('[data-mp-paralaxe]');
+    window.addEventListener('scroll', pedirRolar, { passive: true });
+    window.addEventListener('resize', pedirRolar);
+    rolar();
+    ligarLuz();
+    ligarIman();
+
+    /* Entrada do hero: dois frames depois, para o navegador pintar o estado inicial primeiro. */
+    requestAnimationFrame(() => requestAnimationFrame(() => raiz.classList.add('mp-entrou')));
+  }
+
+  window.MyPageMovimento = { iniciar, contar };
+
+  document.addEventListener('mypage:artista', () => iniciar());
+  /* Se o renderer já tiver corrido antes deste ficheiro carregar. */
+  if (raiz.dataset.mypage === 'on') iniciar();
+  /* Página de demonstração, sem dados de artista: arranca quando carregar. */
+  const semArtista = !window.MY_PAGE_ARTISTA && !new URLSearchParams(location.search).get('artista');
+  if (semArtista) {
+    if (document.readyState === 'complete') iniciar();
+    else window.addEventListener('load', iniciar);
+  }
+})();
