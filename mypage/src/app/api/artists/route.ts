@@ -24,9 +24,10 @@ export const GET = handle(async (request: Request) => {
     ...(query
       ? {
           OR: [
-            { displayName: { contains: query } },
-            { city: { contains: query } },
-            { genres: { contains: query } },
+            // Postgres compares case-sensitively by default (SQLite's LIKE did not).
+            { displayName: { contains: query, mode: "insensitive" as const } },
+            { city: { contains: query, mode: "insensitive" as const } },
+            { genres: { contains: query, mode: "insensitive" as const } },
           ],
         }
       : {}),

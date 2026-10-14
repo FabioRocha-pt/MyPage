@@ -19,3 +19,6 @@ tests/.auth
 playwright-report
 test-results
 .playwright-cli
+
+# Throwaway sqlite schema written by scripts/migrate-sqlite-to-postgres.ts.
+prisma/.sqlite

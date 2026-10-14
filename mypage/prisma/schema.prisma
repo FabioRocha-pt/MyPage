@@ -1,7 +1,8 @@
 // My Page · Powered by Muska
 // Schema derived from "documentacao/03-ARQUITETURA-E-INTEGRACOES.md" (Entidades mínimas propostas).
-// SQLite for local development. Swap the datasource provider to postgresql for the Muska environment;
-// the only SQLite-specific choices here are String-encoded JSON columns and the absence of native enums.
+// PostgreSQL everywhere (local: docker-compose.yml). Until October 2026 this ran on SQLite; the schema
+// still keeps JSON in String columns and no native enums, so it stayed portable, and
+// scripts/migrate-sqlite-to-postgres.ts copies an old SQLite database across.
 
 generator client {
   provider = "prisma-client-js"
@@ -9,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
