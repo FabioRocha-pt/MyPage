@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { getAccount } from "@/lib/auth";
 import { ApiError, fail, handle } from "@/lib/api";
-import { etagFor, exists, readStream } from "@/lib/storage";
+import { etagFor, readStream, size } from "@/lib/storage";
 
 /**
  * Serves the display derivative (or the original when no derivative exists).
@@ -46,7 +46,8 @@ export const GET = handle(async (request: Request, { params }: Params) => {
     // External links have no stored bytes; the caller should use externalUrl.
     return fail("Este item é uma ligação externa.", 409, "external_only");
   }
-  if (!(await exists(key))) throw new ApiError("Ficheiro indisponível.", 410, "gone");
+  const bytes = await size(key);
+  if (bytes === null) throw new ApiError("Ficheiro indisponível.", 410, "gone");
 
   const etag = etagFor(key);
   if (request.headers.get("if-none-match") === etag) {
@@ -56,9 +57,25 @@ export const GET = handle(async (request: Request, { params }: Params) => {
   const isDerived = key === media.derivedKey;
   const contentType = isDerived ? "image/webp" : media.mimeType;
 
-  return new Response(readStream(key), {
+  // Video players (Safari above all) only play a file served in byte ranges.
+  const range = /^bytes=(\d*)-(\d*)$/.exec(request.headers.get("range") ?? "");
+  let slice: { start: number; end: number } | undefined;
+  if (range && (range[1] || range[2])) {
+    const start = range[1] ? Number(range[1]) : Math.max(0, bytes - Number(range[2]));
+    const end = range[1] && range[2] ? Math.min(Number(range[2]), bytes - 1) : bytes - 1;
+    if (start >= bytes || start > end) {
+      return new Response(null, { status: 416, headers: { "Content-Range": `bytes */${bytes}` } });
+    }
+    slice = { start, end };
+  }
+
+  return new Response(readStream(key, slice), {
+    status: slice ? 206 : 200,
     headers: {
       "Content-Type": contentType,
+      "Accept-Ranges": "bytes",
+      "Content-Length": String(slice ? slice.end - slice.start + 1 : bytes),
+      ...(slice ? { "Content-Range": `bytes ${slice.start}-${slice.end}/${bytes}` } : {}),
       ETag: etag,
       // Keys are content-addressed by randomness and never rewritten, so a
       // public derivative can be cached hard. Private items must not be cached

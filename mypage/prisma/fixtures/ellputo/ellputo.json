@@ -1,0 +1,146 @@
+{
+  "_nota": "Dados da Página 3 · DJs & Producers (Ellputo, artista de demonstração), retirados de site/index.html da entrega Entrega-Fabio-Pagina-03-DJs-Producers-2026-10-14. O mesmo contrato dos handoffs anteriores, com o bloco pagina3 para o que só esta página mostra. Textos em inglês, como o perfil.",
+  "slug": "ellputo",
+  "template": "06",
+  "plano": "premium",
+  "perfil": {
+    "nomeArtistico": "Ellputo",
+    "alcunha": null,
+    "nomeReal": "Etivaldo Victorino",
+    "frase": "DJ. Producer. No boundaries.",
+    "funcao": "Mozambique / Geobek Records",
+    "cidade": "Maputo",
+    "pais": "Mozambique",
+    "generos": ["DJ", "Producer", "Composer", "Mozambique to the world"],
+    "biografia": "Ellputo is a multi-award-winning DJ and music producer whose work moves across artists, genres and borders.\n\nBorn Etivaldo Victorino on 8 July 1988, he began his musical journey in 2000. In 2003, he co-founded Sameblood Productions with his brother Mic-B, building a home for a new generation of Mozambican talent.\n\nFrom defining records to live experiences and brand soundtracks, his signature is a versatile, unmistakable approach to music.",
+    "biografiaMarcas": []
+  },
+  "biografiaFotos": ["assets/ellputo-02.webp", "assets/ellputo-01.webp", "assets/ellputo-09.webp"],
+  "aparencia": { "fundo": "#181819", "texto": "#f4f1f5", "destaque": "#c49aff" },
+  "imagens": {
+    "principal": "assets/ellputo-recorte-3.png",
+    "retrato": "assets/ellputo-02.webp",
+    "logo": "assets/ellputo-logo.png",
+    "logoHero": "assets/ellputo-logo-hero.png",
+    "logoEscuro": null
+  },
+  "numeros": [
+    { "valor": "332K", "rotulo": "Instagram", "url": "https://www.instagram.com/ellputo/" },
+    { "valor": "329K", "rotulo": "Facebook", "url": "https://www.facebook.com/ellputo/" },
+    { "valor": "145K", "rotulo": "X", "url": "https://twitter.com/ell_p" }
+  ],
+  "links": [
+    { "plataforma": "youtube", "rotulo": "YouTube", "url": "https://www.youtube.com/channel/UCcYqe3o0-lRSeSiH7My5sFg", "destaque": true },
+    { "plataforma": "instagram", "rotulo": "Instagram", "url": "https://www.instagram.com/ellputo/", "destaque": true },
+    { "plataforma": "facebook", "rotulo": "Facebook", "url": "https://www.facebook.com/ellputo/", "destaque": true },
+    { "plataforma": "x", "rotulo": "X", "url": "https://twitter.com/ell_p", "destaque": false },
+    { "plataforma": "website", "rotulo": "Official website", "url": "https://ellputo.com/", "destaque": false }
+  ],
+  "musica": {
+    "player": { "plataformaUrl": "https://open.spotify.com/artist/6kIWq4BfqALFrO5QSEePWY" },
+    "outras": [
+      { "plataforma": "soundcloud", "rotulo": "SoundCloud", "url": "https://soundcloud.com/ellputo" },
+      { "plataforma": "other", "rotulo": "Beatport", "url": "https://www.beatport.com/artist/ellputo/782402" },
+      { "plataforma": "apple", "rotulo": "Apple Music", "url": "https://music.apple.com/us/artist/ellputo/1215971789" }
+    ]
+  },
+  "discografia": [
+    { "titulo": "Unayo", "com": "Ellputo × Cleyton da Drena", "tipo": "Collab", "url": null },
+    { "titulo": "Viva à Nhonga", "com": "Key Marques × Ellputo", "tipo": "Collab", "url": null },
+    { "titulo": "Prodigio × Ellputo", "com": "A creative collaboration", "tipo": "Project", "url": null },
+    { "titulo": "NA WENA", "com": "Ellputo feat. Mano Tsotsi & Vizzow", "tipo": "Track", "url": null },
+    { "titulo": "Episode 1", "com": "Ellputo", "tipo": "Project", "url": null },
+    { "titulo": "ELLPUTULOGY VOL. 1", "com": "Ellputo", "tipo": "EP", "url": null }
+  ],
+  "destaques": [
+    { "titulo": "Best Collaboration", "detalhe": "Zikomo Africa Awards · Katia Vanessa feat. Mano Tsotsi", "tipo": null, "ano": "2024", "video": null },
+    { "titulo": "Best Producer", "detalhe": "Moz Hip-Hop Awards", "tipo": null, "ano": "2022/23", "video": null },
+    { "titulo": "Vodacom Vibratoques Awards", "detalhe": "New Joint · Afro Beat, 2017; Laylizzy · Hip-Hop, 2017; New Joint, 2018", "tipo": null, "ano": "2017 / 2018", "video": null },
+    { "titulo": "Hip-Hop Song of the Year", "detalhe": "Mozambique Music Awards · Dama do Bling, “Casar com outra”; Laylizzy, “The Crew”", "tipo": null, "ano": "2010 / 2016", "video": null },
+    { "titulo": "Best Producer", "detalhe": "Impulso Show, Rádio Cidade", "tipo": null, "ano": "2009", "video": null },
+    { "titulo": "Best Producer", "detalhe": "HipHop Time Show, Rádio Cidade", "tipo": null, "ano": "2010", "video": null },
+    { "titulo": "Best Producer", "detalhe": "Mozambique Music Awards", "tipo": "Nominee", "ano": "2010", "video": null },
+    { "titulo": "Best Producer", "detalhe": "Zikomo Africa Awards", "tipo": "Nominee", "ano": "2023", "video": null }
+  ],
+  "videos": [
+    { "titulo": "Na Wena", "url": "https://youtu.be/H8SfeAlMI3E", "capa": "assets/ellputo-video-na-wena.png" },
+    { "titulo": "Swa Ni Fanela", "url": "https://youtu.be/QIXWxxzRV_o", "capa": "assets/ellputo-video-swa-ni-fanela.png" },
+    {
+      "titulo": "Music Experience",
+      "url": "https://www.youtube.com/playlist?list=PLDsgPq7U5HXBwBdx_QgWLMRKuye6TYJZn",
+      "capa": "assets/ellputo-video-music-experience.png"
+    }
+  ],
+  "galeria": [
+    { "ficheiro": "assets/ellputo-01.webp", "legenda": "Ellputo in a white suit" },
+    { "ficheiro": "assets/ellputo-02.webp", "legenda": "Ellputo in a pale blue shirt" },
+    { "ficheiro": "assets/ellputo-03.webp", "legenda": "Black and white portrait of Ellputo" },
+    { "ficheiro": "assets/ellputo-04.webp", "legenda": "Ellputo with a finger to his lips" },
+    { "ficheiro": "assets/ellputo-05.webp", "legenda": "Ellputo gesturing toward the camera" },
+    { "ficheiro": "assets/ellputo-06.webp", "legenda": "Ellputo leaning forward" },
+    { "ficheiro": "assets/ellputo-07.webp", "legenda": "Ellputo with his arms folded" },
+    { "ficheiro": "assets/ellputo-08.webp", "legenda": "Ellputo with his hands together" },
+    { "ficheiro": "assets/ellputo-09.webp", "legenda": "Ellputo in profile" },
+    { "ficheiro": "assets/ellputo-10.webp", "legenda": "Ellputo seated in a white suit" }
+  ],
+  "booking": {
+    "responsavel": null,
+    "papel": null,
+    "telefone": "+258 86 800 3300",
+    "whatsapp": false,
+    "email": null,
+    "mostrarContactoPublico": true,
+    "regioes": [
+      { "rotulo": "Mozambique", "email": "booking@ellputo.co.za" },
+      { "rotulo": "Rest of the world", "email": "booking@geobek.co.za" }
+    ]
+  },
+  "rider": null,
+  "presskit": { "drive": null, "portfolio": "assets/ellputo-artist-profile.pdf", "publico": true },
+  "pagina3": {
+    "fraseHero": "Feel it.\nDon’t explain it.",
+    "recortesHero": ["assets/ellputo-recorte-1.png", "assets/ellputo-recorte-2.png", "assets/ellputo-recorte-3.png"],
+    "faixa": ["DJ", "Producer", "Composer", "Mozambique to the world"],
+    "origemNumeros": "Audience figures from the artist press kit. Not live counts.",
+    "factos": [
+      { "valor": "2000", "rotulo": "The journey begins" },
+      { "valor": "2003", "rotulo": "Sameblood founded" },
+      { "valor": "MZ ↗", "rotulo": "Worldwide collaborations" }
+    ],
+    "percurso": [
+      { "periodo": "2004", "titulo": "Finding a signature", "texto": "Following “Dinomite esta com gana”, productions for Kloro, Dygo, Hernâni and Gomez brought his sound to new audiences." },
+      { "periodo": "2005", "titulo": "Selecção Nacional", "texto": "Producing 360 Degrees' debut album marked a defining chapter in his career." },
+      { "periodo": "2010", "titulo": "Beyond borders", "texto": "“Dinheiro Limpo” with Laylizzy resonated in Mozambique and across Portuguese-speaking countries." },
+      { "periodo": "Sameblood", "titulo": "The next generation", "texto": "Sameblood Os Primos helped create a path for artists including Blaze, Djimmetta, Jr and Mark Exodus." }
+    ],
+    "colaboracoes": [
+      { "rotulo": "Mozambique", "nomes": "Lizha James · Dama do Bling · Trio Fam · DJ Elex · Young Sixties · Edu · Laylizzy · Hernâni Da Silva · Dice · Blanco · T-Rese · Dabo Boys · Simba" },
+      { "rotulo": "International", "nomes": "Burna Boy · Runtown · A.K.A · Mi Casa · Uhuru · DJ Mbuso · Sean Tizzle · Gomez · Vui Vui" }
+    ],
+    "fotoMusica": "assets/ellputo-07.webp",
+    "fotoPremios": "assets/ellputo-10.webp",
+    "stories": {
+      "video": "assets/ellputo-artist-reel.mp4",
+      "tituloVideo": "Artist reel",
+      "capa": "assets/ellputo-04.webp",
+      "foto": "assets/ellputo-10.webp",
+      "legendaFoto": "The vision behind the sound.",
+      "tipografia": "Make\nit felt.",
+      "introducao": "Music, storytelling and scoring. A creative world in motion.",
+      "notaCreditos": "Selected work recognised by the Prémios Lusófonos da Criatividade. The artist reel above is a separate portfolio piece.",
+      "creditos": [
+        { "ano": "2024", "titulo": "Cantando pela Vida", "cliente": "MPDC" },
+        { "ano": "2024", "titulo": "Melhor do Mundo / Mambas", "cliente": "2M" },
+        { "ano": "2021 / 2023", "titulo": "Desliza", "cliente": "Castle Lite" },
+        { "ano": "2020 / 2022", "titulo": "Number One / Deixa a Leveza Te Levar", "cliente": "2M" }
+      ]
+    },
+    "filmeGaleria": { "video": "assets/ellputo-music-experience.mp4", "titulo": "Ellputo Music Experience", "capa": "assets/ellputo-03.webp" }
+  },
+  "porConfirmar": [
+    "Email de booking de Moçambique: o PDF indica booking@ellputo.co.za, o website booking@ellputo.com (a página usa .co.za).",
+    "Audiência (Instagram 332K, Facebook 329K, X 145K): valores do press kit, não contagens em tempo real.",
+    "Idioma final dos textos (em inglês, como o perfil), direitos de publicação e downloads.",
+    "As imagens e o reel das Stories não estão associados às campanhas premiadas: os créditos ficam numa lista à parte."
+  ]
+}

@@ -26,6 +26,9 @@ const ROUTES = [
   // Template 01 · v1 with real content and its booking page. Needs `npm run db:seed:kevy`.
   { path: "/p/kevy", name: "published page · kevy" },
   { path: "/p/kevy/booking", name: "published booking page · kevy" },
+  // Página 3 · DJs & Producers (template 06). Needs `npm run db:seed:ellputo`.
+  { path: "/p/ellputo", name: "published page · ellputo" },
+  { path: "/templates/06", name: "template 06 demo" },
 ];
 
 for (const route of ROUTES) {

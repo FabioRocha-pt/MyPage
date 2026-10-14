@@ -246,11 +246,13 @@ export const PUT = handle(async (request: Request, { params }: Params) => {
   if (draftInput.content !== undefined) {
     const content = normaliseContent(draftInput.content);
     // Same cross-artist guard as the image references above: every id in the
-    // document must be an image in this artist's own library.
+    // document must be an image in this artist's own library (the two films of
+    // Template 06 are videos from the same library).
     const ids = [...new Set(contentMediaIds(content))];
+    const films = new Set([content.stories.reelMediaId, content.galleryFilm.mediaId].filter(Boolean));
     if (ids.length) {
       const owned = await db.media.findMany({
-        where: { id: { in: ids }, artistId: id, kind: "image" },
+        where: { id: { in: ids }, artistId: id, kind: { in: films.size ? ["image", "video"] : ["image"] } },
         select: { id: true },
       });
       const ownedIds = new Set(owned.map((row) => row.id));

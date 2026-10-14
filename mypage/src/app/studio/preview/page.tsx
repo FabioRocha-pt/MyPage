@@ -3,7 +3,7 @@ import Link from "next/link";
 import { requireStudioContext } from "@/lib/studio";
 import { buildSnapshot } from "@/lib/snapshot";
 import { PageRenderer } from "@/templates/PageRenderer";
-import { HANDOFF_TEMPLATES } from "@/templates/registry";
+import { HANDOFF_TEMPLATES, OWN_RENDERER_TEMPLATES } from "@/templates/registry";
 import "@/styles/templates.css";
 
 export const metadata: Metadata = { title: "Preview do rascunho", robots: { index: false } };
@@ -26,7 +26,7 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
   const page = (await searchParams).page === "booking" && handoff ? "booking" : "home";
   // Templates 01 and 02 have a fixed top bar of their own, so the preview
   // notice moves to the bottom of the screen instead of covering it.
-  const fixedBar = handoff;
+  const fixedBar = OWN_RENDERER_TEMPLATES.has(snapshot.templateId);
 
   return (
     <>

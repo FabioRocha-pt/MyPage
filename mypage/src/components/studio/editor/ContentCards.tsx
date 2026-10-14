@@ -1,7 +1,7 @@
 "use client";
 
 import { CONTENT_LIMITS, type PageContent } from "@/lib/page-content";
-import type { ImageOption } from "./types";
+import type { ImageOption, SelectableItem } from "./types";
 
 /**
  * Editors for the structured content brought by Templates 02 and 01 · versão 1:
@@ -9,6 +9,10 @@ import type { ImageOption } from "./types";
  * public booking contact. Everything here edits one `PageContent` document that
  * is saved with the draft ("Atualizar página") and validated again on the
  * server, so these components hold no rules of their own beyond the limits.
+ *
+ * `Page3Fields` holds the extra content of Página 3 · DJs & Producers
+ * (template 06), shown inside the matching cards only while that template is
+ * the one chosen.
  */
 
 type Patch = (patch: Partial<PageContent>) => void;
@@ -234,17 +238,21 @@ export function StoryFields({
       />
 
       <h3>Números em destaque</h3>
-      <p className="hint">Até seis. O número conta até ao valor quando aparece no ecrã: “3M+”, “11”, “2018”.</p>
+      <p className="hint">
+        Até seis. O número conta até ao valor quando aparece no ecrã: “3M+”, “11”, “2018”. Na Página 3 são a audiência, e o
+        link abre a rede que contam.
+      </p>
       <RowsEditor
         rows={content.stats}
         fields={[
           { key: "value", label: "Valor", placeholder: "3M+" },
           { key: "label", label: "Descrição", placeholder: "visualizações em Pidi La" },
+          { key: "url", label: "Link · opcional", type: "url", placeholder: "https://", wide: true },
         ]}
-        make={() => ({ value: "", label: "" })}
+        make={() => ({ value: "", label: "", url: null })}
         max={CONTENT_LIMITS.stats}
         addLabel="Adicionar número"
-        onChange={(stats) => onChange({ stats: stats.map((s) => ({ value: s.value ?? "", label: s.label ?? "" })) })}
+        onChange={(stats) => onChange({ stats: stats.map((s) => ({ value: s.value ?? "", label: s.label ?? "", url: s.url })) })}
       />
     </>
   );
@@ -296,12 +304,15 @@ export function DiscographyFields({ content, onChange }: { content: PageContent;
           { key: "title", label: "Tema", placeholder: "PIDI LA" },
           { key: "with", label: "Com · opcional", placeholder: "CESF" },
           { key: "year", label: "Ano · opcional", placeholder: "2025" },
+          { key: "type", label: "Tipo · opcional", placeholder: "EP, Collab" },
           { key: "url", label: "Link · opcional", type: "url", placeholder: "https://", wide: true },
         ]}
-        make={() => ({ title: "", with: null, year: null, url: null })}
+        make={() => ({ title: "", with: null, year: null, url: null, type: null })}
         max={CONTENT_LIMITS.discography}
         addLabel="Adicionar tema"
-        onChange={(rows) => onChange({ discography: rows.map((r) => ({ title: r.title ?? "", with: r.with, year: r.year, url: r.url })) })}
+        onChange={(rows) =>
+          onChange({ discography: rows.map((r) => ({ title: r.title ?? "", with: r.with, year: r.year, url: r.url, type: r.type })) })
+        }
       />
     </>
   );
@@ -495,6 +506,301 @@ export function RiderCard({ content, images, onChange }: { content: PageContent;
       </div>
       <h3>Avisos</h3>
       <StringList values={rider.notices} label="Aviso" addLabel="Adicionar aviso" max={CONTENT_LIMITS.notes} onChange={(notices) => setRider({ notices })} />
+    </>
+  );
+}
+
+// --- Página 3 · DJs & Producers (template 06) ------------------------------------------
+
+function MediaSelect({
+  label,
+  value,
+  options,
+  empty,
+  hint,
+  onChange,
+}: {
+  label: string;
+  value: string | null;
+  options: Array<{ id: string; title: string }>;
+  empty: string;
+  hint?: string;
+  onChange: (value: string | null) => void;
+}) {
+  return (
+    <label className="field">
+      {label}
+      <select value={value ?? ""} onChange={(e) => onChange(e.target.value || null)}>
+        <option value="">{empty}</option>
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.title}
+          </option>
+        ))}
+      </select>
+      {hint && <small>{hint}</small>}
+    </label>
+  );
+}
+
+function TextField({
+  label,
+  value,
+  placeholder,
+  hint,
+  wide,
+  onChange,
+}: {
+  label: string;
+  value: string | null;
+  placeholder?: string;
+  hint?: string;
+  wide?: boolean;
+  onChange: (value: string | null) => void;
+}) {
+  return (
+    <label className={`field${wide ? " wide" : ""}`}>
+      {label}
+      <input type="text" value={value ?? ""} placeholder={placeholder} onChange={(e) => onChange(e.target.value || null)} />
+      {hint && <small>{hint}</small>}
+    </label>
+  );
+}
+
+export type Page3Part = "basic" | "music" | "highlights" | "video" | "gallery" | "rider";
+
+/** The extra content of Página 3, split by the card it belongs to. */
+export function Page3Fields({
+  part,
+  content,
+  images,
+  videos,
+  onChange,
+}: {
+  part: Page3Part;
+  content: PageContent;
+  images: ImageOption[];
+  videos: SelectableItem[];
+  onChange: Patch;
+}) {
+  const { stories, galleryFilm } = content;
+  const setStories = (patch: Partial<PageContent["stories"]>) => onChange({ stories: { ...stories, ...patch } });
+  const setFilm = (patch: Partial<PageContent["galleryFilm"]>) => onChange({ galleryFilm: { ...galleryFilm, ...patch } });
+
+  if (part === "basic") {
+    return (
+      <>
+        <h3>Página 3 · hero</h3>
+        <p className="hint">
+          Na Página 3 o logo do hero é obrigatório (Imagens e cores). A “Função” acima aparece na vertical ao lado do logo. Na
+          frase do hero, a segunda linha fica na cor de destaque.
+        </p>
+        <div className="fields">
+          <label className="field wide">
+            Frase do hero
+            <textarea
+              rows={2}
+              placeholder={"Feel it.\nDon’t explain it."}
+              value={content.heroStatement ?? ""}
+              onChange={(e) => onChange({ heroStatement: e.target.value || null })}
+            />
+          </label>
+        </div>
+        <h3>Recortes do hero</h3>
+        <p className="hint">Até três PNG com fundo transparente. Os primeiros ficam atrás, a preto e branco; o último à frente.</p>
+        <RowsEditor
+          rows={content.heroPhotoIds.map((mediaId) => ({ mediaId }))}
+          fields={[{ key: "mediaId", label: "Recorte", type: "image", wide: true }]}
+          make={() => ({ mediaId: images[0]?.id ?? "" })}
+          max={CONTENT_LIMITS.heroPhotos}
+          addLabel="Adicionar recorte"
+          images={images}
+          onChange={(rows) => onChange({ heroPhotoIds: rows.map((row) => (row.mediaId as string | null) ?? "").filter(Boolean) })}
+        />
+        <h3>Faixa em movimento</h3>
+        <p className="hint">As palavras da faixa por baixo do hero. Vazia, usa os géneros.</p>
+        <StringList
+          values={content.ticker}
+          label="Palavra"
+          addLabel="Adicionar palavra"
+          max={CONTENT_LIMITS.ticker}
+          onChange={(ticker) => onChange({ ticker })}
+        />
+        <div className="fields">
+          <TextField
+            label="Origem dos números"
+            wide
+            value={content.statsNote}
+            placeholder="Audience figures from the artist press kit. Not live counts."
+            hint="Os números da audiência não são contagens em tempo real: diz de onde vêm."
+            onChange={(statsNote) => onChange({ statsNote })}
+          />
+        </div>
+        <h3>Factos da biografia</h3>
+        <RowsEditor
+          rows={content.facts}
+          fields={[
+            { key: "value", label: "Valor", placeholder: "2003" },
+            { key: "label", label: "Descrição", placeholder: "Sameblood founded" },
+          ]}
+          make={() => ({ value: "", label: "", url: null })}
+          max={CONTENT_LIMITS.stats}
+          addLabel="Adicionar facto"
+          onChange={(rows) => onChange({ facts: rows.map((r) => ({ value: r.value ?? "", label: r.label ?? "", url: null })) })}
+        />
+        <h3>Percurso</h3>
+        <RowsEditor
+          rows={content.timeline}
+          fields={[
+            { key: "period", label: "Ano ou período", placeholder: "2010" },
+            { key: "title", label: "Título", placeholder: "Beyond borders" },
+            { key: "text", label: "Descrição", wide: true },
+          ]}
+          make={() => ({ period: "", title: "", text: null })}
+          max={CONTENT_LIMITS.timeline}
+          addLabel="Adicionar marco"
+          onChange={(rows) => onChange({ timeline: rows.map((r) => ({ period: r.period ?? "", title: r.title ?? "", text: r.text })) })}
+        />
+      </>
+    );
+  }
+
+  if (part === "music") {
+    return (
+      <>
+        <h3>Página 3 · colaborações</h3>
+        <p className="hint">Um grupo por linha: “Mozambique”, “International”. Os nomes separados por “ · ”.</p>
+        <RowsEditor
+          rows={content.collaborations}
+          fields={[
+            { key: "label", label: "Grupo", placeholder: "International" },
+            { key: "names", label: "Nomes", wide: true },
+          ]}
+          make={() => ({ label: "", names: "" })}
+          max={CONTENT_LIMITS.collaborations}
+          addLabel="Adicionar grupo"
+          onChange={(rows) => onChange({ collaborations: rows.map((r) => ({ label: r.label ?? "", names: r.names ?? "" })) })}
+        />
+        <div className="fields">
+          <MediaSelect
+            label="Fotografia ao lado dos projetos"
+            value={content.musicPhotoId}
+            options={images}
+            empty="Sem fotografia"
+            onChange={(musicPhotoId) => onChange({ musicPhotoId })}
+          />
+        </div>
+      </>
+    );
+  }
+
+  if (part === "highlights") {
+    return (
+      <div className="fields">
+        <MediaSelect
+          label="Página 3 · fotografia ao lado dos prémios"
+          value={content.highlightsPhotoId}
+          options={images}
+          empty="Sem fotografia"
+          hint="Os quatro primeiros destaques aparecem; os restantes ficam em “More recognition”."
+          onChange={(highlightsPhotoId) => onChange({ highlightsPhotoId })}
+        />
+      </div>
+    );
+  }
+
+  if (part === "video") {
+    return (
+      <>
+        <h3>Página 3 · Stories</h3>
+        <p className="hint">
+          Um vídeo da biblioteca (ficheiro carregado, público), uma fotografia editorial e os créditos das campanhas. Não associes
+          as imagens a campanhas a que não pertencem: os créditos ficam numa lista à parte.
+        </p>
+        <div className="fields">
+          <MediaSelect label="Vídeo" value={stories.reelMediaId} options={videos} empty="Sem vídeo" onChange={(reelMediaId) => setStories({ reelMediaId })} />
+          <MediaSelect
+            label="Capa do vídeo"
+            value={stories.posterMediaId}
+            options={images}
+            empty="Sem capa"
+            onChange={(posterMediaId) => setStories({ posterMediaId })}
+          />
+          <TextField label="Título do vídeo" value={stories.reelTitle} placeholder="Artist reel" onChange={(reelTitle) => setStories({ reelTitle })} />
+          <MediaSelect
+            label="Fotografia editorial"
+            value={stories.photoMediaId}
+            options={images}
+            empty="Sem fotografia"
+            onChange={(photoMediaId) => setStories({ photoMediaId })}
+          />
+          <TextField
+            label="Legenda da fotografia"
+            value={stories.photoCaption}
+            placeholder="The vision behind the sound."
+            onChange={(photoCaption) => setStories({ photoCaption })}
+          />
+          <label className="field">
+            Tipografia grande
+            <textarea
+              rows={2}
+              placeholder={"Make\nit felt."}
+              value={stories.statement ?? ""}
+              onChange={(e) => setStories({ statement: e.target.value || null })}
+            />
+          </label>
+          <TextField label="Introdução" wide value={stories.intro} onChange={(intro) => setStories({ intro })} />
+          <TextField label="Nota dos créditos" wide value={stories.creditsNote} onChange={(creditsNote) => setStories({ creditsNote })} />
+        </div>
+        <h3>Créditos das campanhas</h3>
+        <RowsEditor
+          rows={stories.credits}
+          fields={[
+            { key: "year", label: "Ano", placeholder: "2024" },
+            { key: "title", label: "Campanha", placeholder: "Cantando pela Vida" },
+            { key: "client", label: "Cliente", placeholder: "MPDC" },
+          ]}
+          make={() => ({ year: null, title: "", client: null })}
+          max={CONTENT_LIMITS.credits}
+          addLabel="Adicionar crédito"
+          onChange={(rows) => setStories({ credits: rows.map((r) => ({ year: r.year, title: r.title ?? "", client: r.client })) })}
+        />
+      </>
+    );
+  }
+
+  if (part === "gallery") {
+    return (
+      <>
+        <h3>Página 3 · filme por baixo da galeria</h3>
+        <div className="fields">
+          <MediaSelect label="Vídeo" value={galleryFilm.mediaId} options={videos} empty="Sem vídeo" onChange={(mediaId) => setFilm({ mediaId })} />
+          <MediaSelect label="Capa" value={galleryFilm.posterMediaId} options={images} empty="Sem capa" onChange={(posterMediaId) => setFilm({ posterMediaId })} />
+          <TextField label="Título" value={galleryFilm.title} placeholder="Music Experience" onChange={(title) => setFilm({ title })} />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h3>Página 3 · emails de booking por região</h3>
+      <p className="hint">
+        Só aparecem com “Mostrar este contacto na página pública” ligado. A página não recebe pedidos: leva aos contactos.
+      </p>
+      <RowsEditor
+        rows={content.booking.regions}
+        fields={[
+          { key: "label", label: "Região", placeholder: "Rest of the world" },
+          { key: "email", label: "Email", placeholder: "booking@…" },
+        ]}
+        make={() => ({ label: "", email: "" })}
+        max={CONTENT_LIMITS.regions}
+        addLabel="Adicionar região"
+        onChange={(rows) =>
+          onChange({ booking: { ...content.booking, regions: rows.map((r) => ({ label: r.label ?? "", email: r.email ?? "" })) } })
+        }
+      />
     </>
   );
 }

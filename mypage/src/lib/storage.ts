@@ -135,9 +135,12 @@ export async function exists(key: string): Promise<boolean> {
   return (await size(key)) !== null;
 }
 
-/** Streams a stored object. The caller is responsible for authorising the read. */
-export function readStream(key: string): ReadableStream<Uint8Array> {
-  const nodeStream = createReadStream(resolveKey(key));
+/**
+ * Streams a stored object, or the inclusive byte `range` of it (video seeking).
+ * The caller is responsible for authorising the read.
+ */
+export function readStream(key: string, range?: { start: number; end: number }): ReadableStream<Uint8Array> {
+  const nodeStream = createReadStream(resolveKey(key), range);
   return new ReadableStream({
     start(controller) {
       nodeStream.on("data", (chunk) => controller.enqueue(new Uint8Array(chunk as Buffer)));

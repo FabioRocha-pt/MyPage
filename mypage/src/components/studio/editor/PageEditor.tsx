@@ -15,7 +15,7 @@ import { DismissibleNotice } from "../DismissibleNotice";
 import { ToolRequestsManager, type ToolRequestRow } from "../ToolRequestsManager";
 import type { PageContent } from "@/lib/page-content";
 import { BasicCard } from "./BasicCard";
-import { DiscographyFields, GalleryCard, HighlightsCard, LogoDarkField, RiderCard, StoryFields } from "./ContentCards";
+import { DiscographyFields, GalleryCard, HighlightsCard, LogoDarkField, Page3Fields, RiderCard, StoryFields, type Page3Part } from "./ContentCards";
 import { PressCard } from "./PressCard";
 import { SelectionCard } from "./SelectionCard";
 import { VisualCard } from "./VisualCard";
@@ -389,6 +389,18 @@ export function PageEditor(props: PageEditorProps) {
                       onToggle={(id) => toggleContent("video", id)}
                     />
                   )}
+
+                  {/* Página 3 · DJs & Producers: its own content, only while it is the chosen template. */}
+                  {appearance.templateId === "06" &&
+                    (["basic", "music", "highlights", "video", "gallery", "rider"] as string[]).includes(cardId) && (
+                      <Page3Fields
+                        part={cardId as Page3Part}
+                        content={content}
+                        images={props.images}
+                        videos={props.videos}
+                        onChange={patchContent}
+                      />
+                    )}
 
                   {cardId === "events" && (
                     <SelectionCard

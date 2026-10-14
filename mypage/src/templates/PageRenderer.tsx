@@ -5,6 +5,7 @@ import { HEROES } from "./heroes";
 import { templateOrDefault } from "./registry";
 import { Template01 } from "./t01/Template01";
 import { Template02, type T02Links } from "./t02/Template02";
+import { Template06 } from "./t06/Template06";
 import { HANDOFF_TEMPLATES } from "./registry";
 
 /**
@@ -38,6 +39,11 @@ export function PageRenderer({
   links?: T02Links;
 }) {
   const template = templateOrDefault(snapshot.templateId);
+
+  // Página 3 · DJs & Producers (06): one page, booking by contact.
+  if (template.id === "06") {
+    return <Template06 snapshot={snapshot} links={links ?? { home: "#top", booking: null }} />;
+  }
 
   // Templates 01 and 02 · versão 1 have their own full renderers (hero and
   // sections), from the Kevy and Deekay handoffs. The other three still share

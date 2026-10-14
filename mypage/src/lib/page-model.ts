@@ -247,6 +247,13 @@ export interface SnapshotCampaign {
   donors: Array<{ name: string; amountMinor: number; message: string | null }>;
 }
 
+/** A local video file from the library, with its poster. */
+export interface SnapshotFilm {
+  src: string;
+  poster: string | null;
+  title: string;
+}
+
 /**
  * Resolved `PageContent` (src/lib/page-content.ts): media ids become public
  * URLs, private items are dropped, and the two opt-in blocks — rider and
@@ -257,8 +264,8 @@ export interface SnapshotContent {
   nickname: string | null;
   bioMarks: string[];
   bioPhotos: SnapshotImage[];
-  stats: Array<{ value: string; label: string }>;
-  discography: Array<{ title: string; with: string | null; year: string | null; url: string | null }>;
+  stats: Array<{ value: string; label: string; url?: string | null }>;
+  discography: Array<{ title: string; with: string | null; year: string | null; url: string | null; type?: string | null }>;
   highlights: Array<{
     title: string;
     detail: string | null;
@@ -298,6 +305,28 @@ export interface SnapshotContent {
   } | null;
   /** Public documents found in the press kit, by category. */
   documents: { presskit: string | null; rider: string | null; folder: string | null };
+  // --- Página 3 · DJs & Producers (template 06). Optional: older snapshots lack them.
+  heroPhotos?: SnapshotImage[];
+  heroStatement?: string | null;
+  ticker?: string[];
+  statsNote?: string | null;
+  facts?: Array<{ value: string; label: string; url?: string | null }>;
+  timeline?: Array<{ period: string; title: string; text: string | null }>;
+  collaborations?: Array<{ label: string; names: string }>;
+  musicPhoto?: SnapshotImage | null;
+  highlightsPhoto?: SnapshotImage | null;
+  stories?: {
+    reel: SnapshotFilm | null;
+    photo: SnapshotImage | null;
+    photoCaption: string | null;
+    statement: string | null;
+    intro: string | null;
+    creditsNote: string | null;
+    credits: Array<{ year: string | null; title: string; client: string | null }>;
+  } | null;
+  galleryFilm?: SnapshotFilm | null;
+  /** Booking emails by territory; published only with the public booking contact. */
+  bookingRegions?: Array<{ label: string; email: string }>;
 }
 
 export interface PageSnapshot {
