@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
 import { BookingManager, type BookingRow, type CalendarEvent, type Slot } from "@/components/studio/BookingManager";
-import { db } from "@/lib/db";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Booking" };
 
 export default async function BookingPage() {
-  const { artist } = await requireStudioContext();
-
-  const [slots, events, requests] = await Promise.all([
-    db.availability.findMany({ where: { artistId: artist.id }, orderBy: { startsAt: "asc" }, take: 500 }),
-    db.event.findMany({
-      where: { artistId: artist.id, isArchived: false },
-      orderBy: { startsAt: "asc" },
-      select: { id: true, title: true, startsAt: true },
-      take: 500,
-    }),
-    db.bookingRequest.findMany({ where: { artistId: artist.id }, orderBy: { createdAt: "desc" }, take: 50 }),
-  ]);
+  const {
+    context: { artist },
+    rows: [slots, events, requests],
+  } = await load.studioBooking();
 
   const now = new Date();
 

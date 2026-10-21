@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { MediaLibrary } from "@/components/studio/MediaLibrary";
 import { MuskaSearch } from "@/components/studio/MuskaSearch";
-import { getMuskaAdapter } from "@/lib/muska";
-import { loadLibrary } from "@/lib/library";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Áudio" };
 
 export default async function AudioPage() {
-  const { artist, entitlement, usage } = await requireStudioContext();
-  const items = await loadLibrary(artist.id, "audio");
-  const muska = getMuskaAdapter().status();
+  const {
+    context: { artist, entitlement, usage },
+    items,
+    muska,
+  } = await load.studioLibrary("audio");
 
   return (
     <MediaLibrary

@@ -1,37 +1,14 @@
 import type { Metadata } from "next";
 import { StoreManager, type OrderRow, type ProductRow } from "@/components/studio/StoreManager";
-import { db } from "@/lib/db";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Merchandising" };
 
 export default async function StorePage() {
-  const { artist, entitlement } = await requireStudioContext();
-
-  const [products, orders, privateFiles, images] = await Promise.all([
-    db.product.findMany({
-      where: { artistId: artist.id },
-      orderBy: { createdAt: "desc" },
-      include: { variants: { orderBy: { position: "asc" } } },
-    }),
-    db.order.findMany({
-      where: { artistId: artist.id },
-      orderBy: { createdAt: "desc" },
-      take: 40,
-      include: { items: true, payment: { select: { status: true } } },
-    }),
-    // Doc 04: a digital product must be private before it can be sold.
-    db.media.findMany({
-      where: { artistId: artist.id, isPublic: false, NOT: { originalKey: null } },
-      select: { id: true, title: true },
-      take: 200,
-    }),
-    db.media.findMany({
-      where: { artistId: artist.id, kind: "image", status: "ready" },
-      select: { id: true, title: true },
-      take: 200,
-    }),
-  ]);
+  const {
+    context: { artist, entitlement },
+    rows: [products, orders, privateFiles, images],
+  } = await load.studioStore();
 
   const productRows: ProductRow[] = products.map((product) => ({
     id: product.id,

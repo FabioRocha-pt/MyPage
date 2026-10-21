@@ -6,12 +6,11 @@ import type {
   LinkRow,
   SelectableItem,
 } from "@/components/studio/editor/types";
-import { db } from "@/lib/db";
+import { load } from "@/lib/data";
 import { readContent } from "@/lib/page-content";
 import { normaliseEditorOrder, normaliseSections } from "@/lib/page-model";
 import { PLATFORMS, getPlatform, resolveEmbed } from "@/lib/platforms";
 import { PRESS_CATEGORIES } from "@/lib/press";
-import { requireStudioContext } from "@/lib/studio";
 
 export const metadata: Metadata = { title: "Page" };
 
@@ -24,58 +23,11 @@ export const metadata: Metadata = { title: "Page" };
  * version-conflict handling in one place.
  */
 export default async function EditorPage() {
-  const { account, artist, entitlement } = await requireStudioContext();
-
-  const [full, images, links, published, pressLinks, albums, audio, videos, events, toolRequests, attachments] =
-    await Promise.all([
-      db.artist.findUniqueOrThrow({ where: { id: artist.id } }),
-      db.media.findMany({
-        where: { artistId: artist.id, kind: "image", status: "ready" },
-        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
-        select: { id: true, title: true },
-        take: 200,
-      }),
-      db.externalLink.findMany({
-        where: { artistId: artist.id },
-        orderBy: [{ group: "asc" }, { position: "asc" }],
-      }),
-      db.publishedPage.findFirst({
-        where: { artistId: artist.id, isLive: true },
-        select: { version: true },
-      }),
-      db.pressLink.findMany({ where: { artistId: artist.id } }),
-      db.album.findMany({
-        where: { artistId: artist.id },
-        orderBy: { position: "asc" },
-        include: { _count: { select: { media: true } } },
-      }),
-      db.media.findMany({
-        where: { artistId: artist.id, kind: "audio", status: "ready" },
-        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
-        take: 200,
-      }),
-      db.media.findMany({
-        where: { artistId: artist.id, kind: "video", status: "ready" },
-        orderBy: [{ position: "asc" }, { createdAt: "desc" }],
-        take: 200,
-      }),
-      db.event.findMany({
-        where: { artistId: artist.id, isArchived: false },
-        orderBy: { startsAt: "asc" },
-        take: 200,
-      }),
-      db.toolRequest.findMany({ where: { accountId: account.id }, orderBy: { createdAt: "desc" }, take: 20 }),
-      db.media.findMany({
-        where: { artistId: artist.id },
-        orderBy: { createdAt: "desc" },
-        select: { id: true, title: true },
-        take: 20,
-      }),
-    ]);
-
-  const record =
-    (await db.pageDraft.findUnique({ where: { artistId: artist.id } })) ??
-    (await db.pageDraft.create({ data: { artistId: artist.id, editorOrder: "[]", sections: "[]" } }));
+  const {
+    context: { account, artist, entitlement },
+    rows: [full, images, links, published, pressLinks, albums, audio, videos, events, toolRequests, attachments],
+    record,
+  } = await load.studioEditor();
 
   const profile: EditorProfile = {
     displayName: full.displayName,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ToolRequestQueue, type AdminToolRequest } from "@/components/admin/ToolRequestQueue";
-import { db } from "@/lib/db";
+import { load } from "@/lib/data";
 import { formatDateTime } from "@/lib/studio";
 import "@/styles/admin.css";
 
@@ -15,32 +15,7 @@ export const metadata: Metadata = { title: "Plataforma" };
  * everything, answer tool requests.
  */
 export default async function AdminPage() {
-  const [requests, artists, accountCount, artistCount, publishedCount, pendingRequests] = await Promise.all([
-    db.toolRequest.findMany({
-      orderBy: [{ status: "asc" }, { createdAt: "desc" }],
-      take: 100,
-      include: {
-        account: { select: { email: true } },
-        artist: { select: { displayName: true } },
-      },
-    }),
-    db.artist.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 100,
-      select: {
-        id: true,
-        slug: true,
-        displayName: true,
-        plan: true,
-        createdAt: true,
-        publishedPages: { where: { isLive: true }, select: { version: true, publishedAt: true } },
-      },
-    }),
-    db.account.count(),
-    db.artist.count(),
-    db.publishedPage.count({ where: { isLive: true } }),
-    db.toolRequest.count({ where: { status: "new" } }),
-  ]);
+  const [requests, artists, accountCount, artistCount, publishedCount, pendingRequests] = await load.adminOverview();
 
   const rows: AdminToolRequest[] = requests.map((request) => ({
     id: request.id,

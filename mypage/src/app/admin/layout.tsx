@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SignOutButton } from "@/components/studio/SignOutButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { requireStaffAccount } from "@/lib/studio";
+import { load } from "@/lib/data";
 import "@/styles/studio.css";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
  * ever shadow this route.
  */
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const account = await requireStaffAccount();
+  const account = await load.staffAccount();
 
   return (
     <>

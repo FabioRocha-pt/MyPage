@@ -6,5 +6,5 @@
 	request_body {
 		max_size 200MB
 	}
-	reverse_proxy app:3000
+	reverse_proxy web:3000
 }

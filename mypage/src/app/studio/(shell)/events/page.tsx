@@ -1,27 +1,15 @@
 import type { Metadata } from "next";
 import { EventsManager, type EventRow } from "@/components/studio/EventsManager";
-import { db } from "@/lib/db";
-import { getMuskaAdapter } from "@/lib/muska";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Eventos" };
 
 export default async function EventsPage() {
-  const { artist } = await requireStudioContext();
-
-  const [events, images] = await Promise.all([
-    db.event.findMany({
-      where: { artistId: artist.id, isArchived: false },
-      orderBy: { startsAt: "asc" },
-      take: 100,
-    }),
-    db.media.findMany({
-      where: { artistId: artist.id, kind: "image", status: "ready" },
-      select: { id: true, title: true },
-      orderBy: { createdAt: "desc" },
-      take: 200,
-    }),
-  ]);
+  const {
+    context: { artist },
+    rows: [events, images],
+    muskaConnected,
+  } = await load.studioEvents();
 
   const rows: EventRow[] = events.map((event) => ({
     id: event.id,
@@ -45,7 +33,7 @@ export default async function EventsPage() {
       artistId={artist.id}
       initialEvents={rows}
       images={images}
-      muskaConnected={getMuskaAdapter().status().connected}
+      muskaConnected={muskaConnected}
     />
   );
 }

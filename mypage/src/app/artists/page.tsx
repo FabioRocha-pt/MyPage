@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArtistGrid, type ArtistCard } from "@/components/artists/ArtistGrid";
-import { db } from "@/lib/db";
+import { load } from "@/lib/data";
 import type { PageSnapshot } from "@/lib/page-model";
 import "@/styles/artists.css";
 
@@ -62,12 +62,7 @@ function initials(name: string): string {
 }
 
 export default async function ArtistsPage() {
-  const published = await db.publishedPage.findMany({
-    where: { isLive: true },
-    orderBy: { publishedAt: "desc" },
-    take: 48,
-    select: { slug: true, snapshot: true },
-  });
+  const published = await load.publishedPages();
 
   const pages: ArtistCard[] = published.flatMap((row) => {
     let snapshot: PageSnapshot;

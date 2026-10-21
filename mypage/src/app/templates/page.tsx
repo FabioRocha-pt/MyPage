@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TemplateCatalog } from "@/components/TemplateCatalog";
-import { getAccount, getCurrentArtistId } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { getArtistEntitlement } from "@/lib/entitlements";
+import { load } from "@/lib/data";
 import "@/styles/studio.css";
 import "@/styles/catalog.css";
 
@@ -24,13 +22,7 @@ export const metadata: Metadata = {
  * visitor is sent to registration carrying the choice.
  */
 export default async function TemplatesPage() {
-  const account = await getAccount();
-  const artistId = account ? await getCurrentArtistId(account.id) : null;
-
-  const [draft, entitlement] = await Promise.all([
-    artistId ? db.pageDraft.findUnique({ where: { artistId }, select: { templateId: true, version: true } }) : null,
-    artistId ? getArtistEntitlement(artistId) : null,
-  ]);
+  const { artistId, draft, entitlement } = await load.templateChoice();
 
   return (
     <main className="catalog-page">

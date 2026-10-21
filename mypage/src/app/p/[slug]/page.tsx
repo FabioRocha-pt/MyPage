@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { loadPublishedSnapshot } from "@/lib/published";
+import { load } from "@/lib/data";
 import { PageRenderer } from "@/templates/PageRenderer";
 import "@/styles/templates.css";
 
@@ -20,7 +20,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-const loadSnapshot = loadPublishedSnapshot;
+const loadSnapshot = load.publishedSnapshot;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

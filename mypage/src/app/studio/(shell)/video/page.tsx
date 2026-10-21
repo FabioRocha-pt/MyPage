@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { MediaLibrary } from "@/components/studio/MediaLibrary";
-import { loadLibrary } from "@/lib/library";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Vídeos" };
 
 export default async function VideoPage() {
-  const { artist, entitlement, usage } = await requireStudioContext();
-  const items = await loadLibrary(artist.id, "video");
+  const {
+    context: { artist, entitlement, usage },
+    items,
+  } = await load.studioLibrary("video");
 
   return (
     <MediaLibrary

@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 import { DonationsManager, type CampaignRow } from "@/components/studio/DonationsManager";
-import { db } from "@/lib/db";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Donativos" };
 
 export default async function DonationsPage() {
-  const { artist, entitlement } = await requireStudioContext();
-
-  const campaigns = await db.campaign.findMany({
-    where: { artistId: artist.id },
-    orderBy: { createdAt: "desc" },
-    include: { donations: { select: { amountMinor: true, status: true } } },
-  });
+  const {
+    context: { artist, entitlement },
+    campaigns,
+  } = await load.studioDonations();
 
   const rows: CampaignRow[] = campaigns.map((campaign) => {
     const sum = (state: string) =>

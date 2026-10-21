@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SignOutButton } from "@/components/studio/SignOutButton";
 import { StudioSidebar, WorkspaceTabs, type SubmenuItem } from "@/components/studio/StudioNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { requireStudioContext } from "@/lib/studio";
+import { load } from "@/lib/data";
 import "@/styles/studio.css";
 import "@/styles/catalog.css";
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
  * rather than failing later inside the screen.
  */
 export default async function StudioLayout({ children }: { children: React.ReactNode }) {
-  const { account, artist, entitlement } = await requireStudioContext();
+  const { account, artist, entitlement } = await load.studioContext();
 
   const submenu: SubmenuItem[] = [
     { href: "/studio/page", label: "Page" },

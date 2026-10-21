@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { getAccount } from "@/lib/auth";
-import { landingFor } from "@/lib/studio";
+import { load } from "@/lib/data";
 import "@/styles/auth.css";
 
 export const metadata: Metadata = { title: "Entrar" };
@@ -13,11 +12,10 @@ interface Props {
 }
 
 export default async function SignInPage({ searchParams }: Props) {
-  const account = await getAccount();
   // Same reason as /signup: /studio bounces an artist-less account onwards, so
   // an unconditional redirect here can loop. `landingFor` only returns a route
   // the account can render.
-  const landing = account ? await landingFor(account) : null;
+  const { landing } = await load.signedInLanding();
   if (landing) redirect(landing);
 
   // Only same-site paths are honoured, so ?next= cannot bounce a signed-in

@@ -3,9 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { SignOutButton } from "@/components/studio/SignOutButton";
-import { getAccount } from "@/lib/auth";
-import { getEntitlement } from "@/lib/entitlements";
-import { landingFor } from "@/lib/studio";
+import { load } from "@/lib/data";
 import { getTemplate } from "@/templates/registry";
 import "@/styles/auth.css";
 
@@ -17,11 +15,10 @@ interface Props {
 }
 
 export default async function SignUpPage({ searchParams }: Props) {
-  const account = await getAccount();
   // Never redirect straight to /studio: it sends an account with no artist
   // back here, which is an infinite loop. `landingFor` returns null when there
   // is nowhere safe to go, and then this page renders instead of bouncing.
-  const landing = account ? await landingFor(account) : null;
+  const { account, landing } = await load.signedInLanding();
   if (landing) redirect(landing);
 
   // Doc 01: the public address format is still to be confirmed with the owner,
@@ -36,7 +33,7 @@ export default async function SignUpPage({ searchParams }: Props) {
    */
   const { template } = await searchParams;
   const chosen = template ? getTemplate(template) : undefined;
-  const freePlan = await getEntitlement("free");
+  const freePlan = await load.freeEntitlement();
   const chosenIsFree = chosen ? freePlan.allowedTemplates.includes(chosen.id) : false;
 
   return (

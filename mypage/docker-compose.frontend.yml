@@ -1,0 +1,46 @@
+# My Page frontend: the public pages and the studio, on the frontend server.
+#
+#   cp .env.frontend.example .env.frontend      # fill in API_URL and the secret
+#   docker compose -f docker-compose.frontend.yml --env-file .env.frontend --profile proxy up -d --build
+#
+# web    the same app image with MYPAGE_ROLE=web: renders the pages and has no
+#        database. Page data and every /api/* request go to the backend server
+#        (API_URL) over the private network; see lib/data.ts and server.js.
+# caddy  optional HTTPS reverse proxy for mypage.cv (`--profile proxy`); leave
+#        it off if the server already runs nginx/Traefik in front of web.
+
+name: mypage-frontend
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://mypage.cv}
+    image: mypage-app
+    restart: unless-stopped
+    env_file: .env.frontend
+    environment:
+      MYPAGE_ROLE: web
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+
+  caddy:
+    image: caddy:2-alpine
+    profiles: ["proxy"]
+    restart: unless-stopped
+    depends_on:
+      - web
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-mypage.cv}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  caddy-data:
+  caddy-config:

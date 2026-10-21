@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStudioContext } from "@/lib/studio";
-import { buildSnapshot } from "@/lib/snapshot";
+import { load } from "@/lib/data";
 import { PageRenderer } from "@/templates/PageRenderer";
 import { HANDOFF_TEMPLATES, OWN_RENDERER_TEMPLATES } from "@/templates/registry";
 import "@/styles/templates.css";
@@ -20,8 +19,10 @@ export const metadata: Metadata = { title: "Preview do rascunho", robots: { inde
  * readable from the public side.
  */
 export default async function PreviewPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
-  const { artist } = await requireStudioContext();
-  const { snapshot, warnings, errors } = await buildSnapshot(artist.id, { mode: "preview" });
+  const {
+    context: { artist },
+    build: { snapshot, warnings, errors },
+  } = await load.studioPreview();
   const handoff = HANDOFF_TEMPLATES.has(snapshot.templateId);
   const page = (await searchParams).page === "booking" && handoff ? "booking" : "home";
   // Templates 01 and 02 have a fixed top bar of their own, so the preview

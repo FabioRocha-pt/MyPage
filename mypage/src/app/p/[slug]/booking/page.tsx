@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { snapshotContent } from "@/lib/page-model";
-import { loadPublishedSnapshot } from "@/lib/published";
+import { load } from "@/lib/data";
 import { PageRenderer } from "@/templates/PageRenderer";
 import { HANDOFF_TEMPLATES } from "@/templates/registry";
 import "@/styles/templates.css";
@@ -21,7 +21,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const snapshot = await loadPublishedSnapshot(slug);
+  const snapshot = await load.publishedSnapshot(slug);
   if (!snapshot) return { title: "Página não encontrada" };
   const title = `Booking · ${snapshot.profile.displayName}`;
   const description = `Pedido de booking, rider técnico e hospitalidade de ${snapshot.profile.displayName}.`;
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BookingPage({ params }: Props) {
   const { slug } = await params;
-  const snapshot = await loadPublishedSnapshot(slug);
+  const snapshot = await load.publishedSnapshot(slug);
   if (!snapshot || !HANDOFF_TEMPLATES.has(snapshot.templateId)) notFound();
   if (!snapshot.booking.enabled && !snapshotContent(snapshot).rider) notFound();
 

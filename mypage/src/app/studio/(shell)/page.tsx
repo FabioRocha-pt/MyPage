@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { db } from "@/lib/db";
+import { load } from "@/lib/data";
 import { formatMoney, type CurrencyCode } from "@/lib/money";
-import { formatDateTime, requireStudioContext } from "@/lib/studio";
+import { formatDateTime } from "@/lib/studio";
 import { DismissibleNotice } from "@/components/studio/DismissibleNotice";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -27,28 +27,10 @@ interface Metric {
 }
 
 export default async function DashboardPage() {
-  const { artist, entitlement, usage, isPublished, publishedAt, draftUpdatedAt } =
-    await requireStudioContext();
-
-  const [newBookings, totalBookings, confirmedDonations, notifications, draft, links] = await Promise.all([
-    db.bookingRequest.count({ where: { artistId: artist.id, status: "new" } }),
-    db.bookingRequest.count({ where: { artistId: artist.id } }),
-    db.donation.aggregate({
-      where: { status: "confirmed", campaign: { artistId: artist.id } },
-      _sum: { amountMinor: true },
-      _count: true,
-    }),
-    db.notification.findMany({
-      where: { artistId: artist.id },
-      orderBy: { createdAt: "desc" },
-      take: 6,
-    }),
-    db.pageDraft.findUnique({
-      where: { artistId: artist.id },
-      select: { heroMediaId: true, portraitMediaId: true, templateId: true },
-    }),
-    db.externalLink.count({ where: { artistId: artist.id } }),
-  ]);
+  const {
+    context: { artist, entitlement, usage, isPublished, publishedAt, draftUpdatedAt },
+    rows: [newBookings, totalBookings, confirmedDonations, notifications, draft, links],
+  } = await load.studioDashboard();
 
   const donationsEnabled = entitlement.tools.includes("donations");
 
