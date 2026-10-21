@@ -1,0 +1,17 @@
+node_modules
+.next
+storage
+test-results
+playwright-report
+tests/.auth
+.playwright-cli
+prisma/.sqlite
+*.db
+*.db-journal
+.env
+.env.*
+!.env.example
+tsconfig.tsbuildinfo
+Dockerfile
+docker-compose*.yml
+.git

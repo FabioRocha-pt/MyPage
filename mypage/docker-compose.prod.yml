@@ -1,0 +1,76 @@
+# My Page on the Hetzner server: one machine, separate containers.
+#
+#   cp .env.production.example .env.production   # fill in the secrets
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# --env-file is required on every command: Compose reads ${...} values from it
+# (by default it would read .env, which is the local development file).
+#
+# app       Next.js (pages, studio and API), port 3000 on the host's loopback only
+# postgres  PostgreSQL 17, reachable only from the app over the compose network
+# caddy     optional HTTPS reverse proxy for mypage.cv (`--profile proxy`);
+#           leave it off if the server already runs nginx/Traefik in front
+#
+# Data lives in two named volumes: mypage-pg (database) and mypage-storage
+# (uploaded media, STORAGE_DIR). Both need backups. Full steps in DEPLOY.md.
+
+# Own project name, so it never shares containers or volumes with the local
+# development database from docker-compose.yml (same folder).
+name: mypage-prod
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-mypage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env.production}
+      POSTGRES_DB: ${POSTGRES_DB:-mypage}
+    volumes:
+      - mypage-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://mypage.cv}
+    image: mypage-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-mypage}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-mypage}?schema=public
+      STORAGE_DIR: /app/storage
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    volumes:
+      - mypage-storage:/app/storage
+
+  caddy:
+    image: caddy:2-alpine
+    profiles: ["proxy"]
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-mypage.cv}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  mypage-pg:
+  mypage-storage:
+  caddy-data:
+  caddy-config:

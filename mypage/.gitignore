@@ -22,3 +22,6 @@ test-results
 
 # Throwaway sqlite schema written by scripts/migrate-sqlite-to-postgres.ts.
 prisma/.sqlite
+
+# Production environment for docker-compose.prod.yml (holds real secrets).
+.env.production
