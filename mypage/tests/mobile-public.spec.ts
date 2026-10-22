@@ -11,6 +11,14 @@ import { clippedText, documentOverflow, edgeOverflow, report, smallTapTargets } 
 
 const ROUTES = [
   { path: "/", name: "landing" },
+  { path: "/servicos/presence", name: "service · presence" },
+  { path: "/servicos/live", name: "service · live (coming soon)" },
+  { path: "/setores/djs-produtores", name: "sector · djs & producers" },
+  { path: "/help", name: "help" },
+  { path: "/contact", name: "contact" },
+  { path: "/terms", name: "terms" },
+  { path: "/privacy", name: "privacy" },
+  { path: "/esta-pagina-nao-existe", name: "404" },
   { path: "/login", name: "login" },
   { path: "/signup", name: "signup" },
   { path: "/artists", name: "artists" },
@@ -67,25 +75,31 @@ for (const route of ROUTES) {
 }
 
 /**
- * The nav links used to be removed below 950px (`.lp-navlinks a:not(.keep)`)
- * and the Backoffice button below 620px. This is the regression guard: every
- * entry has to be present and reachable, scrolled into view if need be.
+ * The landing's dock keeps only the wordmark and the menu button below 1060px;
+ * everything else moves into the left menu. This is the regression guard:
+ * every entry the desktop dock shows has to be reachable from the menu.
  */
 test("landing keeps all navigation entries on a phone", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
 
-  for (const name of ["Artistas", "Templates", "Tools", "Pricing"]) {
-    const link = page.locator(".lp-navlinks a", { hasText: name });
-    await expect(link, `"${name}" desapareceu da navegação`).toHaveCount(1);
+  const trigger = page.locator(".menu-trigger");
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+  const menu = page.locator("#leftNavigation");
+  await expect(menu).toBeVisible();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+  for (const name of ["Serviços", "Para quem", "Artistas", "Entrar", "Começar"]) {
+    const link = menu.locator("a", { hasText: name });
+    await expect(link, `"${name}" desapareceu do menu`).toHaveCount(1);
     await link.scrollIntoViewIfNeeded();
     await expect(link).toBeVisible();
-    const box = await link.boundingBox();
-    expect(box!.height, `"${name}" tem ${box!.height}px de altura`).toBeGreaterThanOrEqual(43.5);
   }
+  await expect(menu.locator("select")).toBeVisible();
 
-  const backoffice = page.locator(".lp-actions a", { hasText: "Backoffice" });
-  await expect(backoffice, "o botão Backoffice foi escondido").toBeVisible();
+  await menu.locator("a", { hasText: "Serviços" }).click();
+  await expect(menu).toBeHidden();
 });
 
 /** `.ar-navlinks .optional` used to be dropped below 800px. */
@@ -96,15 +110,13 @@ test("artist directory keeps all navigation entries on a phone", async ({ page }
   await expect(page.locator(".ar-navlinks a", { hasText: "O meu espaço" })).toBeVisible();
 });
 
-/** `.auth-aside` used to be dropped below 900px, taking the whole pitch. */
-test("sign-in keeps the brand and the summary on a phone", async ({ page }) => {
+/** The login card keeps the way back, the language switch and the way to sign up. */
+test("sign-in keeps its header and links on a phone", async ({ page }) => {
   await page.goto("/login");
-  await expect(page.locator(".auth-aside")).toBeVisible();
-  await expect(page.locator(".auth-brand")).toBeVisible();
-  await expect(page.locator(".auth-list li")).toHaveCount(3);
-  for (const item of await page.locator(".auth-list li").all()) {
-    await expect(item).toBeVisible();
-  }
+  await expect(page.locator(".system-header .wordmark")).toBeVisible();
+  await expect(page.locator(".system-header select")).toBeVisible();
+  await expect(page.locator(".account-card h1")).toBeVisible();
+  await expect(page.locator(".account-switch a", { hasText: "Criar conta" })).toBeVisible();
 });
 
 /**
