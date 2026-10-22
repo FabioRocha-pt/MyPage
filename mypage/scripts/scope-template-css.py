@@ -23,6 +23,10 @@ styles as four separate layers instead of <style> blocks; pass them in order
 Its state lives on <body> as classes (template-06, motion-edition,
 motion-paused), which the root element carries instead.
 
+The public landing (MyPage-Landing-Entrega-2026-10-22.zip) ships plain .css
+files; they scope under .pub, with html[data-theme=…] kept on the real <html>.
+Pass them in the order the pages link them (see src/styles/public.css).
+
 Usage (from the mypage folder):
     python scripts/scope-template-css.py <page.html> src/styles/template-02.css
     python scripts/scope-template-css.py <page.html> src/styles/template-01.css
@@ -37,6 +41,8 @@ STATE_CLASSES = {
     "mp-mov", "mp-entrou", "mp-luz", "mp-rolou", "mp-menu-aberto", "mp-parado",
     # Template 06: classes on <body>.
     "template-06", "motion-edition", "motion-paused",
+    # Public pages: the landing marks its root once reveal-on-scroll is ready.
+    "motion-ready",
 }
 
 
@@ -51,6 +57,12 @@ def strip_comments(css: str) -> str:
 def strip_imports(css: str) -> str:
     # Web fonts are loaded by the renderer; an @import has no block to scope.
     return re.sub(r"@import\s+(?:url\([^)]*\)|\"[^\"]*\"|'[^']*')[^;]*;", "", css)
+
+
+def strip_font_faces(css: str) -> str:
+    # @font-face is global and cannot be scoped; the target declares its own
+    # faces (with app paths) in the additions block.
+    return re.sub(r"@font-face\s*\{[^}]*\}", "", css)
 
 
 def split_top(text: str, sep: str) -> list[str]:
@@ -106,6 +118,10 @@ def scope_selector(sel: str) -> str:
     sel = " ".join(sel.split())
     if not sel:
         return sel
+    # The public pages follow the app's theme, which lives on the real <html>.
+    if ROOT == ".pub" and sel.startswith("html[data-theme"):
+        end = sel.index("]") + 1
+        return sel[:end] + " " + ROOT + sel[end:]
     if sel.startswith(':root[data-mypage="on"]'):
         return ROOT + ROOT + sel[len(':root[data-mypage="on"]'):]
     for prefix in (":root", "html", "body"):
@@ -172,6 +188,7 @@ HANDOFF = {
     ".t01": "Template 01 · versão 1 (Kevy handoff, kevy-v1-publicar.zip)",
     ".t02": "Template 02 · versão 1 (Deekay handoff, deekay-v1-publicar.zip)",
     ".t06": "Página 3 · DJs & Producers, template 06 (Ellputo handoff, Entrega-Fabio-Pagina-03-DJs-Producers)",
+    ".pub": "Landing e páginas públicas (MyPage-Landing-Entrega-2026-10-22.zip)",
 }
 
 HEADER = """/*
@@ -194,14 +211,17 @@ def main() -> None:
     global ROOT
     *sources, target = sys.argv[1:]
     m = re.search(r"template-(\d+)\.css$", target)
-    if not m:
-        sys.exit("target must be src/styles/template-NN.css")
-    ROOT = f".t{m.group(1)}"
+    if m:
+        ROOT = f".t{m.group(1)}"
+    elif target.endswith("public.css"):
+        ROOT = ".pub"
+    else:
+        sys.exit("target must be src/styles/template-NN.css or src/styles/public.css")
     parts = []
     for source in sources:
         raw = open(source, encoding="utf-8").read()
         parts.append(raw if source.endswith(".css") else read_styles(raw))
-    css = strip_imports(strip_comments("\n".join(parts)))
+    css = strip_font_faces(strip_imports(strip_comments("\n".join(parts))))
     names = set(re.findall(r"@keyframes\s+([\w-]+)", css))
     scoped = transform(css, names)
 
